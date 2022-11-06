@@ -1,0 +1,3 @@
+const MIN_ANDROID_VERSION = 1;
+
+export {MIN_ANDROID_VERSION};
