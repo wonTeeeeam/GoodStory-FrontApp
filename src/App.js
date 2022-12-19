@@ -3,6 +3,8 @@ import {Platform, View, Text, StatusBar} from 'react-native';
 // import codePush from 'react-native-code-push';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
+// Import vector icons
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {MIN_ANDROID_VERSION} from './config';
 import RootNavigation from './navigations/RootNavigation';
 
@@ -17,6 +19,7 @@ let App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar />
+      <Icon name="rocket" size={30} color="#900" />
       <RootNavigation />
     </SafeAreaProvider>
   );
