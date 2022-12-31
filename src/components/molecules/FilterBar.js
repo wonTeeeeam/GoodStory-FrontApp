@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {TextColor} from '../../styles/TextColor';
+import {scale, moderateScale, verticalScale} from '../../utils/Scaling';
 
 export default function FilterBar({filterValue, changeFilterValue}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -14,8 +15,8 @@ export default function FilterBar({filterValue, changeFilterValue}) {
     <View>
       <Pressable onPress={() => setIsModalVisible(true)}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{filterValue || '최신순'}</Text>
-          <Icon name="down" size={20} color={TextColor.gray} />
+          <Text style={styles.text}>{filterValue}</Text>
+          <Icon name="down" size={moderateScale(20)} color={TextColor.gray} />
         </View>
       </Pressable>
       <Modal
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight: 20,
+    marginRight: moderateScale(20),
   },
   text: {
     color: TextColor.gray,
@@ -59,11 +60,11 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   modalContents: {
-    backgroundColor: BackgroundColor.modal,
-    padding: 10,
+    backgroundColor: BackgroundColor.white,
+    padding: moderateScale(10),
   },
   modalText: {
     color: TextColor.black,
-    margin: 10,
+    margin: moderateScale(10),
   },
 });
