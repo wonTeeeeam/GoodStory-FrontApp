@@ -11,14 +11,15 @@ import timeConvert from '../../utils/TimeConvert';
 import {BackgroundColor} from '../../styles/BackgroundColor';
 
 export default function Post({singleData}) {
-  const [likeCnt, setLikeCnt] = useState(singleData.Like);
-  const [replyCnt, setReplyCnt] = useState(singleData.ReplyCount);
-  const [viewCnt, setViewCnt] = useState(singleData.Views);
+  // const [likeCnt, setLikeCnt] = useState(postData.Like);
+  // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
+  // const [viewCnt, setViewCnt] = useState(postData.Views);
+  const postData = singleData.item;
 
   // const renderLikeCnt = () => {
-  //   if(singleData.Like === 0) return '좋아요'
-  //   else if (likeCnt > singleData.Like) return likeCnt;
-  //   else if (singleData.Like > 0) return singleData.Like;
+  //   if(postData.Like === 0) return '좋아요'
+  //   else if (likeCnt > postData.Like) return likeCnt;
+  //   else if (postData.Like > 0) return postData.Like;
 
   //   return '좋아요';
   // };
@@ -29,10 +30,10 @@ export default function Post({singleData}) {
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <Pressable>
-              <Text style={styles.topicText}>{singleData.Category}</Text>
+              <Text style={styles.topicText}>{postData.Category}</Text>
             </Pressable>
             <Text style={styles.timeText}>
-              {timeConvert(singleData.Created_date)}
+              {timeConvert(postData.Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
@@ -45,18 +46,16 @@ export default function Post({singleData}) {
               color={TextColor.gray}
             />
             <Pressable>
-              <Text style={styles.nickNameText}>
-                {singleData.user.Nickname}
-              </Text>
+              <Text style={styles.nickNameText}>{postData.user.Nickname}</Text>
             </Pressable>
           </View>
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.titleText}>{singleData.Title}</Text>
+            <Text style={styles.titleText}>{postData.Title}</Text>
           </View>
           <View>
-            <Text style={styles.contextText}>{singleData.Content}</Text>
+            <Text style={styles.contextText}>{postData.Content}</Text>
           </View>
         </View>
         <View style={styles.iconsContainer}>
@@ -64,7 +63,7 @@ export default function Post({singleData}) {
             style={styles.bottomContainer}
             onPress={() => setLikeCnt(prev => prev + 1)}>
             <View style={styles.iconContainer}>
-              {singleData.Like > 0 ? (
+              {postData.Like > 0 ? (
                 <AntDesignIcon name="heart" color={TextColor.red} />
               ) : (
                 <AntDesignIcon name="hearto" color={TextColor.gray} />
@@ -80,7 +79,7 @@ export default function Post({singleData}) {
               />
             </View>
             <Text style={styles.replyText}>
-              {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+              {postData.ReplyCount > 0 ? postData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
           <Pressable style={styles.bottomContainer}>
@@ -88,7 +87,7 @@ export default function Post({singleData}) {
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
             <Text style={styles.viewText}>
-              {singleData.Views > 0 ? singleData.Views : '조회수'}
+              {postData.Views > 0 ? postData.Views : '조회수'}
             </Text>
           </Pressable>
         </View>
