@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {TextColor} from '../../styles/TextColor';
-import {scale, moderateScale, verticalScale} from '../../utils/Scaling';
+import {scale, moderateScale, verticalScale} from '../../utils/scailing';
 
 export default function FilterBar({filterValue, changeFilterValue}) {
   const [isModalVisible, setIsModalVisible] = useState(false);

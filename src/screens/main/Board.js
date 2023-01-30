@@ -27,7 +27,7 @@ export default function Board() {
         />
       </View>
       <View style={styles.postList}>
-        <PostList filterValue={filterValue} />
+        <PostList filterValue={filterValue} navigation={navigation} />
       </View>
       {/* <BottomTab.Navigator>
         <BottomTab.Screen name="Home" component={Board} />

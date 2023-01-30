@@ -6,11 +6,10 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {TextColor} from '../../styles/TextColor';
-import {moderateScale, verticalScale} from '../../utils/Scaling';
-import timeConvert from '../../utils/TimeConvert';
-import {BackgroundColor} from '../../styles/BackgroundColor';
+import {moderateScale, verticalScale} from '../../utils/scailing';
+import {convertTimeToKorean} from '../../utils/timeConverter';
 
-export default function Post({singleData}) {
+export default function Post({singleData, navigation}) {
   // const [likeCnt, setLikeCnt] = useState(postData.Like);
   // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
   // const [viewCnt, setViewCnt] = useState(postData.Views);
@@ -26,14 +25,20 @@ export default function Post({singleData}) {
 
   return (
     <View>
-      <Pressable style={styles.allContainer}>
+      <Pressable
+        style={styles.allContainer}
+        onPress={() =>
+          navigation.navigate('DetailPost', {
+            postData,
+          })
+        }>
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <Pressable>
               <Text style={styles.topicText}>{postData.Category}</Text>
             </Pressable>
             <Text style={styles.timeText}>
-              {timeConvert(postData.Created_date)}
+              {convertTimeToKorean(postData.Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
@@ -55,7 +60,7 @@ export default function Post({singleData}) {
             <Text style={styles.titleText}>{postData.Title}</Text>
           </View>
           <View>
-            <Text style={styles.contextText}>{postData.Content}</Text>
+            <Text style={styles.contextText}>{postData.Summary}</Text>
           </View>
         </View>
         <View style={styles.iconsContainer}>

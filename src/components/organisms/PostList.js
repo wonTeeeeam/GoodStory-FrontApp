@@ -4,9 +4,10 @@ import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import Post from '../molecules/Post';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
-import {moderateScale} from '../../utils/Scaling';
+import {moderateScale} from '../../utils/scailing';
+import axios from 'axios';
 
-export default function PostList({filterValue}) {
+export default function PostList({filterValue, navigation}) {
   const mockDatas = useMemo(() => {
     return [
       {
@@ -106,9 +107,10 @@ export default function PostList({filterValue}) {
       },
     ];
   }, []);
+
   useEffect(() => {
     fetchNextData();
-  });
+  }, []);
 
   useEffect(() => {
     if (filterValue === '최신순') {
@@ -122,9 +124,12 @@ export default function PostList({filterValue}) {
     }
   }, [filterValue, mockDatas]);
 
-  const fetchNextData = () => {
+  const fetchNextData = async () => {
     try {
-      alert('hi!');
+      // const result = await axios.get(
+      //   'http://3.35.111.44:3001/board/getAll?top=2&skip=0&category=Life',
+      // );
+      // alert('gi!');
     } catch (e) {}
   };
   return (
@@ -134,7 +139,7 @@ export default function PostList({filterValue}) {
         renderItem={(singleData, index) => {
           return (
             <View key={index} style={styles.container}>
-              <Post singleData={singleData} />
+              <Post singleData={singleData} navigation={navigation} />
             </View>
           );
         }}
