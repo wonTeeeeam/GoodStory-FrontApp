@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 
 import Post from '../molecules/Post';
@@ -8,138 +8,44 @@ import {moderateScale} from '../../utils/scailing';
 import axios from 'axios';
 
 export default function PostList({filterValue, navigation}) {
-  const mockDatas = useMemo(() => {
-    return [
-      {
-        BoardId: 10,
-        Category: 'Life',
-        Created_date: new Date('2022-12-30T11:54:44.827Z'),
-        Title: '원재 사랑한다1',
-        Content: '원재 좋다1.',
-        Like: 5,
-        Views: 0,
-        ReplyCount: 0,
-        PhotoURL:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWX',
-        user: {
-          UserId: '0c9b9956-6ec9-437c-afc4-e98cbcead68b',
-          Nickname: '한원석',
-          CompanyCode: 'ZH001000',
-          CompanyName: '진학사',
-          Created_date: new Date('2022-12-30T11:53:13.002Z'),
-        },
-      },
-      {
-        BoardId: 11,
-        Category: 'Life',
-        Created_date: new Date('2022-12-30T12:19:06.636Z'),
-        Title: '원재 사랑한다2',
-        Content: '원재 좋다2.',
-        Like: 0,
-        Views: 0,
-        ReplyCount: 0,
-        PhotoURL:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWX',
-        user: {
-          UserId: '0c9b9956-6ec9-437c-afc4-e98cbcead68b',
-          Nickname: '한원석',
-          CompanyCode: 'ZH001000',
-          CompanyName: '진학사',
-          Created_date: new Date('2022-12-30T11:53:13.002Z'),
-        },
-      },
-      {
-        BoardId: 11,
-        Category: 'Life',
-        Created_date: new Date('2022-12-30T12:19:06.636Z'),
-        Title: '원재 사랑한다2',
-        Content: '원재 좋다2.',
-        Like: 0,
-        Views: 0,
-        ReplyCount: 0,
-        PhotoURL:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWX',
-        user: {
-          UserId: '0c9b9956-6ec9-437c-afc4-e98cbcead68b',
-          Nickname: '한원석',
-          CompanyCode: 'ZH001000',
-          CompanyName: '진학사',
-          Created_date: new Date('2022-12-30T11:53:13.002Z'),
-        },
-      },
-      {
-        BoardId: 11,
-        Category: 'Life',
-        Created_date: new Date('2022-12-30T12:19:06.636Z'),
-        Title: '원재 사랑한다2',
-        Content: '원재 좋다2.',
-        Like: 0,
-        Views: 0,
-        ReplyCount: 0,
-        PhotoURL:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWX',
-        user: {
-          UserId: '0c9b9956-6ec9-437c-afc4-e98cbcead68b',
-          Nickname: '한원석',
-          CompanyCode: 'ZH001000',
-          CompanyName: '진학사',
-          Created_date: new Date('2022-12-30T11:53:13.002Z'),
-        },
-      },
-      {
-        BoardId: 11,
-        Category: 'Life',
-        Created_date: new Date('2022-12-30T12:19:06.636Z'),
-        Title: '원재 사랑한다2',
-        Content: '원재 좋다2.',
-        Like: 0,
-        Views: 0,
-        ReplyCount: 0,
-        PhotoURL:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWX',
-        user: {
-          UserId: '0c9b9956-6ec9-437c-afc4-e98cbcead68b',
-          Nickname: '한원석',
-          CompanyCode: 'ZH001000',
-          CompanyName: '진학사',
-          Created_date: new Date('2022-12-30T11:53:13.002Z'),
-        },
-      },
-    ];
-  }, []);
+  const [skip, setSkip] = useState(0);
+  const [listData, setListData] = useState([]);
 
   useEffect(() => {
     fetchNextData();
-  }, []);
+  }, [fetchNextData]);
 
   useEffect(() => {
     if (filterValue === '최신순') {
-      mockDatas.sort((firstValue, secondValue) => {
+      listData.sort((firstValue, secondValue) => {
         return secondValue.Created_date - firstValue.Created_date;
       });
     } else if (filterValue === '추천순') {
-      mockDatas.sort((firstValue, secondValue) => {
+      listData.sort((firstValue, secondValue) => {
         return secondValue.Like - firstValue.Like;
       });
     }
-  }, [filterValue, mockDatas]);
+  }, [filterValue, listData]);
 
-  const fetchNextData = async () => {
+  const fetchNextData = useCallback(async () => {
+    const top = 5;
     try {
-      // const result = await axios.get(
-      //   'http://3.35.111.44:3001/board/getAll?top=2&skip=0&category=Life',
-      // );
-      // alert('gi!');
+      const nextData = await axios.get('http://3.35.111.44:3001/board/getAll', {
+        params: {top: top, skip: skip, category: 'Life'},
+      });
+      setSkip(skip + 5);
+      setListData([...listData, ...nextData.data]);
     } catch (e) {}
-  };
+  }, [skip, listData]);
+
   return (
     <View>
       <FlatList
-        data={mockDatas}
-        renderItem={(singleData, index) => {
+        data={listData}
+        renderItem={({item, index}) => {
           return (
             <View key={index} style={styles.container}>
-              <Post singleData={singleData} navigation={navigation} />
+              <Post singleData={item} navigation={navigation} />
             </View>
           );
         }}

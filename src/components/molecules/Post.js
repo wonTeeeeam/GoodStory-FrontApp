@@ -13,7 +13,6 @@ export default function Post({singleData, navigation}) {
   // const [likeCnt, setLikeCnt] = useState(postData.Like);
   // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
   // const [viewCnt, setViewCnt] = useState(postData.Views);
-  const postData = singleData.item;
 
   // const renderLikeCnt = () => {
   //   if(postData.Like === 0) return '좋아요'
@@ -29,16 +28,16 @@ export default function Post({singleData, navigation}) {
         style={styles.allContainer}
         onPress={() =>
           navigation.navigate('DetailPost', {
-            postData,
+            singleData,
           })
         }>
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <Pressable>
-              <Text style={styles.topicText}>{postData.Category}</Text>
+              <Text style={styles.topicText}>{singleData.Category}</Text>
             </Pressable>
             <Text style={styles.timeText}>
-              {convertTimeToKorean(postData.Created_date)}
+              {convertTimeToKorean(singleData.Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
@@ -51,16 +50,18 @@ export default function Post({singleData, navigation}) {
               color={TextColor.gray}
             />
             <Pressable>
-              <Text style={styles.nickNameText}>{postData.user.Nickname}</Text>
+              <Text style={styles.nickNameText}>
+                {singleData.user.Nickname}
+              </Text>
             </Pressable>
           </View>
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.titleText}>{postData.Title}</Text>
+            <Text style={styles.titleText}>{singleData.Title}</Text>
           </View>
           <View>
-            <Text style={styles.contextText}>{postData.Summary}</Text>
+            <Text style={styles.contextText}>{singleData.Summary}</Text>
           </View>
         </View>
         <View style={styles.iconsContainer}>
@@ -68,7 +69,7 @@ export default function Post({singleData, navigation}) {
             style={styles.bottomContainer}
             onPress={() => setLikeCnt(prev => prev + 1)}>
             <View style={styles.iconContainer}>
-              {postData.Like > 0 ? (
+              {singleData.Like > 0 ? (
                 <AntDesignIcon name="heart" color={TextColor.red} />
               ) : (
                 <AntDesignIcon name="hearto" color={TextColor.gray} />
@@ -84,7 +85,7 @@ export default function Post({singleData, navigation}) {
               />
             </View>
             <Text style={styles.replyText}>
-              {postData.ReplyCount > 0 ? postData.ReplyCount : '댓글'}
+              {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
           <Pressable style={styles.bottomContainer}>
@@ -92,7 +93,7 @@ export default function Post({singleData, navigation}) {
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
             <Text style={styles.viewText}>
-              {postData.Views > 0 ? postData.Views : '조회수'}
+              {singleData.Views > 0 ? singleData.Views : '조회수'}
             </Text>
           </Pressable>
         </View>

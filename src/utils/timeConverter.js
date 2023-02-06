@@ -1,5 +1,5 @@
 export function convertTimeToKorean(rawTime) {
-  const inputTime = rawTime.getTime();
+  const inputTime = new Date(rawTime);
   const presentTime = Date.now();
 
   const gap = presentTime - inputTime;
@@ -19,6 +19,7 @@ export function convertTimeToKorean(rawTime) {
 }
 
 export function convertTimeToStandardFormat(createdDate) {
+  const inputDate = new Date(createdDate);
   const month = [
     'January',
     'February',
@@ -35,14 +36,14 @@ export function convertTimeToStandardFormat(createdDate) {
   ];
 
   return (
-    createdDate.getDate() +
+    inputDate.getDate() +
     ' ' +
-    month[createdDate.getMonth()] +
+    month[inputDate.getMonth()] +
     ' ' +
-    createdDate.getFullYear() +
+    inputDate.getFullYear() +
     ' / ' +
-    createdDate.getHours() +
+    inputDate.getHours() +
     ':' +
-    createdDate.getMinutes()
+    inputDate.getMinutes()
   );
 }
