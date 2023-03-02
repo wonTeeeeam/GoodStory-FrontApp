@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 
 import Post from '../molecules/Post';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
-import {moderateScale} from '../../utils/scailing';
+import {ss} from '../../utils/scailing';
 import axios from 'axios';
 
 export default function PostList({filterValue, navigation}) {
@@ -59,6 +59,6 @@ export default function PostList({filterValue, navigation}) {
 const styles = StyleSheet.create({
   container: {
     borderBottomColor: BackgroundColor.lightGray,
-    borderBottomWidth: moderateScale(3),
+    borderBottomWidth: ss(3),
   },
 });

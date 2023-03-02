@@ -6,19 +6,20 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {TextColor} from '../../styles/TextColor';
-import {scale, moderateScale, verticalScale} from '../../utils/scailing';
+import {hs, ss, vs} from '../../utils/scailing';
 
 export default function FilterBar({filterValue, changeFilterValue}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
-    <View>
+    <View style={{}}>
       <Pressable onPress={() => setIsModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
-          <Icon name="down" size={moderateScale(20)} color={TextColor.gray} />
+          <Icon name="down" size={ss(20)} color={TextColor.gray} />
         </View>
       </Pressable>
+
       <Modal
         isVisible={isModalVisible}
         style={styles.bottomModal}
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight: moderateScale(20),
+    marginRight: ss(20),
   },
   text: {
     color: TextColor.gray,
@@ -61,10 +62,10 @@ const styles = StyleSheet.create({
   },
   modalContents: {
     backgroundColor: BackgroundColor.white,
-    padding: moderateScale(10),
+    padding: ss(10),
   },
   modalText: {
     color: TextColor.black,
-    margin: moderateScale(10),
+    margin: ss(10),
   },
 });

@@ -6,7 +6,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {TextColor} from '../../styles/TextColor';
-import {moderateScale, verticalScale} from '../../utils/scailing';
+import {ss, vs} from '../../utils/scailing';
 import {convertTimeToKorean} from '../../utils/timeConverter';
 
 export default function Post({singleData, navigation}) {
@@ -46,7 +46,7 @@ export default function Post({singleData, navigation}) {
             </Pressable>
             <EntypoIcon
               name="dot-single"
-              size={moderateScale(20)}
+              size={ss(20)}
               color={TextColor.gray}
             />
             <Pressable>
@@ -104,28 +104,28 @@ export default function Post({singleData, navigation}) {
 
 const styles = StyleSheet.create({
   allContainer: {
-    height: verticalScale(200),
+    height: vs(200),
   },
   container: {
-    margin: moderateScale(15),
+    margin: ss(15),
     marginBottom: 0,
   },
   firstDetailContainer: {
     flexDirection: 'row',
-    width: moderateScale(105),
+    width: ss(105),
     justifyContent: 'space-between',
   },
   secondDetailContainer: {
     flexDirection: 'row',
-    marginTop: moderateScale(5),
-    width: moderateScale(105),
+    marginTop: ss(5),
+    width: ss(105),
     justifyContent: 'space-between',
   },
   iconsContainer: {
     flexDirection: 'row',
-    width: moderateScale(270),
-    margin: moderateScale(40),
-    marginLeft: moderateScale(50),
+    width: ss(270),
+    margin: ss(40),
+    marginLeft: ss(50),
     justifyContent: 'space-between',
   },
   bottomContainer: {flexDirection: 'row'},
@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
   titleText: {
     color: TextColor.black,
     fontWeight: 'bold',
-    fontSize: moderateScale(25),
+    fontSize: ss(25),
   },
-  contextText: {color: TextColor.gray, fontSize: moderateScale(20)},
+  contextText: {color: TextColor.gray, fontSize: ss(20)},
   likeText: {color: TextColor.gray},
   replyText: {color: TextColor.gray},
   viewText: {color: TextColor.gray},

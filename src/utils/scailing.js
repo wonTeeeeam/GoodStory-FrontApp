@@ -6,9 +6,8 @@ const {width, height} = Dimensions.get('window');
 const guidelineBaseWidth = 350;
 const guidelineBaseHeight = 680;
 
-const scale = size => (width / guidelineBaseWidth) * size;
-const verticalScale = size => (height / guidelineBaseHeight) * size;
-const moderateScale = (size, factor = 0.5) =>
-  size + (scale(size) - size) * factor;
+const hs = size => (width / guidelineBaseWidth) * size;
+const vs = size => (height / guidelineBaseHeight) * size;
+const ss = (size, factor = 0.5) => size + (hs(size) - size) * factor;
 
-export {scale, verticalScale, moderateScale};
+export {hs, vs, ss};
