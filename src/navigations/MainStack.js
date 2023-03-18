@@ -11,11 +11,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {Modal, Pressable, Text, View} from 'react-native';
 import {ss} from '../utils/scailing';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const Stack = createNativeStackNavigator();
 
 export default function MainStack() {
   const navigation = useNavigation();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleSetIsModalVisible = useCallback(isVisible => {

@@ -7,6 +7,7 @@ import FilterBar from '../../components/molecules/FilterBar';
 import PostList from '../../components/organisms/PostList';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
+import {ss} from '../../utils/scailing';
 
 export default function Board() {
   const navigation = useNavigation();
