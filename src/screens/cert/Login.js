@@ -11,12 +11,14 @@ import {hs, vs, ss} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
 function Login() {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
   const [isSaveID, setIsSaveID] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
+  const navigation = useNavigation();
 
   /**
    * ID 입력값 변경
@@ -204,7 +206,10 @@ function Login() {
           alignSelf: 'stretch',
           justifyContent: 'space-between',
         }}>
-        <Text>회원가입</Text>
+        <Pressable onPress={() => navigation.navigate('JoinEmail')}>
+          <Text>회원가입</Text>
+        </Pressable>
+
         <View style={{borderLeftWidth: ss(1)}} />
         <Text>아이디 찾기</Text>
         <View style={{borderLeftWidth: ss(1)}} />

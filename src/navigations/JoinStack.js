@@ -12,10 +12,12 @@ import {useNavigation} from '@react-navigation/native';
 import {Modal, Pressable, Text, View} from 'react-native';
 import {ss} from '../utils/scailing';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import JoinEmail from '../screens/cert/JoinEmail';
+import Login from '../screens/cert/Login';
 
 const Stack = createNativeStackNavigator();
 
-export default function MainStack() {
+export default function JoinStack() {
   const navigation = useNavigation();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,7 +28,7 @@ export default function MainStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Board"
+      initialRouteName="Login"
       screenOptions={{
         headerStyle: {backgroundColor: BackgroundColor.snow},
         headerLeft: () => {
@@ -55,11 +57,16 @@ export default function MainStack() {
         // },
       }}>
       <Stack.Screen
-        name="Board"
-        component={Board}
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="JoinEmail"
+        component={JoinEmail}
+        options={{headerShown: false}}
+      />
+      {/* <Stack.Screen
         name="DetailPost"
         component={DetailPost}
         initialParams={
@@ -74,7 +81,7 @@ export default function MainStack() {
           // animationTypeForReplace: 'push',
           animation: 'slide_from_right',
         }}
-      />
+      /> */}
       {/* <Stack.Screen
         name="Password"
         component={Password}

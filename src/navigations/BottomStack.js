@@ -18,6 +18,7 @@ import Alarm from '../screens/alarm/Alarm';
 import Setting from '../screens/setting/Setting';
 import Posting from '../screens/posting/Posting';
 import Topic from '../screens/topic/Topic';
+import JoinStack from './JoinStack';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
@@ -129,8 +130,8 @@ function BottomStack() {
         }}
       />
       <Tab.Screen
-        name="Login"
-        component={Login}
+        name="JoinStack"
+        component={JoinStack}
         options={{
           headerShown: false,
           tabBarIcon: () => (
@@ -138,7 +139,7 @@ function BottomStack() {
               name="person"
               color={'blue'}
               size={ss(20)}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('JoinStack')}
             />
           ),
           tabBarShowLabel: false,
