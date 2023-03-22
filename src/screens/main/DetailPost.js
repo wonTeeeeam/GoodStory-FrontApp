@@ -53,11 +53,11 @@ export default function DetailPost({route, navigation}) {
   const fetchDetailData = useCallback(async () => {
     try {
       const result = await axios.get(
-        `http://3.35.111.44:3001/board/getOne/${singleData.BoardId}`,
+        `http://3.35.111.44:3001/board/getOne/${singleData.Board_BoardId}`,
       );
       setReplyData(result.data);
     } catch (e) {}
-  }, [singleData.BoardId]);
+  }, [singleData.Board_BoardId]);
 
   const handleChoosePhoto = async () => {
     const result = await launchImageLibrary();
@@ -75,12 +75,12 @@ export default function DetailPost({route, navigation}) {
               <Text style={{color: 'black'}}>사진</Text>
             </View>
             <View style={styles.userContainer}>
-              <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
+              <Text style={styles.nickName}>{singleData.user_Nickname}</Text>
             </View>
           </View>
           <View style={styles.timeContainer}>
             <Text style={styles.date}>
-              {convertTimeToStandardFormat(singleData.Created_date)}
+              {convertTimeToStandardFormat(singleData.user_Created_date)}
             </Text>
           </View>
 
@@ -90,7 +90,7 @@ export default function DetailPost({route, navigation}) {
             <View style={styles.likeBox}>
               <AntDesignIcon name="heart" color={TextColor.red} />
               <Text style={styles.user}>추천</Text>
-              <Text style={styles.user}>{singleData.Like}</Text>
+              <Text style={styles.user}>{singleData.Board_Like}</Text>
             </View>
           </View>
 

@@ -206,7 +206,10 @@ function Login() {
           alignSelf: 'stretch',
           justifyContent: 'space-between',
         }}>
-        <Pressable onPress={() => navigation.navigate('JoinEmail')}>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('JoinStack', {screen: 'JoinEmail'})
+          }>
           <Text>회원가입</Text>
         </Pressable>
 

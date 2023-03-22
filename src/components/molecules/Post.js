@@ -34,15 +34,17 @@ export default function Post({singleData, navigation}) {
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <Pressable>
-              <Text style={styles.topicText}>{singleData.Category}</Text>
+              <Text style={styles.topicText}>{singleData.Board_Category}</Text>
             </Pressable>
             <Text style={styles.timeText}>
-              {convertTimeToKorean(singleData.Created_date)}
+              {convertTimeToKorean(singleData.Board_Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
             <Pressable>
-              <Text style={styles.companyNameText}>회사명</Text>
+              <Text style={styles.companyNameText}>
+                {singleData.user_CompanyName}
+              </Text>
             </Pressable>
             <EntypoIcon
               name="dot-single"
@@ -51,17 +53,17 @@ export default function Post({singleData, navigation}) {
             />
             <Pressable>
               <Text style={styles.nickNameText}>
-                {singleData.user.Nickname}
+                {singleData.user_Nickname}
               </Text>
             </Pressable>
           </View>
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.titleText}>{singleData.Title}</Text>
+            <Text style={styles.titleText}>{singleData.Board_Title}</Text>
           </View>
           <View>
-            <Text style={styles.contextText}>{singleData.Summary}</Text>
+            {/* <Text style={styles.contextText}>{singleData.Summary}</Text> */}
           </View>
         </View>
         <View style={styles.iconsContainer}>
@@ -69,7 +71,7 @@ export default function Post({singleData, navigation}) {
             style={styles.bottomContainer}
             onPress={() => setLikeCnt(prev => prev + 1)}>
             <View style={styles.iconContainer}>
-              {singleData.Like > 0 ? (
+              {singleData.Board_Like > 0 ? (
                 <AntDesignIcon name="heart" color={TextColor.red} />
               ) : (
                 <AntDesignIcon name="hearto" color={TextColor.gray} />
@@ -85,7 +87,9 @@ export default function Post({singleData, navigation}) {
               />
             </View>
             <Text style={styles.replyText}>
-              {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+              {singleData.Board_ReplyCount > 0
+                ? singleData.Board_ReplyCount
+                : '댓글'}
             </Text>
           </Pressable>
           <Pressable style={styles.bottomContainer}>
@@ -93,7 +97,7 @@ export default function Post({singleData, navigation}) {
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
             <Text style={styles.viewText}>
-              {singleData.Views > 0 ? singleData.Views : '조회수'}
+              {singleData.Board_Views > 0 ? singleData.Board_Views : '조회수'}
             </Text>
           </Pressable>
         </View>

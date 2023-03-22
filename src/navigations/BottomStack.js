@@ -19,87 +19,17 @@ import Setting from '../screens/setting/Setting';
 import Posting from '../screens/posting/Posting';
 import Topic from '../screens/topic/Topic';
 import JoinStack from './JoinStack';
+import BoardStack from './BoardStack';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
-  const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
 
-  function Main() {
-    return (
-      <Stack.Navigator
-        initialRouteName="Board"
-        screenOptions={{
-          headerStyle: {backgroundColor: BackgroundColor.snow},
-          headerLeft: () => {
-            return (
-              <Ionicons
-                name="chevron-back"
-                color={TextColor.black}
-                size={20}
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-            );
-          },
-          // headerRight: () => {
-          //   return (
-          //     <Entypo
-          //       name="dots-three-vertical"
-          //       color={TextColor.black}
-          //       size={20}
-          //       onPress={() => {
-          //         handleSetIsModalVisible(true);
-          //       }}
-          //     />
-          //   );
-          // },
-        }}>
-        <Stack.Screen
-          name="Board"
-          component={Board}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="DetailPost"
-          component={DetailPost}
-          initialParams={
-            {
-              // isModalVisible: isModalVisible,
-            }
-          }
-          options={{
-            headerShown: true,
-            headerTitle: '좋',
-            headerTitleStyle: {},
-            // animationTypeForReplace: 'push',
-            animation: 'slide_from_right',
-          }}
-        />
-        {/* <Stack.Screen
-        name="Password"
-        component={Password}
-        options={{headerShown: false}}
-      /> */}
-        {/* <Stack.Screen
-        name="NickName"
-        component={NickName}
-        options={{headerShown: false}}
-      /> */}
-        {/* <Stack.Screen
-        name="BusinessCard"
-        component={BusinessCard}
-        options={{headerShown: false}}
-      /> */}
-      </Stack.Navigator>
-    );
-  }
   return (
-    <Tab.Navigator initialRouteName="Main" backBehavior="history">
+    <Tab.Navigator backBehavior="history">
       <Tab.Screen
-        name="Main"
-        component={Main}
+        name="BoardStack"
+        component={BoardStack}
         options={{
           headerShown: false,
           tabBarIcon: () => (
@@ -107,7 +37,7 @@ function BottomStack() {
               name="home"
               color={'blue'}
               size={ss(20)}
-              onPress={() => navigation.navigate('Main')}
+              onPress={() => navigation.navigate('BoardStack')}
             />
           ),
           tabBarShowLabel: false,
@@ -130,8 +60,8 @@ function BottomStack() {
         }}
       />
       <Tab.Screen
-        name="JoinStack"
-        component={JoinStack}
+        name="Login"
+        component={Login}
         options={{
           headerShown: false,
           tabBarIcon: () => (
@@ -139,7 +69,7 @@ function BottomStack() {
               name="person"
               color={'blue'}
               size={ss(20)}
-              onPress={() => navigation.navigate('JoinStack')}
+              onPress={() => navigation.navigate('Login')}
             />
           ),
           tabBarShowLabel: false,

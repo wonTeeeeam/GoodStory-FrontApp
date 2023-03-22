@@ -18,11 +18,11 @@ export default function PostList({filterValue, navigation}) {
   useEffect(() => {
     if (filterValue === '최신순') {
       listData.sort((firstValue, secondValue) => {
-        return secondValue.Created_date - firstValue.Created_date;
+        return secondValue.Board_Created_date - firstValue.Board_Created_date;
       });
     } else if (filterValue === '추천순') {
       listData.sort((firstValue, secondValue) => {
-        return secondValue.Like - firstValue.Like;
+        return secondValue.Board_Like - firstValue.Board_Like;
       });
     }
   }, [filterValue, listData]);
@@ -31,7 +31,7 @@ export default function PostList({filterValue, navigation}) {
     const top = 5;
     try {
       const nextData = await axios.get('http://3.35.111.44:3001/board/getAll', {
-        params: {top: top, skip: skip, category: 'Life'},
+        params: {top: top, skip: skip, Category: 'Life'},
       });
       setSkip(skip + 5);
       setListData([...listData, ...nextData.data]);

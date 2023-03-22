@@ -1,34 +1,19 @@
-import React, {useCallback, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import React from 'react';
 import Board from '../screens/main/Board';
 import DetailPost from '../screens/main/DetailPost';
 import {BackgroundColor} from '../styles/BackgroundColor';
 import {TextColor} from '../styles/TextColor';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import {Modal, Pressable, Text, View} from 'react-native';
-import {ss} from '../utils/scailing';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import JoinEmail from '../screens/cert/JoinEmail';
-import Login from '../screens/cert/Login';
 
-const Stack = createNativeStackNavigator();
-
-export default function JoinStack() {
+function BoardStack() {
+  const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const handleSetIsModalVisible = useCallback(isVisible => {
-    setIsModalVisible(isVisible);
-  }, []);
 
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Board"
       screenOptions={{
         headerStyle: {backgroundColor: BackgroundColor.snow},
         headerLeft: () => {
@@ -57,11 +42,11 @@ export default function JoinStack() {
         // },
       }}>
       <Stack.Screen
-        name="JoinEmail"
-        component={JoinEmail}
+        name="Board"
+        component={Board}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="DetailPost"
         component={DetailPost}
         initialParams={
@@ -76,7 +61,7 @@ export default function JoinStack() {
           // animationTypeForReplace: 'push',
           animation: 'slide_from_right',
         }}
-      /> */}
+      />
       {/* <Stack.Screen
         name="Password"
         component={Password}
@@ -95,3 +80,5 @@ export default function JoinStack() {
     </Stack.Navigator>
   );
 }
+
+export default BoardStack;
