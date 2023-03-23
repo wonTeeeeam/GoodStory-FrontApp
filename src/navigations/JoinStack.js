@@ -14,6 +14,9 @@ import {ss} from '../utils/scailing';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import JoinEmail from '../screens/cert/JoinEmail';
 import Login from '../screens/cert/Login';
+import JoinPassword from '../screens/cert/JoinPassword';
+import JoinName from '../screens/cert/JoinName';
+import JoinCamera from '../screens/cert/JoinCamera';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +31,7 @@ export default function JoinStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="JoinEmail"
       screenOptions={{
         headerStyle: {backgroundColor: BackgroundColor.snow},
         headerLeft: () => {
@@ -43,50 +46,28 @@ export default function JoinStack() {
             />
           );
         },
-        // headerRight: () => {
-        //   return (
-        //     <Entypo
-        //       name="dots-three-vertical"
-        //       color={TextColor.black}
-        //       size={20}
-        //       onPress={() => {
-        //         handleSetIsModalVisible(true);
-        //       }}
-        //     />
-        //   );
-        // },
       }}>
       <Stack.Screen
         name="JoinEmail"
         component={JoinEmail}
-        options={{headerShown: false}}
+        options={{headerShown: true, headerTitle: '회원가입'}}
       />
-      {/* <Stack.Screen
-        name="DetailPost"
-        component={DetailPost}
-        initialParams={
-          {
-            // isModalVisible: isModalVisible,
-          }
-        }
-        options={{
-          headerShown: true,
-          headerTitle: '좋',
-          headerTitleStyle: {},
-          // animationTypeForReplace: 'push',
-          animation: 'slide_from_right',
-        }}
-      /> */}
-      {/* <Stack.Screen
-        name="Password"
-        component={Password}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
-        name="NickName"
-        component={NickName}
-        options={{headerShown: false}}
-      /> */}
+
+      <Stack.Screen
+        name="JoinPassword"
+        component={JoinPassword}
+        options={{headerShown: true, headerTitle: '회원가입'}}
+      />
+      <Stack.Screen
+        name="JoinName"
+        component={JoinName}
+        options={{headerShown: true, headerTitle: '회원가입'}}
+      />
+      <Stack.Screen
+        name="JoinCamera"
+        component={JoinCamera}
+        options={{headerShown: true, headerTitle: '회원가입'}}
+      />
       {/* <Stack.Screen
         name="BusinessCard"
         component={BusinessCard}
