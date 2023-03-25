@@ -29,9 +29,17 @@ export default function PostList({filterValue, navigation}) {
 
   const fetchNextData = useCallback(async () => {
     const top = 5;
+    const BoardTopic = [
+      'Tip',
+      'Backbiting',
+      'Salary',
+      'Turnover',
+      'Free',
+      'Humor',
+    ];
     try {
       const nextData = await axios.get('http://3.35.111.44:3001/board/getAll', {
-        params: {top: top, skip: skip, Category: 'Life'},
+        params: {top: top, skip: skip, Category: BoardTopic[4]},
       });
       setSkip(skip + 5);
       setListData([...listData, ...nextData.data]);

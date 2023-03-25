@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -58,12 +58,17 @@ export default function Post({singleData, navigation}) {
             </Pressable>
           </View>
         </View>
-        <View style={styles.container}>
-          <View>
-            <Text style={styles.titleText}>{singleData.Board_Title}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.titleText}>{singleData.Board_Title}</Text>
+            </View>
+            <View>
+              <Text style={styles.contextText}>좆같다</Text>
+            </View>
           </View>
           <View>
-            {/* <Text style={styles.contextText}>{singleData.Summary}</Text> */}
+            <Image source={singleData.Board_PhotoURL} />
           </View>
         </View>
         <View style={styles.iconsContainer}>

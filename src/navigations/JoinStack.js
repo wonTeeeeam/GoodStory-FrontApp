@@ -41,19 +41,34 @@ export default function JoinStack() {
               color={TextColor.black}
               size={20}
               onPress={() => {
+                navigation.push('JoinEmail');
+                navigation.pop(1);
                 navigation.goBack();
+                // navigation goBack doesn't work exactly...
+                // const currenetStack = navigation.getState().routes[1];
+                // if (!currenetStack.state || currenetStack.state.index === 0) {
+                //   return navigation.goBack();
+                // }
+                // return navigation.navigate(
+                //   `${
+                //     currenetStack.state.routes[currenetStack.state.index - 1]
+                //       .name
+                //   }`,
+                // );
               }}
             />
           );
         },
       }}>
       <Stack.Screen
+        key={'1'}
         name="JoinEmail"
         component={JoinEmail}
         options={{headerShown: true, headerTitle: '회원가입'}}
       />
 
       <Stack.Screen
+        key={'2'}
         name="JoinPassword"
         component={JoinPassword}
         options={{headerShown: true, headerTitle: '회원가입'}}

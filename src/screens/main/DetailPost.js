@@ -25,7 +25,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function DetailPost({route, navigation}) {
   const {singleData} = route.params;
-  const [replyData, setReplyData] = useState({});
+  const [replyData, setReplyData] = useState([]);
   const [img, setImage] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -55,7 +55,7 @@ export default function DetailPost({route, navigation}) {
       const result = await axios.get(
         `http://3.35.111.44:3001/board/getOne/${singleData.Board_BoardId}`,
       );
-      setReplyData(result.data);
+      setReplyData(result.data.replys);
     } catch (e) {}
   }, [singleData.Board_BoardId]);
 
@@ -94,7 +94,7 @@ export default function DetailPost({route, navigation}) {
             </View>
           </View>
 
-          <ReplyList />
+          <ReplyList replyData={replyData} />
 
           <View style={{...styles.grayBox, ...styles.pictureBox}}>
             <Pressable onPress={handleChoosePhoto}>

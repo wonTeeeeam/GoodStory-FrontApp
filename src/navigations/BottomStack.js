@@ -18,7 +18,6 @@ import Alarm from '../screens/alarm/Alarm';
 import Setting from '../screens/setting/Setting';
 import Posting from '../screens/posting/Posting';
 import Topic from '../screens/topic/Topic';
-import JoinStack from './JoinStack';
 import BoardStack from './BoardStack';
 
 function BottomStack() {

@@ -5,7 +5,7 @@ import {BackgroundColor} from '../../styles/BackgroundColor';
 import {ss, hs, vs} from '../../utils/scailing';
 import Reply from '../molecules/Reply';
 
-export default function ReplyList() {
+export default function ReplyList({replyData}) {
   const mockDatas = [
     {
       replyTitle: '안녕',
@@ -22,11 +22,11 @@ export default function ReplyList() {
           />
           <Text style={styles.replyList}>댓글목록</Text>
         </View>
-        {mockDatas.map((singleData, index) => {
+        {replyData.map((singleData, index) => {
           return (
             <View key={index} style={styles.flatList}>
               <Reply singleData={singleData} />
-              {index === mockDatas.length - 1 ? undefined : (
+              {index === replyData.length - 1 ? undefined : (
                 <View
                   style={{
                     backgroundColor: '#C0C0C0',
