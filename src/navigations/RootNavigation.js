@@ -3,12 +3,13 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import BottomStack from './BottomStack';
 import MainStack from './MainStack';
+import JoinStack from './JoinStack';
 
 export default function RootNavigation() {
-  const [user, setUser] = useState(false);
+  const [isJoinStack, setIsJoinStack] = useState(false);
   return (
     <NavigationContainer>
-      <MainStack />
+      {isJoinStack ? <JoinStack /> : <MainStack />}
     </NavigationContainer>
   );
 }

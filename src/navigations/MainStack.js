@@ -13,11 +13,6 @@ function MainStack() {
         component={BottomStack}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="JoinStack"
-        component={JoinStack}
-        options={{headerShown: false}}
-      />
     </Stack.Navigator>
   );
 }
