@@ -13,6 +13,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 
+import * as Keychain from 'react-native-keychain';
+
 function Login() {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
@@ -51,18 +53,41 @@ function Login() {
   /**
    * 로그인 버튼 클릭
    */
-  const onSubmitLoginForm = async () => {
+  const handleLogin = async () => {
     if (ID === '' || password === '') {
       return;
     }
 
-    const formData = {
-      ID: ID,
-      Password: password,
-    };
-
     try {
-      const oReturn = await axios.post(`url`, formData);
+      const result = await axios.post(`http://3.35.111.44:3001/auth/login`, {
+        Account: ID,
+        Password: password,
+      });
+
+      const accessToken = await Keychain.getInternetCredentials('accessToken');
+
+      const refreshToken = await Keychain.getInternetCredentials(
+        'refreshToken',
+      );
+
+      await Keychain.setInternetCredentials(
+        'accessToken',
+        'accessToken',
+        result.data.access_token,
+      );
+
+      await Keychain.setInternetCredentials(
+        'refreshToken',
+        'refreshToken',
+        result.data.refresh_token,
+      );
+
+      // const accessToken = await Keychain.getInternetCredentials('accessToken');
+
+      // const refreshToken = await Keychain.getInternetCredentials(
+      //   'refreshToken',
+      // );
+      console.log('hi!');
     } catch (error) {
       // Toast.fail(error.message, 10);
     }
@@ -186,7 +211,7 @@ function Login() {
             borderRadius: ss(20),
             backgroundColor: 'blue',
           }}>
-          <Pressable>
+          <Pressable onPress={handleLogin}>
             <View
               style={{
                 height: vs(45),
