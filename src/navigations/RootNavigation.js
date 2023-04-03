@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 
-import BottomStack from './BottomStack';
 import MainStack from './MainStack';
 import JoinStack from './JoinStack';
 
 export default function RootNavigation() {
-  const [isJoinStack, setIsJoinStack] = useState(false);
+  const user = useSelector(state => state.user.value);
   return (
     <NavigationContainer>
-      {isJoinStack ? <JoinStack /> : <MainStack />}
+      {user ? <MainStack /> : <JoinStack />}
     </NavigationContainer>
   );
 }

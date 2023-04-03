@@ -5,6 +5,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {MIN_ANDROID_VERSION} from './config';
 import RootNavigation from './navigations/RootNavigation';
+import store from './store';
+import {Provider} from 'react-redux';
 
 let App = () => {
   if (Platform.Version < MIN_ANDROID_VERSION) {
@@ -17,7 +19,9 @@ let App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar />
-      <RootNavigation />
+      <Provider store={store}>
+        <RootNavigation />
+      </Provider>
     </SafeAreaProvider>
   );
 };
