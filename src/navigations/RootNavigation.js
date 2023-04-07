@@ -6,10 +6,10 @@ import MainStack from './MainStack';
 import JoinStack from './JoinStack';
 
 export default function RootNavigation() {
-  const user = useSelector(state => state.user.value);
+  const isUserStartJoin = useSelector(state => state.user.isUserStartJoin);
   return (
     <NavigationContainer>
-      {user ? <MainStack /> : <JoinStack />}
+      {isUserStartJoin ? <JoinStack /> : <MainStack />}
     </NavigationContainer>
   );
 }

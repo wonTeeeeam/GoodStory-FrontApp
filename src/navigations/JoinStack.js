@@ -7,27 +7,19 @@ import {BackgroundColor} from '../styles/BackgroundColor';
 import {TextColor} from '../styles/TextColor';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import {Modal, Pressable, Text, View} from 'react-native';
-import {ss} from '../utils/scailing';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import JoinEmail from '../screens/cert/JoinEmail';
-import Login from '../screens/cert/Login';
 import JoinPassword from '../screens/cert/JoinPassword';
 import JoinName from '../screens/cert/JoinName';
 import JoinCamera from '../screens/cert/JoinCamera';
+import {useDispatch} from 'react-redux';
+import {handleIsUserStartJoin} from '../slice/userSlice';
 
 const Stack = createNativeStackNavigator();
 
 export default function JoinStack() {
   const navigation = useNavigation();
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const handleSetIsModalVisible = useCallback(isVisible => {
-    setIsModalVisible(isVisible);
-  }, []);
+  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator
@@ -41,20 +33,11 @@ export default function JoinStack() {
               color={TextColor.black}
               size={20}
               onPress={() => {
-                navigation.push('JoinEmail');
-                navigation.pop(1);
-                navigation.goBack();
-                // navigation goBack doesn't work exactly...
-                // const currenetStack = navigation.getState().routes[1];
-                // if (!currenetStack.state || currenetStack.state.index === 0) {
-                //   return navigation.goBack();
-                // }
-                // return navigation.navigate(
-                //   `${
-                //     currenetStack.state.routes[currenetStack.state.index - 1]
-                //       .name
-                //   }`,
-                // );
+                const stackLength = navigation.getState().routes.length;
+                if (stackLength === 1) {
+                  return dispatch(handleIsUserStartJoin());
+                }
+                return navigation.goBack();
               }}
             />
           );

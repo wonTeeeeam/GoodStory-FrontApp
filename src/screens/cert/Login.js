@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Pressable, Text, TextInput, View} from 'react-native';
 import {hs, vs, ss} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -14,13 +7,16 @@ import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 
 import * as Keychain from 'react-native-keychain';
+import {useDispatch} from 'react-redux';
+import {handleIsUserStartJoin} from '../../slice/userSlice';
 
 function Login() {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
   const [isSaveID, setIsSaveID] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
-  const navigation = useNavigation();
+
+  const dispatch = useDispatch();
 
   /**
    * ID 입력값 변경
@@ -231,7 +227,7 @@ function Login() {
           alignSelf: 'stretch',
           justifyContent: 'space-between',
         }}>
-        <Pressable onPress={() => navigation.navigate('JoinStack')}>
+        <Pressable onPress={() => dispatch(handleIsUserStartJoin())}>
           <Text>회원가입</Text>
         </Pressable>
 
