@@ -4,7 +4,6 @@ import {hs, vs, ss} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/native';
 
 import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
@@ -60,12 +59,6 @@ function Login() {
         Password: password,
       });
 
-      const accessToken = await Keychain.getInternetCredentials('accessToken');
-
-      const refreshToken = await Keychain.getInternetCredentials(
-        'refreshToken',
-      );
-
       await Keychain.setInternetCredentials(
         'accessToken',
         'accessToken',
@@ -77,16 +70,7 @@ function Login() {
         'refreshToken',
         result.data.refresh_token,
       );
-
-      // const accessToken = await Keychain.getInternetCredentials('accessToken');
-
-      // const refreshToken = await Keychain.getInternetCredentials(
-      //   'refreshToken',
-      // );
-      console.log('hi!');
-    } catch (error) {
-      // Toast.fail(error.message, 10);
-    }
+    } catch (error) {}
   };
 
   /**
@@ -121,6 +105,7 @@ function Login() {
 
           <TextInput
             style={{
+              flex: 1,
               marginLeft: vs(5),
               borderLeftWidth: ss(1),
               height: hs(40),
@@ -144,11 +129,13 @@ function Login() {
 
           <TextInput
             style={{
+              flex: 1,
               marginLeft: vs(5),
               borderLeftWidth: ss(1),
               height: hs(40),
             }}
             placeholder="비밀번호"
+            secureTextEntry={true}
             placeholderTextColor={'red'}
             value={password}
             onChangeText={onChangeUserPassword}
