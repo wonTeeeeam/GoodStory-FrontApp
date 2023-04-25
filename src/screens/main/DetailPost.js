@@ -22,12 +22,15 @@ import {ss, vs, hs} from '../../utils/scailing';
 import {convertTimeToStandardFormat} from '../../utils/timeConverter';
 
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function DetailPost({route, navigation}) {
   const {singleData} = route.params;
   const [replyData, setReplyData] = useState([]);
   const [img, setImage] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [likeCnt, setLikeCnt] = useState(singleData.Like);
+  const [isLikePressed, setIsLikePressed] = useState(false);
 
   const handleSetIsModalVisible = useCallback(() => {
     setIsModalVisible(!isModalVisible);
@@ -53,21 +56,68 @@ export default function DetailPost({route, navigation}) {
   const fetchDetailData = useCallback(async () => {
     try {
       const result = await axios.get(
-        `http://3.35.111.44:3001/board/getOne/${singleData.Board_BoardId}`,
+        `http://3.35.111.44:3001/board/getOne/${singleData.BoardId}`,
       );
       setReplyData(result.data.replys);
     } catch (e) {}
-  }, [singleData.Board_BoardId]);
+  }, [singleData.BoardId]);
 
   const handleChoosePhoto = async () => {
     const result = await launchImageLibrary();
     setImage(result.assets[0]);
   };
 
+  const handlePressLike = async () => {
+    !isLikePressed ? plusLike() : minusLike();
+  };
+
+  const plusLike = () => {
+    try {
+      // const result = await axios.post(
+      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
+      //   {
+      //     BoardID: singleData.BoardId,
+      //     Like: likeCnt + 1,
+      //   },
+      // );
+      setLikeCnt(likeCnt + 1);
+      setIsLikePressed(true);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const minusLike = () => {
+    try {
+      // const result = await axios.post(
+      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
+      //   {
+      //     BoardID: singleData.BoardId,
+      //     Like: likeCnt - 1,
+      //   },
+      // );
+      setLikeCnt(likeCnt - 1);
+      setIsLikePressed(false);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const onPressFunction = async () => {
+    try {
+      const result = await axios.post('http://3.35.111.44:3001/reply/create', {
+        replyData,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={{backgroundColor: BackgroundColor.snow, flex: 1}}>
       <ScrollView
         style={styles.totalContainer}
+        // keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
         <View style={{marginVertical: vs(20)}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -75,23 +125,61 @@ export default function DetailPost({route, navigation}) {
               <Text style={{color: 'black'}}>사진</Text>
             </View>
             <View style={styles.userContainer}>
-              <Text style={styles.nickName}>{singleData.user_Nickname}</Text>
+              <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
             </View>
           </View>
           <View style={styles.timeContainer}>
             <Text style={styles.date}>
-              {convertTimeToStandardFormat(singleData.user_Created_date)}
+              {convertTimeToStandardFormat(singleData.user.Created_date)}
             </Text>
           </View>
 
           <DetailPostMain singleData={singleData} />
 
-          <View style={styles.likeContainer}>
-            <View style={styles.likeBox}>
-              <AntDesignIcon name="heart" color={TextColor.red} />
-              <Text style={styles.user}>추천</Text>
-              <Text style={styles.user}>{singleData.Board_Like}</Text>
-            </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              // margin: ss(10),
+              marginTop: vs(30),
+              paddingHorizontal: ss(10),
+              justifyContent: 'space-between',
+            }}>
+            <Pressable
+              style={styles.bottomContainer}
+              onPress={() => handlePressLike()}>
+              <View style={styles.iconContainer}>
+                {isLikePressed ? (
+                  <AntDesignIcon name="heart" color={TextColor.red} />
+                ) : (
+                  <AntDesignIcon name="hearto" color={TextColor.gray} />
+                )}
+              </View>
+              {likeCnt === 0 ? (
+                <Text style={styles.likeText}>{'좋아요'}</Text>
+              ) : (
+                <Text style={styles.likeText}>{likeCnt}</Text>
+              )}
+            </Pressable>
+            <Pressable style={styles.bottomContainer}>
+              <View style={styles.iconContainer}>
+                <MaterialCommunityIcons
+                  name="message-reply-outline"
+                  color={TextColor.gray}
+                />
+              </View>
+              <Text style={styles.replyText}>
+                {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+              </Text>
+            </Pressable>
+            <Pressable style={styles.bottomContainer}>
+              <View style={styles.iconContainer}>
+                <AntDesignIcon name="eyeo" color={TextColor.gray} />
+              </View>
+              <Text style={styles.viewText}>
+                {singleData.Views > 0 ? singleData.Views : '조회수'}
+              </Text>
+            </Pressable>
           </View>
 
           <ReplyList replyData={replyData} />
@@ -139,36 +227,39 @@ export default function DetailPost({route, navigation}) {
                 buttonColor={'#6495ED'}
                 text={'댓글등록'}
                 textColor={'white'}
+                onPressFunction={onPressFunction}
               />
             </View>
           </View>
         </View>
-        <Modal
-          isVisible={isModalVisible}
-          style={{justifyContent: 'flex-end', margin: 0}}
-          backdropColor="transparent"
-          onBackButtonPress={() => {
-            setIsModalVisible(false);
-          }}
-          onBackdropPress={() => {
-            setIsModalVisible(false);
-          }}>
-          <View
-            style={{backgroundColor: BackgroundColor.white, padding: ss(10)}}>
-            <Pressable onPress={() => {}}>
-              <Text style={{color: TextColor.black, margin: ss(10)}}>
-                신고하기
-              </Text>
-            </Pressable>
-          </View>
-        </Modal>
       </ScrollView>
+      <Modal
+        isVisible={isModalVisible}
+        style={{justifyContent: 'flex-end', margin: 0}}
+        backdropColor="transparent"
+        onBackButtonPress={() => {
+          setIsModalVisible(false);
+        }}
+        onBackdropPress={() => {
+          setIsModalVisible(false);
+        }}>
+        <View style={{backgroundColor: BackgroundColor.white, padding: ss(10)}}>
+          <Pressable onPress={() => {}}>
+            <Text style={{color: TextColor.black, margin: ss(10)}}>
+              신고하기
+            </Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  totalContainer: {margin: ss(25), marginVertical: 0},
+  totalContainer: {
+    padding: ss(25),
+    marginVertical: 0,
+  },
   userContainer: {
     justifyContent: 'center',
     width: ss(200),
@@ -221,4 +312,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  bottomContainer: {flexDirection: 'row'},
+  iconContainer: {justifyContent: 'center', marginRight: 5},
+  likeText: {color: TextColor.gray},
+  replyText: {color: TextColor.gray},
+  viewText: {color: TextColor.gray},
 });

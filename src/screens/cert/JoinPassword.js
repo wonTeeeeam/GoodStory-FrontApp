@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function JoinPassword({route, navigation}) {
   const {Email} = route.params;
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState('');
   return (
     <View>
       <JoinTextInput

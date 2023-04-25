@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Image,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -12,9 +13,19 @@ import {hs, ss, vs} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
 function Posting() {
+  const categories = [
+    'Tip',
+    'Backbiting',
+    'Salary',
+    'Turnover',
+    'Free',
+    'Humor',
+  ];
   const navigation = useNavigation();
+  const [category, setCategory] = useState(categories[1]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
@@ -33,7 +44,11 @@ function Posting() {
       return;
     }
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
-    const result = await launchImageLibrary();
+    const result = await launchImageLibrary({includeBase64: true});
+    // const response = await axios.get(result.assets[0].uri);
+    // RNFS.copyFile(result.assets[0].uri, );
+    // const response = await fetch(result.assets[0].uri);
+
     setImage([...image, result.assets[0]]);
   };
 
@@ -72,10 +87,78 @@ function Posting() {
     });
   }
 
+  const postBoard = async () => {
+    const formData = new FormData();
+    // formData.append('Category', 'Free');
+    // formData.append('Title', '임시타이틀');
+    // formData.append('Content', '임시컨텐츠');
+    // formData.append(
+    //   'user',
+    //   JSON.stringify({
+    //     UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
+    //     Account: 'qksdnjswo@gmail.com',
+    //     Nickname: '반원재',
+    //   }),
+    // );
+    // formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
+    // formData.append('user[Account]', 'qksdnjswo@gmail.com');
+    // formData.append('user[Nickname]', '반원재');
+
+    formData.append('file', {
+      name: image[0].fileName,
+      type: image[0].type,
+      uri:
+        Platform.OS === 'ios'
+          ? image[0].uri.replace('file://', '')
+          : image[0].uri,
+    });
+
+    // if (image.length > 0) {
+    //   const images = [];
+    //   image.forEach(singleImage => {
+    //     images.push(file);
+    //   });
+    // }
+
+    // images.push({
+    //   name: singleImage.fileName,
+    //   type: singleImage.type,
+    //   uri:
+    //     Platform.OS === 'ios'
+    //       ? singleImage.uri.replace('file://', '')
+    //       : singleImage.uri,
+    // }),
+
+    // formData.append('files', image);
+
+    try {
+      const result = await axios.post(
+        'http://192.168.123.105:3000/upload',
+        formData,
+      );
+      // const result = await axios.post(
+      //   'http://3.35.111.44:3001/board/create',
+      //   formData,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODIwNzgxMTYsImV4cCI6MTY4MjA4NTMxNn0.HCD7Bfrsx7DwTIiDa35rpb882Wk7s8oCf_QV3wT05UI`,
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   },
+      // );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(10)}}>
       <View style={{alignItems: 'flex-end'}}>
-        <Pressable onPress={() => {}} disabled={isDisabled}>
+        <Pressable
+          onPress={() => {
+            postBoard();
+          }}
+          disabled={false}>
           <Text style={{color: isDisabled ? 'gray' : 'black'}}>등록</Text>
         </Pressable>
       </View>

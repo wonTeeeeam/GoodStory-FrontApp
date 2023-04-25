@@ -6,13 +6,15 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {TextColor} from '../../styles/TextColor';
-import {ss, vs} from '../../utils/scailing';
+import {hs, ss, vs} from '../../utils/scailing';
 import {convertTimeToKorean} from '../../utils/timeConverter';
+import axios from 'axios';
 
 export default function Post({singleData, navigation}) {
-  // const [likeCnt, setLikeCnt] = useState(postData.Like);
+  const [likeCnt, setLikeCnt] = useState(singleData.Like);
+  const [isLikePressed, setIsLikePressed] = useState(false);
   // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
-  // const [viewCnt, setViewCnt] = useState(postData.Views);
+  const [viewCnt, setViewCnt] = useState(singleData.Views);
 
   // const renderLikeCnt = () => {
   //   if(postData.Like === 0) return '좋아요'
@@ -22,28 +24,69 @@ export default function Post({singleData, navigation}) {
   //   return '좋아요';
   // };
 
+  const handlePressLike = async () => {
+    !isLikePressed ? plusLike() : minusLike();
+  };
+
+  const plusLike = () => {
+    try {
+      // const result = await axios.post(
+      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
+      //   {
+      //     BoardID: singleData.BoardId,
+      //     Like: likeCnt + 1,
+      //   },
+      // );
+      setLikeCnt(likeCnt + 1);
+      setIsLikePressed(true);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const minusLike = () => {
+    try {
+      // const result = await axios.post(
+      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
+      //   {
+      //     BoardID: singleData.BoardId,
+      //     Like: likeCnt - 1,
+      //   },
+      // );
+      setLikeCnt(likeCnt - 1);
+      setIsLikePressed(false);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const handleNavigate = async () => {
+    setViewCnt(viewCnt + 1);
+    try {
+      // await axios.post();
+    } catch (e) {}
+
+    navigation.navigate('DetailPost', {
+      singleData,
+    });
+  };
+
   return (
     <View>
-      <Pressable
-        style={styles.allContainer}
-        onPress={() =>
-          navigation.navigate('DetailPost', {
-            singleData,
-          })
-        }>
+      <Pressable style={styles.allContainer} onPress={() => handleNavigate()}>
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <Pressable>
-              <Text style={styles.topicText}>{singleData.Board_Category}</Text>
+              <Text style={styles.topicText}>{singleData.Category}</Text>
             </Pressable>
             <Text style={styles.timeText}>
-              {convertTimeToKorean(singleData.Board_Created_date)}
+              {convertTimeToKorean(singleData.Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
             <Pressable>
               <Text style={styles.companyNameText}>
-                {singleData.user_CompanyName}
+                {singleData.user.CompanyName}
               </Text>
             </Pressable>
             <EntypoIcon
@@ -53,36 +96,52 @@ export default function Post({singleData, navigation}) {
             />
             <Pressable>
               <Text style={styles.nickNameText}>
-                {singleData.user_Nickname}
+                {singleData.user.Nickname}
               </Text>
             </Pressable>
           </View>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <View style={styles.container}>
+          <View style={{...styles.container, flex: 0.8}}>
             <View>
-              <Text style={styles.titleText}>{singleData.Board_Title}</Text>
+              <Text style={styles.titleText}>{singleData.Title}</Text>
             </View>
             <View>
-              <Text style={styles.contextText}>좆같다</Text>
+              <Text style={styles.contextText}>{singleData.Content}</Text>
             </View>
           </View>
-          <View>
-            <Image source={singleData.Board_PhotoURL} />
+          <View style={{flex: 0.2, marginRight: hs(10)}}>
+            {singleData.BoardPhotos[0] && (
+              <Image
+                style={{height: vs(75)}}
+                source={{uri: singleData.BoardPhotos[0].URL}}
+              />
+            )}
           </View>
         </View>
-        <View style={styles.iconsContainer}>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: ss(270),
+            margin: singleData.BoardPhotos[0] ? ss(25) : ss(40),
+            marginLeft: ss(50),
+            justifyContent: 'space-between',
+          }}>
           <Pressable
             style={styles.bottomContainer}
-            onPress={() => setLikeCnt(prev => prev + 1)}>
+            onPress={() => handlePressLike()}>
             <View style={styles.iconContainer}>
-              {singleData.Board_Like > 0 ? (
+              {isLikePressed ? (
                 <AntDesignIcon name="heart" color={TextColor.red} />
               ) : (
                 <AntDesignIcon name="hearto" color={TextColor.gray} />
               )}
             </View>
-            <Text style={styles.likeText}>{'좋아요'}</Text>
+            {likeCnt === 0 ? (
+              <Text style={styles.likeText}>{'좋아요'}</Text>
+            ) : (
+              <Text style={styles.likeText}>{likeCnt}</Text>
+            )}
           </Pressable>
           <Pressable style={styles.bottomContainer}>
             <View style={styles.iconContainer}>
@@ -92,9 +151,7 @@ export default function Post({singleData, navigation}) {
               />
             </View>
             <Text style={styles.replyText}>
-              {singleData.Board_ReplyCount > 0
-                ? singleData.Board_ReplyCount
-                : '댓글'}
+              {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
           <Pressable style={styles.bottomContainer}>
@@ -102,7 +159,7 @@ export default function Post({singleData, navigation}) {
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
             <Text style={styles.viewText}>
-              {singleData.Board_Views > 0 ? singleData.Board_Views : '조회수'}
+              {singleData.Views > 0 ? singleData.Views : '조회수'}
             </Text>
           </Pressable>
         </View>
@@ -149,9 +206,9 @@ const styles = StyleSheet.create({
   titleText: {
     color: TextColor.black,
     fontWeight: 'bold',
-    fontSize: ss(25),
+    fontSize: ss(20),
   },
-  contextText: {color: TextColor.gray, fontSize: ss(20)},
+  contextText: {color: TextColor.gray, fontSize: ss(15)},
   likeText: {color: TextColor.gray},
   replyText: {color: TextColor.gray},
   viewText: {color: TextColor.gray},

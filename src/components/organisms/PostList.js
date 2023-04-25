@@ -43,7 +43,9 @@ export default function PostList({filterValue, navigation}) {
       });
       setSkip(skip + 5);
       setListData([...listData, ...nextData.data]);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }, [skip, listData]);
 
   return (

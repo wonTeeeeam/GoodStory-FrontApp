@@ -7,10 +7,10 @@ export default function DetailPostMain({singleData}) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{singleData.Board_Title}</Text>
+        <Text style={styles.title}>{singleData.Title}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.content}>{singleData.Board_Content}</Text>
+        <Text style={styles.content}>{singleData.Content}</Text>
       </View>
     </View>
   );

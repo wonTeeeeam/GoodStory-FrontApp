@@ -30,14 +30,17 @@ function JoinTextInput({
 
         <TextInput
           style={{
+            flex: 1,
             marginLeft: vs(5),
             borderLeftWidth: ss(1),
             height: hs(40),
+            color: 'red',
           }}
           placeholder={placeholder}
           placeholderTextColor={'red'}
           value={value}
           onChangeText={setValue}
+          secureTextEntry={placeholder === '비밀번호' ? true : false}
         />
       </View>
       <View

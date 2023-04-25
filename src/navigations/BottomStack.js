@@ -90,38 +90,6 @@ function BottomStack() {
           tabBarShowLabel: false,
         }}
       />
-      <Tab.Screen
-        name="Alarm"
-        component={Alarm}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="alarm-light"
-              color={'blue'}
-              size={ss(20)}
-              onPress={() => navigation.navigate('Alarm')}
-            />
-          ),
-          tabBarShowLabel: false,
-        }}
-      />
-      <Tab.Screen
-        name="Setting"
-        component={Setting}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <AntDesign
-              name="setting"
-              color={'blue'}
-              size={ss(20)}
-              onPress={() => navigation.navigate('Setting')}
-            />
-          ),
-          tabBarShowLabel: false,
-        }}
-      />
 
       {/* <Tab.Screen name="Settings" component={} /> */}
     </Tab.Navigator>

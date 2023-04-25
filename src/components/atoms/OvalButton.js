@@ -11,7 +11,7 @@ export default function OvalButton({
   return (
     <View style={styles(buttonColor).buttonContainer}>
       <Pressable onPress={onPressFunction}>
-        <Text>{text}</Text>
+        <Text style={{color: textColor}}>{text}</Text>
       </Pressable>
     </View>
   );
