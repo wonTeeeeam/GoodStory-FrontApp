@@ -59,22 +59,6 @@ function BottomStack() {
         }}
       />
       <Tab.Screen
-        name="Login"
-        component={Login}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => (
-            <Ionicons
-              name="person"
-              color={'blue'}
-              size={ss(20)}
-              onPress={() => navigation.navigate('Login')}
-            />
-          ),
-          tabBarShowLabel: false,
-        }}
-      />
-      <Tab.Screen
         name="Posting"
         component={Posting}
         options={{
@@ -85,6 +69,22 @@ function BottomStack() {
               color={'blue'}
               size={ss(20)}
               onPress={() => navigation.navigate('Posting')}
+            />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+      <Tab.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => (
+            <Ionicons
+              name="person"
+              color={'blue'}
+              size={ss(20)}
+              onPress={() => navigation.navigate('Login')}
             />
           ),
           tabBarShowLabel: false,
