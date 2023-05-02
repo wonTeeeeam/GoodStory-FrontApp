@@ -9,7 +9,7 @@ import PostList from '../../components/organisms/PostList';
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {ss} from '../../utils/scailing';
 
-export default function Board() {
+export default function Board({route}) {
   const navigation = useNavigation();
   const [filterValue, setFilterValue] = useState('최신순');
 
@@ -28,7 +28,11 @@ export default function Board() {
         />
       </View>
       <View style={styles.postList}>
-        <PostList filterValue={filterValue} navigation={navigation} />
+        <PostList
+          filterValue={filterValue}
+          navigation={navigation}
+          topic={route.params.boardTopic}
+        />
       </View>
       {/* <BottomTab.Navigator>
         <BottomTab.Screen name="Home" component={Board} />

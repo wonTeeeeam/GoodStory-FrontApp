@@ -89,9 +89,9 @@ function Posting() {
 
   const postBoard = async () => {
     const formData = new FormData();
-    // formData.append('Category', 'Free');
-    // formData.append('Title', '임시타이틀');
-    // formData.append('Content', '임시컨텐츠');
+    formData.append('Category', 'Free');
+    formData.append('Title', '임시타이틀');
+    formData.append('Content', '임시컨텐츠');
     // formData.append(
     //   'user',
     //   JSON.stringify({
@@ -100,11 +100,11 @@ function Posting() {
     //     Nickname: '반원재',
     //   }),
     // );
-    // formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
-    // formData.append('user[Account]', 'qksdnjswo@gmail.com');
-    // formData.append('user[Nickname]', '반원재');
+    formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
+    formData.append('user[Account]', 'qksdnjswo@gmail.com');
+    formData.append('user[Nickname]', '반원재');
 
-    formData.append('file', {
+    formData.append('files', {
       name: image[0].fileName,
       type: image[0].type,
       uri:
@@ -132,20 +132,21 @@ function Posting() {
     // formData.append('files', image);
 
     try {
-      const result = await axios.post(
-        'http://192.168.123.105:3000/upload',
-        formData,
-      );
       // const result = await axios.post(
       //   'http://3.35.111.44:3001/board/create',
       //   formData,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODIwNzgxMTYsImV4cCI6MTY4MjA4NTMxNn0.HCD7Bfrsx7DwTIiDa35rpb882Wk7s8oCf_QV3wT05UI`,
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   },
       // );
+      const result = await axios.post(
+        'http://3.35.111.44:3001/board/create',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODI3NzA0NzgsImV4cCI6MTY4Mjc4MTI3OH0.Eer72_5emMQC5-wYaFgukZKmsuXQA4_fqGj_HxDWPE8`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(result);
     } catch (e) {
       console.log(e);
     }

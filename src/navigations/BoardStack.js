@@ -7,7 +7,7 @@ import {TextColor} from '../styles/TextColor';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-function BoardStack() {
+function BoardStack({route}) {
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
 
@@ -23,7 +23,7 @@ function BoardStack() {
               color={TextColor.black}
               size={20}
               onPress={() => {
-                navigation.goBack();
+                navigation.navigate('Board');
               }}
             />
           );
@@ -45,6 +45,7 @@ function BoardStack() {
         name="Board"
         component={Board}
         options={{headerShown: false}}
+        initialParams={{boardTopic: route?.params?.boardTopic || 'Free'}}
       />
       <Stack.Screen
         name="DetailPost"

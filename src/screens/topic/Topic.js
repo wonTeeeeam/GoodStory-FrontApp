@@ -10,14 +10,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import HandleTopicCard from '../../components/organisms/HandleTopicCard';
 
 function Topic() {
-  const BoardTopic = [
-    'Tip',
-    'Backbiting',
-    'Salary',
-    'Turnover',
-    'Free',
-    'Humor',
-  ];
   return (
     <View style={{marginHorizontal: hs(20), flex: 1}}>
       <View style={{alignItems: 'center', marginTop: vs(20)}}>
