@@ -55,9 +55,7 @@ export default function DetailPost({route, navigation}) {
 
   const fetchDetailData = useCallback(async () => {
     try {
-      const result = await axios.get(
-        `http://3.35.111.44:3001/board/getOne/${singleData.BoardId}`,
-      );
+      const result = await axios.get(`/board/getOne/${singleData.BoardId}`);
       setReplyData(result.data.replys);
     } catch (e) {}
   }, [singleData.BoardId]);
@@ -105,7 +103,7 @@ export default function DetailPost({route, navigation}) {
 
   const onPressFunction = async () => {
     try {
-      const result = await axios.post('http://3.35.111.44:3001/reply/create', {
+      const result = await axios.post('/reply/create', {
         replyData,
       });
     } catch (e) {

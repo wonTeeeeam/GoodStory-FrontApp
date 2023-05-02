@@ -31,21 +31,12 @@ export default function Post({singleData, navigation}) {
 
   const plusLike = async () => {
     try {
-      const result = await axios.post(
-        'http://3.35.111.44:3001/likeboard/presslikeboard',
-        {
-          LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
-          user: {
-            UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
-          },
+      const result = await axios.post('/likeboard/presslikeboard', {
+        LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
+        user: {
+          UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
         },
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODI3NzA0NzgsImV4cCI6MTY4Mjc4MTI3OH0.Eer72_5emMQC5-wYaFgukZKmsuXQA4_fqGj_HxDWPE8`,
-            // 'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
+      });
       setLikeCnt(likeCnt + 1);
       setIsLikePressed(true);
     } catch (e) {
@@ -55,21 +46,12 @@ export default function Post({singleData, navigation}) {
 
   const minusLike = async () => {
     try {
-      const result = await axios.delete(
-        'http://3.35.111.44:3001/likeboard/pressdislikeboard',
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODI3NzA0NzgsImV4cCI6MTY4Mjc4MTI3OH0.Eer72_5emMQC5-wYaFgukZKmsuXQA4_fqGj_HxDWPE8`,
-            // 'Content-Type': 'multipart/form-data',
-          },
+      const result = await axios.delete('/likeboard/pressdislikeboard', {
+        data: {
+          LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
+          UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
         },
-        {
-          data: {
-            LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
-            UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
-          },
-        },
-      );
+      });
       setLikeCnt(likeCnt - 1);
       setIsLikePressed(false);
     } catch (e) {

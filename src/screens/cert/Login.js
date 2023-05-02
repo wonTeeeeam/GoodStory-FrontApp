@@ -54,7 +54,7 @@ function Login() {
     }
 
     try {
-      const result = await axios.post(`http://3.35.111.44:3001/auth/login`, {
+      const result = await axios.post(`/auth/login`, {
         Account: ID,
         Password: password,
       });
@@ -70,6 +70,7 @@ function Login() {
         'refreshToken',
         result.data.refresh_token,
       );
+      axios.defaults.headers.common['Authorization'] = result.data.access_token;
     } catch (error) {}
   };
 

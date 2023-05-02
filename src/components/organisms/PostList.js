@@ -31,7 +31,7 @@ export default function PostList({filterValue, navigation, topic}) {
     const top = 5;
 
     try {
-      const nextData = await axios.get('http://3.35.111.44:3001/board/getAll', {
+      const nextData = await axios.get('/board/getAll', {
         params: {
           top: top,
           skip: skip,

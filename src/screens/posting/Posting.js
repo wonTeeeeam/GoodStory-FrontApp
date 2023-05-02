@@ -136,16 +136,11 @@ function Posting() {
       //   'http://3.35.111.44:3001/board/create',
       //   formData,
       // );
-      const result = await axios.post(
-        'http://3.35.111.44:3001/board/create',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmMzEyODA2NC0yOGE0LTQ3YzItYmRhNC05ZTFiNTk4NzMwMGYiLCJpYXQiOjE2ODI3NzA0NzgsImV4cCI6MTY4Mjc4MTI3OH0.Eer72_5emMQC5-wYaFgukZKmsuXQA4_fqGj_HxDWPE8`,
-            'Content-Type': 'multipart/form-data',
-          },
+      const result = await axios.post('/board/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
       console.log(result);
     } catch (e) {
       console.log(e);
