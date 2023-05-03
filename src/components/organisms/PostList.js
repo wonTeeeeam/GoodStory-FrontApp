@@ -1,15 +1,31 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  RefreshControl,
+  Image,
+} from 'react-native';
 
 import Post from '../molecules/Post';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
-import {ss} from '../../utils/scailing';
+import {ss, vs} from '../../utils/scailing';
 import axios from 'axios';
+import noimage from '../../assets/images/noimage.png';
 
 export default function PostList({filterValue, navigation, topic}) {
   const [skip, setSkip] = useState(0);
   const [listData, setListData] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     fetchNextData();
@@ -47,18 +63,25 @@ export default function PostList({filterValue, navigation, topic}) {
 
   return (
     <View>
-      <FlatList
-        data={listData}
-        renderItem={({item, index}) => {
-          return (
-            <View key={index} style={styles.container}>
-              <Post singleData={item} navigation={navigation} />
-            </View>
-          );
-        }}
-        onEndReachedThreshold={0.1}
-        onEndReached={fetchNextData}
-      />
+      {listData.length === 0 ? (
+        <Image style={{width: '100%'}} source={noimage} resizeMode="contain" />
+      ) : (
+        <FlatList
+          data={listData}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          renderItem={({item, index}) => {
+            return (
+              <View key={index} style={styles.container}>
+                <Post singleData={item} navigation={navigation} />
+              </View>
+            );
+          }}
+          onEndReachedThreshold={0.1}
+          onEndReached={fetchNextData}
+        />
+      )}
     </View>
   );
 }

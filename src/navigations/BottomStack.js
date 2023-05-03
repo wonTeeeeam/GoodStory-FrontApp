@@ -19,6 +19,7 @@ import Setting from '../screens/setting/Setting';
 import Posting from '../screens/posting/Posting';
 import Topic from '../screens/topic/Topic';
 import BoardStack from './BoardStack';
+import {useState} from 'react';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
