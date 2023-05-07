@@ -4,10 +4,14 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     isUserStartJoin: false,
+    userId: '',
   },
   reducers: {
     handleIsUserStartJoin: state => {
       state.isUserStartJoin = !state.isUserStartJoin;
+    },
+    handleUserId: (state, action) => {
+      state.userId = action.payload;
     },
   },
 });

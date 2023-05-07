@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Image,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -27,9 +28,11 @@ function Posting() {
   const navigation = useNavigation();
   const [category, setCategory] = useState(categories[1]);
   const [title, setTitle] = useState('');
+  const [topic, setTopic] = useState();
   const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDropDown, setIsDropDown] = useState(false);
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -45,10 +48,7 @@ function Posting() {
     }
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
     const result = await launchImageLibrary({includeBase64: true});
-    // const response = await axios.get(result.assets[0].uri);
-    // RNFS.copyFile(result.assets[0].uri, );
-    // const response = await fetch(result.assets[0].uri);
-
+    if (result.didCancel) return;
     setImage([...image, result.assets[0]]);
   };
 
@@ -92,44 +92,19 @@ function Posting() {
     formData.append('Category', 'Free');
     formData.append('Title', '임시타이틀');
     formData.append('Content', '임시컨텐츠');
-    // formData.append(
-    //   'user',
-    //   JSON.stringify({
-    //     UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
-    //     Account: 'qksdnjswo@gmail.com',
-    //     Nickname: '반원재',
-    //   }),
-    // );
+
     formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
     formData.append('user[Account]', 'qksdnjswo@gmail.com');
     formData.append('user[Nickname]', '반원재');
 
     formData.append('files', {
       name: image[0].fileName,
-      type: image[0].type,
+      topic: image[0].topic,
       uri:
         Platform.OS === 'ios'
           ? image[0].uri.replace('file://', '')
           : image[0].uri,
     });
-
-    // if (image.length > 0) {
-    //   const images = [];
-    //   image.forEach(singleImage => {
-    //     images.push(file);
-    //   });
-    // }
-
-    // images.push({
-    //   name: singleImage.fileName,
-    //   type: singleImage.type,
-    //   uri:
-    //     Platform.OS === 'ios'
-    //       ? singleImage.uri.replace('file://', '')
-    //       : singleImage.uri,
-    // }),
-
-    // formData.append('files', image);
 
     try {
       // const result = await axios.post(
@@ -138,7 +113,7 @@ function Posting() {
       // );
       const result = await axios.post('/board/create', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-topic': 'multipart/form-data',
         },
       });
       console.log(result);
@@ -147,19 +122,41 @@ function Posting() {
     }
   };
 
+  const changeTopicToKorean = () => {
+    switch (topic) {
+      case 'Tip':
+        return '꿀팁';
+      case 'Backbiting':
+        return '뒷담';
+      case 'Salary':
+        return '연봉';
+      case 'Turnover':
+        return '이직';
+      case 'Free':
+        return '자유';
+      case 'Humor':
+        return '유머';
+    }
+  };
+
   return (
     <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(10)}}>
       <View style={{alignItems: 'flex-end'}}>
         <Pressable
           onPress={() => {
-            postBoard();
+            if (!isDisabled) {
+              postBoard();
+            }
           }}
           disabled={false}>
           <Text style={{color: isDisabled ? 'gray' : 'black'}}>등록</Text>
         </Pressable>
       </View>
       <ScrollView>
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            setIsDropDown(!isDropDown);
+          }}>
           <View
             style={{
               borderBottomColor: 'black',
@@ -169,15 +166,85 @@ function Posting() {
               justifyContent: 'space-between',
               marginTop: vs(15),
             }}>
-            <Text style={{color: 'black'}}>등록위치 선택</Text>
-            <AntDesign
-              name="caretdown"
-              color={'blue'}
-              size={ss(10)}
-              onPress={() => {}}
-            />
+            <Text style={{color: 'black'}}>
+              {topic ? changeTopicToKorean() : '등록위치 선택'}
+            </Text>
+            <AntDesign name="caretdown" color={'blue'} size={ss(10)} />
           </View>
         </Pressable>
+
+        <Modal visible={isDropDown} transparent animationtopic="none">
+          <Pressable
+            style={{flex: 1}}
+            onPress={() => {
+              setIsDropDown(false);
+            }}>
+            <View
+              style={{
+                marginTop: vs(65),
+                marginHorizontal: hs(20),
+                backgroundColor: 'white',
+              }}>
+              <ScrollView style={{paddingHorizontal: hs(10)}}>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Tip');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    꿀팁
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Backbiting');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    뒷담
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Salary');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    연봉
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Turnover');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    이직
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Free');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    자유
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setIsDropDown(false);
+                    setTopic('Humor');
+                  }}>
+                  <Text style={{color: 'black', marginVertical: vs(5)}}>
+                    유머
+                  </Text>
+                </Pressable>
+              </ScrollView>
+            </View>
+          </Pressable>
+        </Modal>
+
         <View
           style={{
             flexDirection: 'row',

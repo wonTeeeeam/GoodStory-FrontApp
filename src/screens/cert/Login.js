@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, Text, TextInput, View} from 'react-native';
+import {Keyboard, Pressable, Text, TextInput, View} from 'react-native';
 import {hs, vs, ss} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -12,7 +12,6 @@ import {handleIsUserStartJoin} from '../../slice/userSlice';
 function Login() {
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
-  const [isSaveID, setIsSaveID] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
 
   const dispatch = useDispatch();
@@ -32,20 +31,6 @@ function Login() {
   };
 
   /**
-   * 아이디 저장 FLAG 변경
-   */
-  const onChangeSaveID = value => {
-    setIsSaveID(value);
-  };
-
-  /**
-   * 자동 로그인 FLAG 변경
-   */
-  const onChangeAutoLogin = value => {
-    setIsAutoLogin(value);
-  };
-
-  /**
    * 로그인 버튼 클릭
    */
   const handleLogin = async () => {
@@ -58,38 +43,29 @@ function Login() {
         Account: ID,
         Password: password,
       });
+      if (isAutoLogin) {
+        await Keychain.setInternetCredentials(
+          'accessToken',
+          'accessToken',
+          result.data.access_token,
+        );
 
-      await Keychain.setInternetCredentials(
-        'accessToken',
-        'accessToken',
-        result.data.access_token,
-      );
-
-      await Keychain.setInternetCredentials(
-        'refreshToken',
-        'refreshToken',
-        result.data.refresh_token,
-      );
+        await Keychain.setInternetCredentials(
+          'refreshToken',
+          'refreshToken',
+          result.data.refresh_token,
+        );
+      }
       axios.defaults.headers.common['Authorization'] = result.data.access_token;
     } catch (error) {}
   };
 
-  /**
-   * 회원가입 버튼 클릭
-   */
-  const onSignUp = () => {};
-
-  /**
-   * 아이디 / 비밀번호 찾기 버튼 클릭
-   */
-  const onFindUserInfo = () => {};
-
   return (
     <View
-      style={{flex: 1, backgroundColor: '#5A4FCF', paddingHorizontal: hs(20)}}>
-      <View style={{flex: 1}}>
+      style={{flex: 1, backgroundColor: '#4B02FE', paddingHorizontal: hs(20)}}>
+      <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
         <View style={{marginTop: vs(200), alignSelf: 'center'}}>
-          <Text style={{color: 'white', fontWeight: '200'}}>
+          <Text style={{color: 'white', fontWeight: 'bold'}}>
             당신의 좋같은 회사 경험담
           </Text>
         </View>
@@ -101,18 +77,21 @@ function Login() {
             backgroundColor: 'white',
             height: hs(50),
             borderRadius: ss(20),
+            paddingLeft: vs(10),
           }}>
-          <AntDesign name="user" size={ss(20)} color={'black'} />
+          <AntDesign name="user" size={ss(20)} color={'#B2B0B0'} />
 
           <TextInput
             style={{
               flex: 1,
               marginLeft: vs(5),
               borderLeftWidth: ss(1),
+              borderColor: '#B2B0B0',
               height: hs(40),
+              color: '#B2B0B0',
             }}
             placeholder="아이디"
-            placeholderTextColor={'red'}
+            placeholderTextColor={'#B2B0B0'}
             value={ID}
             onChangeText={onChangeUserId}
           />
@@ -125,8 +104,9 @@ function Login() {
             backgroundColor: 'white',
             height: hs(50),
             borderRadius: ss(20),
+            paddingLeft: vs(10),
           }}>
-          <AntDesign name="lock" size={ss(20)} color={'black'} />
+          <AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />
 
           <TextInput
             style={{
@@ -134,66 +114,51 @@ function Login() {
               marginLeft: vs(5),
               borderLeftWidth: ss(1),
               height: hs(40),
+              borderColor: '#B2B0B0',
+              color: '#B2B0B0',
             }}
             placeholder="비밀번호"
             secureTextEntry={true}
-            placeholderTextColor={'red'}
+            placeholderTextColor={'#B2B0B0'}
             value={password}
             onChangeText={onChangeUserPassword}
           />
         </View>
-        <View
-          style={{flexDirection: 'row', marginTop: hs(20), marginLeft: hs(20)}}>
-          <View style={{flexDirection: 'row'}}>
-            <Pressable onPress={() => setIsSaveID(!isSaveID)}>
+        <View style={{marginTop: hs(20)}}>
+          <View style={{marginLeft: hs(20)}}>
+            <Pressable
+              onPress={() => setIsAutoLogin(!isAutoLogin)}
+              style={{
+                flexDirection: 'row',
+                width: vs(100),
+              }}>
               <View
                 style={{
-                  borderColor: 'blue',
+                  borderColor: '#029BFE',
                   borderWidth: ss(2),
                   borderRadius: ss(5),
                   height: vs(20),
                   width: hs(20),
-                  backgroundColor: isSaveID ? 'blue' : null,
-                }}>
-                {isSaveID ? (
-                  <AntDesign name="check" size={ss(18)} color={'black'} />
-                ) : null}
-              </View>
-            </Pressable>
-            <View style={{marginLeft: hs(10)}}>
-              <Text>아이디 저장</Text>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', marginLeft: hs(20)}}>
-            <Pressable onPress={() => setIsAutoLogin(!isAutoLogin)}>
-              <View
-                style={{
-                  borderColor: 'blue',
-                  borderWidth: ss(2),
-                  borderRadius: ss(5),
-                  height: vs(20),
-                  width: hs(20),
-                  backgroundColor: isAutoLogin ? 'blue' : null,
+                  backgroundColor: isAutoLogin ? '#029BFE' : null,
                 }}>
                 {isAutoLogin ? (
-                  <AntDesign name="check" size={ss(18)} color={'black'} />
+                  <AntDesign name="check" size={ss(18)} color={'white'} />
                 ) : null}
               </View>
+              <View style={{marginLeft: hs(10)}}>
+                <Text style={{color: '#029BFE'}}>자동 로그인</Text>
+              </View>
             </Pressable>
-            <View style={{marginLeft: hs(10)}}>
-              <Text>자동 로그인</Text>
-            </View>
           </View>
         </View>
         <View
           style={{
             marginTop: hs(20),
             alignSelf: 'center',
-            borderWidth: ss(1),
             height: vs(50),
             width: hs(150),
             borderRadius: ss(20),
-            backgroundColor: 'blue',
+            backgroundColor: '#029BFE',
           }}>
           <Pressable onPress={handleLogin}>
             <View
@@ -202,27 +167,29 @@ function Login() {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text>로그인</Text>
+              <Text style={{fontSize: ss(20)}}>로그인</Text>
             </View>
           </Pressable>
         </View>
-      </View>
+      </Pressable>
       <View
         style={{
           marginHorizontal: hs(10),
           marginBottom: vs(40),
-          flexDirection: 'row',
-          alignSelf: 'stretch',
-          justifyContent: 'space-between',
+          alignSelf: 'center',
         }}>
+        <Text style={{color: 'white'}}>아직 회원이 아니신가요?</Text>
         <Pressable onPress={() => dispatch(handleIsUserStartJoin())}>
-          <Text>회원가입</Text>
+          <Text
+            style={{
+              borderBottomWidth: ss(1),
+              borderBottomColor: 'white',
+              color: 'white',
+              alignSelf: 'center',
+            }}>
+            회원가입 바로가기
+          </Text>
         </Pressable>
-
-        <View style={{borderLeftWidth: ss(1)}} />
-        <Text>아이디 찾기</Text>
-        <View style={{borderLeftWidth: ss(1)}} />
-        <Text>비밀번호 재설정</Text>
       </View>
     </View>
   );
