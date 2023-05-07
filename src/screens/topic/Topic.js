@@ -13,10 +13,10 @@ function Topic() {
   return (
     <View style={{marginHorizontal: hs(20), flex: 1}}>
       <View style={{alignItems: 'center', marginTop: vs(20)}}>
-        <Text style={{color: 'black'}}>주제별 게시판</Text>
+        <Text style={{color: 'black', fontSize: ss(20)}}>주제별 게시판</Text>
       </View>
       <View style={{alignItems: 'center', marginTop: vs(20)}}>
-        <Text style={{color: 'black'}}>
+        <Text style={{color: 'black', fontSize: ss(15)}}>
           이 회사가 좋소라고 생각한 가장 큰 이유
         </Text>
       </View>
