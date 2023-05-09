@@ -15,7 +15,8 @@ export default function RootNavigation() {
   const scheme = useColorScheme();
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+    // theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
+    <NavigationContainer>
       {isUserStartJoin ? <JoinStack /> : <MainStack />}
     </NavigationContainer>
   );

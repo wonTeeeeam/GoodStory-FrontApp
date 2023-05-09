@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -111,7 +112,7 @@ export default function Post({singleData, navigation}) {
           </View>
           <View style={{flex: 0.2, marginRight: hs(10)}}>
             {singleData.BoardPhotos[0] && (
-              <Image
+              <FastImage
                 style={{height: vs(75)}}
                 source={{uri: singleData.BoardPhotos[0].URL}}
               />

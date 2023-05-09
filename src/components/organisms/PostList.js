@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Image,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Post from '../molecules/Post';
 
