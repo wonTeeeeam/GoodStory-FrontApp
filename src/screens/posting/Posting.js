@@ -15,6 +15,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import FastImage from 'react-native-fast-image';
 
 function Posting() {
   const categories = [
@@ -49,7 +50,14 @@ function Posting() {
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
     const result = await launchImageLibrary({includeBase64: true});
     if (result.didCancel) return;
+    const Image = (
+      <FastImage
+        style={{height: vs(75)}}
+        source={{uri: result.assets[0].uri}}
+      />
+    );
     setImage([...image, result.assets[0]]);
+    setContent(content + Image);
   };
 
   function HandleImage() {
@@ -66,7 +74,7 @@ function Posting() {
             paddingVertical: vs(5),
             flexDirection: 'row',
           }}>
-          <Image
+          <FastImage
             source={{uri: singleData.uri}}
             style={{width: 50, height: 50}}
           />
@@ -141,7 +149,12 @@ function Posting() {
 
   return (
     <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(10)}}>
-      <View style={{alignItems: 'flex-end'}}>
+      <View
+        style={{
+          alignItems: 'flex-end',
+          flex: 0.1,
+          justifyContent: 'center',
+        }}>
         <Pressable
           onPress={() => {
             if (!isDisabled) {
@@ -152,7 +165,7 @@ function Posting() {
           <Text style={{color: isDisabled ? 'gray' : 'black'}}>등록</Text>
         </Pressable>
       </View>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flex: 0.9}}>
         <Pressable
           onPress={() => {
             setIsDropDown(!isDropDown);
@@ -279,9 +292,12 @@ function Posting() {
             </View>
           </View>
         </View>
+        <ScrollView style={{borderWidth: ss(1), flex: 0.8}}>
+          <Text>{content}</Text>
+        </ScrollView>
         <View>
           <TextInput
-            style={{color: 'black'}}
+            style={{color: 'black', borderWidth: ss(1), marginTop: vs(20)}}
             placeholder="제목을 입력해주세요"
             placeholderTextColor={'black'}
             maxLength={50}
@@ -291,7 +307,7 @@ function Posting() {
         </View>
         <View>
           <TextInput
-            style={{color: 'black'}}
+            style={{color: 'black', borderWidth: ss(1), marginTop: vs(20)}}
             placeholder="내용을 입력해주세요"
             placeholderTextColor={'black'}
             maxLength={500}
@@ -299,7 +315,7 @@ function Posting() {
             onChangeText={setContent}
           />
         </View>
-        <View style={{flexDirection: 'row'}}>{HandleImage()}</View>
+        {/* <View style={{flexDirection: 'row'}}>{HandleImage()}</View> */}
       </ScrollView>
     </View>
   );
