@@ -25,6 +25,9 @@ function MyPage() {
         <Pressable>
           <Text style={{color: 'black'}}>도움말</Text>
         </Pressable>
+        <Pressable>
+          <Text style={{color: 'black'}}>로그아웃</Text>
+        </Pressable>
       </ScrollView>
     </View>
   );

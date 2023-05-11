@@ -165,7 +165,7 @@ function Posting() {
           <Text style={{color: isDisabled ? 'gray' : 'black'}}>등록</Text>
         </Pressable>
       </View>
-      <ScrollView contentContainerStyle={{flex: 0.9}}>
+      <ScrollView contentContainerStyle={{flexGrow: 0.9}}>
         <Pressable
           onPress={() => {
             setIsDropDown(!isDropDown);
@@ -194,11 +194,13 @@ function Posting() {
             }}>
             <View
               style={{
-                marginTop: vs(65),
+                marginTop: vs(103),
                 marginHorizontal: hs(20),
                 backgroundColor: 'white',
               }}>
-              <ScrollView style={{paddingHorizontal: hs(10)}}>
+              <ScrollView
+                style={{paddingHorizontal: hs(10)}}
+                nestedScrollEnabled={true}>
                 <Pressable
                   onPress={() => {
                     setIsDropDown(false);
@@ -292,8 +294,15 @@ function Posting() {
             </View>
           </View>
         </View>
-        <ScrollView style={{borderWidth: ss(1), flex: 0.8}}>
-          <Text>{content}</Text>
+        <ScrollView
+          style={{borderWidth: ss(1), flex: 0.8}}
+          nestedScrollEnabled={true}>
+          <Text style={{color: 'black'}}>
+            <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
+            {'\n'}
+            {'\n'}
+            {content}
+          </Text>
         </ScrollView>
         <View>
           <TextInput
@@ -315,7 +324,7 @@ function Posting() {
             onChangeText={setContent}
           />
         </View>
-        {/* <View style={{flexDirection: 'row'}}>{HandleImage()}</View> */}
+        <View style={{flexDirection: 'row'}}>{HandleImage()}</View>
       </ScrollView>
     </View>
   );
