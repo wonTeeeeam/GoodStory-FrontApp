@@ -1,7 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import BottomStack from './BottomStack';
-import JoinStack from './JoinStack';
 
 function MainStack() {
   const Stack = createNativeStackNavigator();

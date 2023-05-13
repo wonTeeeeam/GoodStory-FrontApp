@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     isUserStartJoin: false,
     userId: '',
+    accessToken: '',
   },
   reducers: {
     handleIsUserStartJoin: state => {
@@ -13,10 +14,13 @@ export const userSlice = createSlice({
     handleUserId: (state, action) => {
       state.userId = action.payload;
     },
+    handleAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {handleIsUserStartJoin} = userSlice.actions;
+export const {handleIsUserStartJoin, handleAccessToken} = userSlice.actions;
 
 export default userSlice.reducer;

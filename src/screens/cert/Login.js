@@ -2,63 +2,21 @@ import React, {useState} from 'react';
 import {Keyboard, Pressable, Text, TextInput, View} from 'react-native';
 import {hs, vs, ss} from '../../utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
-import axios from 'axios';
-
-import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from '../../slice/userSlice';
+import useLogin from '../../hooks/useLogin';
 
 function Login() {
-  const [ID, setID] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAutoLogin, setIsAutoLogin] = useState(false);
-
   const dispatch = useDispatch();
-
-  /**
-   * ID 입력값 변경
-   */
-  const onChangeUserId = value => {
-    setID(value);
-  };
-
-  /**
-   * password 입력값 변경
-   */
-  const onChangeUserPassword = value => {
-    setPassword(value);
-  };
-
-  /**
-   * 로그인 버튼 클릭
-   */
-  const handleLogin = async () => {
-    if (ID === '' || password === '') {
-      return;
-    }
-
-    try {
-      const result = await axios.post(`/auth/login`, {
-        Account: ID,
-        Password: password,
-      });
-      if (isAutoLogin) {
-        await Keychain.setInternetCredentials(
-          'accessToken',
-          'accessToken',
-          result.data.access_token,
-        );
-
-        await Keychain.setInternetCredentials(
-          'refreshToken',
-          'refreshToken',
-          result.data.refresh_token,
-        );
-      }
-      axios.defaults.headers.common['Authorization'] = result.data.access_token;
-    } catch (error) {}
-  };
+  const {
+    ID,
+    password,
+    isAutoLogin,
+    onChangeUserId,
+    onChangeUserPassword,
+    onChangeIsAutoLogin,
+    handleLogin,
+  } = useLogin();
 
   return (
     <View
@@ -127,7 +85,7 @@ function Login() {
         <View style={{marginTop: hs(20)}}>
           <View style={{marginLeft: hs(20)}}>
             <Pressable
-              onPress={() => setIsAutoLogin(!isAutoLogin)}
+              onPress={() => onChangeIsAutoLogin()}
               style={{
                 flexDirection: 'row',
                 width: vs(100),
@@ -160,7 +118,10 @@ function Login() {
             borderRadius: ss(20),
             backgroundColor: '#029BFE',
           }}>
-          <Pressable onPress={handleLogin}>
+          <Pressable
+            onPress={async () => {
+              await handleLogin(ID, password);
+            }}>
             <View
               style={{
                 height: vs(45),

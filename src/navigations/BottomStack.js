@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,23 +9,12 @@ import Login from '../screens/cert/Login';
 import Posting from '../screens/posting/Posting';
 import Topic from '../screens/topic/Topic';
 import BoardStack from './BoardStack';
-import {useState} from 'react';
-import * as Keychain from 'react-native-keychain';
 import MyPage from '../screens/myPage';
-import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
-  const navigation = useNavigation();
-  const [accessToken, setAccessToken] = useState('');
-
-  useEffect(() => {
-    const fetchAccessToken = async () => {
-      const credentials = await Keychain.getInternetCredentials('accessToken');
-      setAccessToken(credentials.password);
-    };
-    fetchAccessToken();
-  }, []);
+  const accessToken = useSelector(state => state.user.accessToken);
 
   return (
     <Tab.Navigator backBehavior="history">
