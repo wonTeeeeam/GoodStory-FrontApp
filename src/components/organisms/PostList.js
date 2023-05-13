@@ -7,26 +7,24 @@ import {
   RefreshControl,
   Image,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
 import Post from '../molecules/Post';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {ss, vs} from '../../utils/scailing';
 import axios from 'axios';
-import noimage from '../../assets/images/noimage.png';
 
 export default function PostList({filterValue, navigation, topic}) {
   const [skip, setSkip] = useState(0);
   const [listData, setListData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+    setSkip(0);
+    await fetchNextData();
+    setRefreshing(false);
+  }, [fetchNextData]);
 
   useEffect(() => {
     fetchNextData();
@@ -56,7 +54,9 @@ export default function PostList({filterValue, navigation, topic}) {
         },
       });
       setSkip(skip + 5);
-      setListData([...listData, ...nextData.data]);
+      skip === 0
+        ? setListData([...nextData.data])
+        : setListData([...listData, ...nextData.data]);
     } catch (e) {
       console.log(e);
     }
@@ -64,25 +64,21 @@ export default function PostList({filterValue, navigation, topic}) {
 
   return (
     <View>
-      {listData.length === 0 ? (
-        <Image style={{width: '100%'}} source={noimage} resizeMode="contain" />
-      ) : (
-        <FlatList
-          data={listData}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          renderItem={({item, index}) => {
-            return (
-              <View key={index} style={styles.container}>
-                <Post singleData={item} navigation={navigation} />
-              </View>
-            );
-          }}
-          onEndReachedThreshold={0.1}
-          onEndReached={fetchNextData}
-        />
-      )}
+      <FlatList
+        data={listData}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        renderItem={({item, index}) => {
+          return (
+            <View key={index} style={styles.container}>
+              <Post singleData={item} navigation={navigation} />
+            </View>
+          );
+        }}
+        onEndReachedThreshold={0.1}
+        onEndReached={fetchNextData}
+      />
     </View>
   );
 }

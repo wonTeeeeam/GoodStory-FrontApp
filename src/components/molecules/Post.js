@@ -61,11 +61,14 @@ export default function Post({singleData, navigation}) {
   };
 
   const handleNavigate = async () => {
-    setViewCnt(viewCnt + 1);
     try {
-      // await axios.post();
-    } catch (e) {}
-
+      const result = await axios.patch('/board/updateBoardViews', {
+        BoardId: singleData.BoardId,
+      });
+      setViewCnt(viewCnt + 1);
+    } catch (e) {
+      console.log(e);
+    }
     navigation.navigate('DetailPost', {
       singleData,
     });
