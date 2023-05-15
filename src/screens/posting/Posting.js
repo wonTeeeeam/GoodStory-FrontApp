@@ -34,6 +34,7 @@ function Posting() {
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
+  const [imagePlace, setImagePlace] = useState(1);
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -50,14 +51,26 @@ function Posting() {
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
     const result = await launchImageLibrary({includeBase64: true});
     if (result.didCancel) return;
-    const Image = (
-      <FastImage
-        style={{height: vs(75)}}
-        source={{uri: result.assets[0].uri}}
-      />
-    );
     setImage([...image, result.assets[0]]);
-    setContent(content + Image);
+    setContent(content + `image://${imagePlace}`);
+    setImagePlace(imagePlace + 1);
+  };
+
+  const InsertImageInContent = () => {
+    const imageFlags = new RegExp(
+      /image:\/\/1|image:\/\/2|image:\/\/3|image:\/\/4|image:\/\/5/,
+      'g',
+    );
+
+    const array = [...content.split(imageFlags)];
+    for (let i = 0; i < array.length; i++) {
+      array.splice(
+        i + 1,
+        0,
+        <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
+      );
+    }
+    return array;
   };
 
   function HandleImage() {
@@ -152,7 +165,7 @@ function Posting() {
       <View
         style={{
           alignItems: 'flex-end',
-          flex: 0.1,
+          flex: 0.3,
           justifyContent: 'center',
         }}>
         <Pressable
@@ -162,7 +175,10 @@ function Posting() {
             }
           }}
           disabled={false}>
-          <Text style={{color: isDisabled ? 'gray' : 'black'}}>등록</Text>
+          <Text
+            style={{color: isDisabled ? 'gray' : 'black', fontSize: ss(15)}}>
+            등록
+          </Text>
         </Pressable>
       </View>
       <ScrollView contentContainerStyle={{flexGrow: 0.9}}>
@@ -194,7 +210,7 @@ function Posting() {
             }}>
             <View
               style={{
-                marginTop: vs(103),
+                marginTop: vs(130),
                 marginHorizontal: hs(20),
                 backgroundColor: 'white',
               }}>
@@ -301,7 +317,7 @@ function Posting() {
             <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
             {'\n'}
             {'\n'}
-            {content}
+            {image.length > 0 ? InsertImageInContent() : content}
           </Text>
         </ScrollView>
         <View>
