@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import JoinTextInput from '../../components/organisms/JoinTextInput';
+import JoinTextInput from '../../components/JoinTextInput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ss} from '../../utils/scailing';
 

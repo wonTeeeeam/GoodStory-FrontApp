@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
-import {ss, vs} from '../../utils/scailing';
+import {ss, vs} from '../utils/scailing';
 import {useNavigation} from '@react-navigation/native';
 
 function HandleTopicCard({color, text, children}) {

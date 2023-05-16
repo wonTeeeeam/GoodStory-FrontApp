@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {hs, vs} from '../../utils/scailing';
+import {hs, vs} from '../utils/scailing';
 
 export default function Reply({singleData}) {
   return (

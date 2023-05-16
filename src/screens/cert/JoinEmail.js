@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Pressable, Text, TextInput, View} from 'react-native';
 import {hs, ss, vs} from '../../utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import JoinTextInput from '../../components/organisms/JoinTextInput';
+import JoinTextInput from '../../components/JoinTextInput';
 
 function JoinEmail() {
   const navigation = useNavigation();

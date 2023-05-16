@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import HandleTopicCard from '../../components/organisms/HandleTopicCard';
+import HandleTopicCard from '../../components/HandleTopicCard';
 
 function Topic() {
   return (

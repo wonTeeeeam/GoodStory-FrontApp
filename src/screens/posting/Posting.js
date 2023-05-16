@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
-  Image,
   Modal,
   Platform,
   Pressable,
@@ -10,12 +10,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {hs, ss, vs} from '../../utils/scailing';
+import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {launchImageLibrary} from 'react-native-image-picker';
-import axios from 'axios';
-import FastImage from 'react-native-fast-image';
+import SelectedImage from '../../components/SelectedImage';
+import {hs, ss, vs} from '../../utils/scailing';
+import {changeTopicToKorean} from '../../utils/translation';
 
 function Posting() {
   const categories = [
@@ -56,57 +56,22 @@ function Posting() {
     setImagePlace(imagePlace + 1);
   };
 
-  const InsertImageInContent = () => {
-    const imageFlags = new RegExp(
-      /image:\/\/1|image:\/\/2|image:\/\/3|image:\/\/4|image:\/\/5/,
-      'g',
-    );
+  // const InsertImageInContent = () => {
+  //   const imageFlags = new RegExp(
+  //     /image:\/\/1|image:\/\/2|image:\/\/3|image:\/\/4|image:\/\/5/,
+  //     'g',
+  //   );
 
-    const array = [...content.split(imageFlags)];
-    for (let i = 0; i < array.length; i++) {
-      array.splice(
-        i + 1,
-        0,
-        <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
-      );
-    }
-    return array;
-  };
-
-  function HandleImage() {
-    if (image.length === 0) return;
-    return image.map((singleData, index) => {
-      return (
-        <View
-          key={index}
-          style={{
-            marginTop: vs(20),
-            height: vs(100),
-            alignItems: 'flex-start',
-            paddingLeft: hs(10),
-            paddingVertical: vs(5),
-            flexDirection: 'row',
-          }}>
-          <FastImage
-            source={{uri: singleData.uri}}
-            style={{width: 50, height: 50}}
-          />
-          <View style={{marginLeft: hs(52), position: 'absolute'}}>
-            <AntDesign
-              name="closecircle"
-              color={'#4682B4'}
-              size={15}
-              onPress={() => {
-                const newImages = [...image];
-                newImages.splice(index, 1);
-                setImage([...newImages]);
-              }}
-            />
-          </View>
-        </View>
-      );
-    });
-  }
+  //   const array = [...content.split(imageFlags)];
+  //   for (let i = 0; i < array.length; i++) {
+  //     array.splice(
+  //       i + 1,
+  //       0,
+  //       <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
+  //     );
+  //   }
+  //   return array;
+  // };
 
   const postBoard = async () => {
     const formData = new FormData();
@@ -140,23 +105,6 @@ function Posting() {
       console.log(result);
     } catch (e) {
       console.log(e);
-    }
-  };
-
-  const changeTopicToKorean = () => {
-    switch (topic) {
-      case 'Tip':
-        return '꿀팁';
-      case 'Backbiting':
-        return '뒷담';
-      case 'Salary':
-        return '연봉';
-      case 'Turnover':
-        return '이직';
-      case 'Free':
-        return '자유';
-      case 'Humor':
-        return '유머';
     }
   };
 
@@ -196,7 +144,7 @@ function Posting() {
               marginTop: vs(15),
             }}>
             <Text style={{color: 'black'}}>
-              {topic ? changeTopicToKorean() : '등록위치 선택'}
+              {topic ? changeTopicToKorean(topic) : '등록위치 선택'}
             </Text>
             <AntDesign name="caretdown" color={'blue'} size={ss(10)} />
           </View>
@@ -313,12 +261,12 @@ function Posting() {
         <ScrollView
           style={{borderWidth: ss(1), flex: 0.8}}
           nestedScrollEnabled={true}>
-          <Text style={{color: 'black'}}>
+          {/* <Text style={{color: 'black'}}>
             <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
             {'\n'}
             {'\n'}
             {image.length > 0 ? InsertImageInContent() : content}
-          </Text>
+          </Text> */}
         </ScrollView>
         <View>
           <TextInput
@@ -340,7 +288,9 @@ function Posting() {
             onChangeText={setContent}
           />
         </View>
-        <View style={{flexDirection: 'row'}}>{HandleImage()}</View>
+        <View style={{flexDirection: 'row'}}>
+          <SelectedImage images={image} setImage={setImage} />
+        </View>
       </ScrollView>
     </View>
   );

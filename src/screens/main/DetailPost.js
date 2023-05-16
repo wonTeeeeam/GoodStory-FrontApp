@@ -12,10 +12,10 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 
-import OvalButton from '../../components/atoms/OvalButton';
-import DetailPostMain from '../../components/organisms/DetailPostMain';
-import ReplyInput from '../../components/organisms/ReplyInput';
-import ReplyList from '../../components/organisms/ReplyList';
+import OvalButton from '../../components/OvalButton';
+import DetailPostMain from '../../components/DetailPostMain';
+import ReplyInput from '../../components/ReplyInput';
+import ReplyList from '../../components/ReplyList';
 import {BackgroundColor} from '../../styles/BackgroundColor';
 import {TextColor} from '../../styles/TextColor';
 import {ss, vs, hs} from '../../utils/scailing';

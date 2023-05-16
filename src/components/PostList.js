@@ -8,10 +8,10 @@ import {
   Image,
 } from 'react-native';
 
-import Post from '../molecules/Post';
+import Post from './Post';
 
-import {BackgroundColor} from '../../styles/BackgroundColor';
-import {ss, vs} from '../../utils/scailing';
+import {BackgroundColor} from '../styles/BackgroundColor';
+import {ss, vs} from '../utils/scailing';
 import axios from 'axios';
 
 export default function PostList({filterValue, navigation, topic}) {

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, Text, TextInput, View} from 'react-native';
-import {hs, ss, vs} from '../../utils/scailing';
+import {hs, ss, vs} from '../utils/scailing';
 
 function JoinTextInput({
   text,

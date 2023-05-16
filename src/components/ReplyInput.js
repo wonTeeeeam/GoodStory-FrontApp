@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {hs} from '../../utils/scailing';
+import {hs} from '../utils/scailing';
 
 export default function ReplyInput({img}) {
   const [input, setInput] = useState('');

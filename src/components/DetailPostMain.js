@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import {TextColor} from '../../styles/TextColor';
-import {ss, vs} from '../../utils/scailing';
+import {TextColor} from '../styles/TextColor';
+import {ss, vs} from '../utils/scailing';
 
 export default function DetailPostMain({singleData}) {
   return (

@@ -3,11 +3,10 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import FilterBar from '../../components/molecules/FilterBar';
-import PostList from '../../components/organisms/PostList';
+import FilterBar from '../../components/FilterBar';
+import PostList from '../../components/PostList';
 
 import {BackgroundColor} from '../../styles/BackgroundColor';
-import {ss} from '../../utils/scailing';
 
 export default function Board({route}) {
   const navigation = useNavigation();
