@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {BackgroundColor} from '../styles/BackgroundColor';
-import {ss, hs, vs} from '../utils/scailing';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
 
 export default function ReplyList({replyData}) {

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Keyboard, Pressable, Text, TextInput, View} from 'react-native';
-import {hs, vs, ss} from '../../utils/scailing';
+import {hs, vs, ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
-import {handleIsUserStartJoin} from '../../slice/userSlice';
-import useLogin from '../../hooks/useLogin';
+import {handleIsUserStartJoin} from 'slice/userSlice';
+import useLogin from 'hooks/useLogin';
 
 function Login() {
   const dispatch = useDispatch();

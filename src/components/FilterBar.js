@@ -4,9 +4,9 @@ import {View, Text, Pressable, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import {BackgroundColor} from '../styles/BackgroundColor';
-import {TextColor} from '../styles/TextColor';
-import {hs, ss, vs} from '../utils/scailing';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {TextColor} from 'styles/TextColor';
+import {hs, ss, vs} from 'utils/scailing';
 
 export default function FilterBar({filterValue, changeFilterValue}) {
   const [isModalVisible, setIsModalVisible] = useState(false);

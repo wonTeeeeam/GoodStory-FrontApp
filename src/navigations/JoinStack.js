@@ -1,19 +1,17 @@
 import React, {useCallback, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Board from '../screens/main/Board';
-import DetailPost from '../screens/main/DetailPost';
-import {BackgroundColor} from '../styles/BackgroundColor';
-import {TextColor} from '../styles/TextColor';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {TextColor} from 'styles/TextColor';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import JoinEmail from '../screens/cert/JoinEmail';
-import JoinPassword from '../screens/cert/JoinPassword';
-import JoinName from '../screens/cert/JoinName';
-import JoinCamera from '../screens/cert/JoinCamera';
+import JoinEmail from 'screens/cert/JoinEmail';
+import JoinPassword from 'screens/cert/JoinPassword';
+import JoinName from 'screens/cert/JoinName';
+import JoinCamera from 'screens/cert/JoinCamera';
 import {useDispatch} from 'react-redux';
-import {handleIsUserStartJoin} from '../slice/userSlice';
+import {handleIsUserStartJoin} from 'slice/userSlice';
 
 const Stack = createNativeStackNavigator();
 

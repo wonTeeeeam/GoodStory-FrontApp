@@ -10,7 +10,7 @@ import MainStack from './MainStack';
 import JoinStack from './JoinStack';
 import {useColorScheme} from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import useLogin from '../hooks/useLogin';
+import useLogin from 'hooks/useLogin';
 
 export default function RootNavigation() {
   const isUserStartJoin = useSelector(state => state.user.isUserStartJoin);

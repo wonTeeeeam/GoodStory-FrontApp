@@ -1,5 +1,5 @@
 import React from 'react';
-import {hs, vs} from '../utils/scailing';
+import {hs, vs} from 'utils/scailing';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 

@@ -13,9 +13,9 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import SelectedImage from '../../components/SelectedImage';
-import {hs, ss, vs} from '../../utils/scailing';
-import {changeTopicToKorean} from '../../utils/translation';
+import SelectedImage from 'components/SelectedImage';
+import {hs, ss, vs} from 'utils/scailing';
+import {changeTopicToKorean} from 'utils/translation';
 
 function Posting() {
   const categories = [
@@ -50,7 +50,9 @@ function Posting() {
     }
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
     const result = await launchImageLibrary({includeBase64: true});
-    if (result.didCancel) return;
+    if (result.didCancel) {
+      return;
+    }
     setImage([...image, result.assets[0]]);
     setContent(content + `image://${imagePlace}`);
     setImagePlace(imagePlace + 1);

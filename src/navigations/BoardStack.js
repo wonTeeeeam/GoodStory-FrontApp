@@ -1,9 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import Board from '../screens/main/Board';
-import DetailPost from '../screens/main/DetailPost';
-import {BackgroundColor} from '../styles/BackgroundColor';
-import {TextColor} from '../styles/TextColor';
+import Board from 'screens/main/Board';
+import DetailPost from 'screens/main/DetailPost';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {TextColor} from 'styles/TextColor';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 

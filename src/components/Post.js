@@ -6,9 +6,9 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {TextColor} from '../styles/TextColor';
-import {hs, ss, vs} from '../utils/scailing';
-import {convertTimeToKorean} from '../utils/timeConverter';
+import {TextColor} from 'styles/TextColor';
+import {hs, ss, vs} from 'utils/scailing';
+import {convertTimeToKorean} from 'utils/timeConverter';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 

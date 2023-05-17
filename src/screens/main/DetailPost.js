@@ -12,14 +12,14 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 
-import OvalButton from '../../components/OvalButton';
-import DetailPostMain from '../../components/DetailPostMain';
-import ReplyInput from '../../components/ReplyInput';
-import ReplyList from '../../components/ReplyList';
-import {BackgroundColor} from '../../styles/BackgroundColor';
-import {TextColor} from '../../styles/TextColor';
-import {ss, vs, hs} from '../../utils/scailing';
-import {convertTimeToStandardFormat} from '../../utils/timeConverter';
+import OvalButton from 'components/OvalButton';
+import DetailPostMain from 'components/DetailPostMain';
+import ReplyInput from 'components/ReplyInput';
+import ReplyList from 'components/ReplyList';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {TextColor} from 'styles/TextColor';
+import {ss, vs, hs} from 'utils/scailing';
+import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

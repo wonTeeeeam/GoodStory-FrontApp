@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import JoinTextInput from '../../components/JoinTextInput';
-import {ss} from '../../utils/scailing';
+import JoinTextInput from 'components/JoinTextInput';
+import {ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function JoinPassword({route, navigation}) {

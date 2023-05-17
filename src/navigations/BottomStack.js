@@ -4,12 +4,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {ss} from '../utils/scailing';
-import Login from '../screens/cert/Login';
-import Posting from '../screens/posting/Posting';
-import Topic from '../screens/topic/Topic';
+import {ss} from 'utils/scailing';
+import Login from 'screens/cert/Login';
+import Posting from 'screens/posting/Posting';
+import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
-import MyPage from '../screens/myPage';
+import MyPage from 'screens/myPage';
 import {useDispatch, useSelector} from 'react-redux';
 
 function BottomStack() {
