@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
+  Image,
   Modal,
   Platform,
   Pressable,
@@ -16,6 +17,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {changeTopicToKorean} from 'utils/translation';
+import TypeModal from 'components/TypeModal';
+import FastImage from 'react-native-fast-image';
 
 function Posting() {
   const categories = [
@@ -54,26 +57,28 @@ function Posting() {
       return;
     }
     setImage([...image, result.assets[0]]);
-    setContent(content + `image://${imagePlace}`);
+    // setContent(`${content}${(<Image source={{uri: result.assets[0]}} />)}`);
+    setContent(content + `image://${imagePlace}/`);
     setImagePlace(imagePlace + 1);
   };
 
-  // const InsertImageInContent = () => {
-  //   const imageFlags = new RegExp(
-  //     /image:\/\/1|image:\/\/2|image:\/\/3|image:\/\/4|image:\/\/5/,
-  //     'g',
-  //   );
+  const InsertImageInContent = () => {
+    const imageFlags = new RegExp(
+      /image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\/|image:\/\/5\//,
+      'g',
+    );
+    if (content.search(imageFlags) === -1) {
+      return content;
+    }
+    const tempArray = content.slice();
+    const arrayOfTemp = tempArray.split(imageFlags);
+    let Result;
+    Result = arrayOfTemp.map(each => <Text>{each}</Text>);
 
-  //   const array = [...content.split(imageFlags)];
-  //   for (let i = 0; i < array.length; i++) {
-  //     array.splice(
-  //       i + 1,
-  //       0,
-  //       <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
-  //     );
-  //   }
-  //   return array;
-  // };
+    // <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
+
+    // return arrayOfTemp;
+  };
 
   const postBoard = async () => {
     const formData = new FormData();
@@ -152,79 +157,11 @@ function Posting() {
           </View>
         </Pressable>
 
-        <Modal visible={isDropDown} transparent animationtopic="none">
-          <Pressable
-            style={{flex: 1}}
-            onPress={() => {
-              setIsDropDown(false);
-            }}>
-            <View
-              style={{
-                marginTop: vs(130),
-                marginHorizontal: hs(20),
-                backgroundColor: 'white',
-              }}>
-              <ScrollView
-                style={{paddingHorizontal: hs(10)}}
-                nestedScrollEnabled={true}>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Tip');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    꿀팁
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Backbiting');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    뒷담
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Salary');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    연봉
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Turnover');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    이직
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Free');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    자유
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setIsDropDown(false);
-                    setTopic('Humor');
-                  }}>
-                  <Text style={{color: 'black', marginVertical: vs(5)}}>
-                    유머
-                  </Text>
-                </Pressable>
-              </ScrollView>
-            </View>
-          </Pressable>
-        </Modal>
+        <TypeModal
+          isVisible={isDropDown}
+          handleSetIsVisible={setIsDropDown}
+          handleSetTopic={setTopic}
+        />
 
         <View
           style={{
@@ -263,12 +200,13 @@ function Posting() {
         <ScrollView
           style={{borderWidth: ss(1), flex: 0.8}}
           nestedScrollEnabled={true}>
-          {/* <Text style={{color: 'black'}}>
+          <Text style={{color: 'black'}}>
             <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
             {'\n'}
             {'\n'}
-            {image.length > 0 ? InsertImageInContent() : content}
-          </Text> */}
+            {InsertImageInContent()}
+            {/* {image.length > 0 ? InsertImageInContent() : content} */}
+          </Text>
         </ScrollView>
         <View>
           <TextInput
