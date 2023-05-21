@@ -1,9 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  Image,
-  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -14,6 +12,7 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {changeTopicToKorean} from 'utils/translation';
@@ -29,6 +28,14 @@ function Posting() {
     'Free',
     'Humor',
   ];
+  const imageFlags = useMemo(
+    () =>
+      new RegExp(
+        /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
+        'g',
+      ),
+    [],
+  );
   const navigation = useNavigation();
   const [category, setCategory] = useState(categories[1]);
   const [title, setTitle] = useState('');
@@ -37,7 +44,7 @@ function Posting() {
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
-  const [imagePlace, setImagePlace] = useState(1);
+  const [imagePlace, setImagePlace] = useState(0);
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0) {
@@ -45,6 +52,12 @@ function Posting() {
     }
     return setIsDisabled(true);
   }, [title, content]);
+
+  // useEffect(() => {
+  //   if (content.search(imageFlags) !== -1) {
+  //     setPreview(InsertImageInContent(content));
+  //   }
+  // }, [content, InsertImageInContent, imageFlags]);
 
   const handleChoosePhoto = async () => {
     if (image.length >= 5) {
@@ -58,26 +71,63 @@ function Posting() {
     }
     setImage([...image, result.assets[0]]);
     // setContent(`${content}${(<Image source={{uri: result.assets[0]}} />)}`);
-    setContent(content + `image://${imagePlace}/`);
+    setContent(content + `\nimage://${imagePlace}/`);
     setImagePlace(imagePlace + 1);
   };
 
-  const InsertImageInContent = () => {
-    const imageFlags = new RegExp(
-      /image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\/|image:\/\/5\//,
-      'g',
-    );
-    if (content.search(imageFlags) === -1) {
-      return content;
-    }
+  const InsertImageInContent = useCallback(() => {
     const tempArray = content.slice();
     const arrayOfTemp = tempArray.split(imageFlags);
-    let Result;
-    Result = arrayOfTemp.map(each => <Text>{each}</Text>);
+    const Result = [];
+    let keyIndex = 0;
+    for (let i = 0; i < arrayOfTemp.length; i++) {
+      if (arrayOfTemp[i] !== '') {
+        Result.push(<Text key={keyIndex}>{`${arrayOfTemp[i]}\n`}</Text>);
+        keyIndex += 1;
+      }
+      if (i !== arrayOfTemp.length - 1) {
+        if (image[i]) {
+          Result.push(
+            <FastImage
+              key={keyIndex}
+              style={{height: vs(75), width: hs(75)}}
+              source={{uri: image[i].uri}}
+            />,
+          );
+        } else {
+          Result.push(
+            <MaterialIcons
+              key={keyIndex}
+              name="image-not-supported"
+              color={'#4682B4'}
+              size={ss(30)}
+            />,
+          );
+        }
+      }
+      keyIndex += 1;
+    }
+    return Result;
+  }, [content, image, imageFlags]);
 
-    // <FastImage style={{height: vs(75)}} source={{uri: image[i].uri}} />,
-
-    // return arrayOfTemp;
+  const removeImageFromContent = index => {
+    const newImages = [...image];
+    newImages.splice(index, 1);
+    setImage([...newImages]);
+    if (!image[index + 1]) {
+      setContent(content.replace(`\nimage://${index}/`, ''));
+    }
+    // 해당 인덱스를 기준으로 content뒤에 다른 인덱스가 있다면 하나씩 땡겨줘야함.
+    else {
+      let newContent = content.replace(`\nimage://${index}/`, '');
+      for (let i = index + 1; i < image.length; i++) {
+        newContent = newContent.replace(
+          `\nimage://${i}/`,
+          `\nimage://${i - 1}/`,
+        );
+      }
+    }
+    setImagePlace(imagePlace - 1);
   };
 
   const postBoard = async () => {
@@ -205,7 +255,6 @@ function Posting() {
             {'\n'}
             {'\n'}
             {InsertImageInContent()}
-            {/* {image.length > 0 ? InsertImageInContent() : content} */}
           </Text>
         </ScrollView>
         <View>
@@ -226,10 +275,15 @@ function Posting() {
             maxLength={500}
             multiline={true}
             onChangeText={setContent}
+            value={content}
           />
         </View>
         <View style={{flexDirection: 'row'}}>
-          <SelectedImage images={image} setImage={setImage} />
+          <SelectedImage
+            images={image}
+            setImage={setImage}
+            removeImageFromContent={removeImageFromContent}
+          />
         </View>
       </ScrollView>
     </View>

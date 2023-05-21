@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {View} from 'react-native';
 
-function SelectedImage({images, setImage}) {
+function SelectedImage({images, setImage, removeImageFromContent}) {
   return images.map((image, index) => {
     return (
       <View
@@ -25,9 +25,7 @@ function SelectedImage({images, setImage}) {
             color={'#4682B4'}
             size={15}
             onPress={() => {
-              const newImages = [...images];
-              newImages.splice(index, 1);
-              setImage([...newImages]);
+              removeImageFromContent(index);
             }}
           />
         </View>
