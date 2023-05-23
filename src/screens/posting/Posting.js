@@ -29,11 +29,13 @@ function Posting() {
     'Humor',
   ];
   const imageFlags = useMemo(
-    () =>
-      new RegExp(
-        /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
-        'g',
-      ),
+    () => [
+      new RegExp(/image:\/\/0\//, 'g'),
+      new RegExp(/image:\/\/1\//, 'g'),
+      new RegExp(/image:\/\/2\//, 'g'),
+      new RegExp(/image:\/\/3\//, 'g'),
+      new RegExp(/image:\/\/4\//, 'g'),
+    ],
     [],
   );
   const navigation = useNavigation();
@@ -76,16 +78,18 @@ function Posting() {
   };
 
   const InsertImageInContent = useCallback(() => {
-    const tempArray = content.slice();
-    const arrayOfTemp = tempArray.split(imageFlags);
+    let tempArray = content.slice();
+
     const Result = [];
     let keyIndex = 0;
-    for (let i = 0; i < arrayOfTemp.length; i++) {
-      if (arrayOfTemp[i] !== '') {
-        Result.push(<Text key={keyIndex}>{`${arrayOfTemp[i]}\n`}</Text>);
-        keyIndex += 1;
+    for (let i = 0; i < 5; i++) {
+      const arrayOfTemp = tempArray.split(imageFlags[i]);
+      if (arrayOfTemp.length === 1) {
+        continue;
       }
-      if (i !== arrayOfTemp.length - 1) {
+      if (arrayOfTemp.length > 1) {
+        Result.push(<Text key={keyIndex}>{`${arrayOfTemp[0]}\n`}</Text>);
+        keyIndex += 1;
         if (image[i]) {
           Result.push(
             <FastImage
@@ -104,8 +108,12 @@ function Posting() {
             />,
           );
         }
+        keyIndex += 1;
+        tempArray = arrayOfTemp[1];
       }
-      keyIndex += 1;
+    }
+    if (Result.length === 0) {
+      return [<Text>{content}</Text>];
     }
     return Result;
   }, [content, image, imageFlags]);
@@ -126,6 +134,7 @@ function Posting() {
           `\nimage://${i - 1}/`,
         );
       }
+      setContent(newContent);
     }
     setImagePlace(imagePlace - 1);
   };
