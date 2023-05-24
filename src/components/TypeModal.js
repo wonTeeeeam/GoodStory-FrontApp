@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Modal, Pressable, ScrollView, Text, View} from 'react-native';
-import {hs, vs} from 'utils/scailing';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-function TypeModal({isVisible, handleSetIsVisible, handleSetTopic}) {
+import {hs, ss, vs} from 'utils/scailing';
+import {changeTopicToKorean} from 'utils/translation';
+
+function TypeModal({topic, handleSetTopic}) {
+  const [isDropDown, setIsDropDown] = useState(false);
+
   const Item = (english, korean) => {
     return (
       <Pressable
         onPress={() => {
-          handleSetIsVisible(false);
+          setIsDropDown(false);
           handleSetTopic(english);
         }}>
         <Text style={{color: 'black', marginVertical: vs(5)}}>{korean}</Text>
@@ -15,12 +20,33 @@ function TypeModal({isVisible, handleSetIsVisible, handleSetTopic}) {
     );
   };
   return (
-    <View>
-      <Modal visible={isVisible} transparent animationtopic="none">
+    <View style={{}}>
+      <Pressable
+        style={{}}
+        onPress={() => {
+          setIsDropDown(!isDropDown);
+        }}>
+        <View
+          style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: ss(1),
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: vs(15),
+          }}>
+          <Text style={{color: 'black'}}>
+            {topic ? changeTopicToKorean(topic) : '등록위치 선택'}
+          </Text>
+          <AntDesign name="caretdown" color={'blue'} size={ss(10)} />
+        </View>
+      </Pressable>
+
+      <Modal visible={isDropDown} transparent animationtopic="none">
         <Pressable
           style={{flex: 1}}
           onPress={() => {
-            handleSetIsVisible(false);
+            setIsDropDown(false);
           }}>
           <View
             style={{

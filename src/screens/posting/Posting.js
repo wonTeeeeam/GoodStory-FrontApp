@@ -15,7 +15,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
-import {changeTopicToKorean} from 'utils/translation';
 import TypeModal from 'components/TypeModal';
 import FastImage from 'react-native-fast-image';
 
@@ -45,7 +44,6 @@ function Posting() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isDropDown, setIsDropDown] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
 
   useEffect(() => {
@@ -54,12 +52,6 @@ function Posting() {
     }
     return setIsDisabled(true);
   }, [title, content]);
-
-  // useEffect(() => {
-  //   if (content.search(imageFlags) !== -1) {
-  //     setPreview(InsertImageInContent(content));
-  //   }
-  // }, [content, InsertImageInContent, imageFlags]);
 
   const handleChoosePhoto = async () => {
     if (image.length >= 5) {
@@ -82,6 +74,7 @@ function Posting() {
 
     const Result = [];
     let keyIndex = 0;
+
     for (let i = 0; i < 5; i++) {
       const arrayOfTemp = tempArray.split(imageFlags[i]);
       if (arrayOfTemp.length === 1) {
@@ -94,7 +87,8 @@ function Posting() {
           Result.push(
             <FastImage
               key={keyIndex}
-              style={{height: vs(75), width: hs(75)}}
+              style={{height: vs(300), width: hs(300)}}
+              resizeMode="contain"
               source={{uri: image[i].uri}}
             />,
           );
@@ -113,8 +107,9 @@ function Posting() {
       }
     }
     if (Result.length === 0) {
-      return [<Text>{content}</Text>];
+      return [<Text key={keyIndex}>{content}</Text>];
     }
+
     return Result;
   }, [content, image, imageFlags]);
 
@@ -179,7 +174,7 @@ function Posting() {
       <View
         style={{
           alignItems: 'flex-end',
-          flex: 0.3,
+          flexGrow: 0.1,
           justifyContent: 'center',
         }}>
         <Pressable
@@ -195,32 +190,12 @@ function Posting() {
           </Text>
         </Pressable>
       </View>
-      <ScrollView contentContainerStyle={{flexGrow: 0.9}}>
-        <Pressable
-          onPress={() => {
-            setIsDropDown(!isDropDown);
-          }}>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: ss(1),
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: vs(15),
-            }}>
-            <Text style={{color: 'black'}}>
-              {topic ? changeTopicToKorean(topic) : '등록위치 선택'}
-            </Text>
-            <AntDesign name="caretdown" color={'blue'} size={ss(10)} />
-          </View>
-        </Pressable>
 
-        <TypeModal
-          isVisible={isDropDown}
-          handleSetIsVisible={setIsDropDown}
-          handleSetTopic={setTopic}
-        />
+      <ScrollView
+        contentContainerStyle={{flexGrow: 0.9, backgroundColor: 'red'}}>
+        <View style={{paddingTop: vs(0), backgroundColor: 'blue', flex: 0.01}}>
+          <TypeModal topic={topic} handleSetTopic={setTopic} />
+        </View>
 
         <View
           style={{
