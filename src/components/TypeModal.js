@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {hs, ss, vs} from 'utils/scailing';
 import {changeTopicToKorean} from 'utils/translation';
 
-function TypeModal({topic, handleSetTopic}) {
+function TypeModal({category, handleSetCategory}) {
   const [isDropDown, setIsDropDown] = useState(false);
 
   const Item = (english, korean) => {
@@ -13,7 +13,7 @@ function TypeModal({topic, handleSetTopic}) {
       <Pressable
         onPress={() => {
           setIsDropDown(false);
-          handleSetTopic(english);
+          handleSetCategory(english);
         }}>
         <Text style={{color: 'black', marginVertical: vs(5)}}>{korean}</Text>
       </Pressable>
@@ -36,22 +36,21 @@ function TypeModal({topic, handleSetTopic}) {
             marginTop: vs(15),
           }}>
           <Text style={{color: 'black'}}>
-            {topic ? changeTopicToKorean(topic) : '등록위치 선택'}
+            {category ? changeTopicToKorean(category) : '카테고리 선택'}
           </Text>
           <AntDesign name="caretdown" color={'blue'} size={ss(10)} />
         </View>
       </Pressable>
-
-      <Modal visible={isDropDown} transparent animationtopic="none">
+      {isDropDown ? (
         <Pressable
-          style={{flex: 1}}
+          style={{}}
           onPress={() => {
             setIsDropDown(false);
           }}>
           <View
             style={{
-              marginTop: vs(130),
-              marginHorizontal: hs(20),
+              // marginTop: vs(130),
+              // marginHorizontal: hs(20),
               backgroundColor: 'white',
             }}>
             <ScrollView
@@ -66,7 +65,7 @@ function TypeModal({topic, handleSetTopic}) {
             </ScrollView>
           </View>
         </Pressable>
-      </Modal>
+      ) : null}
     </View>
   );
 }

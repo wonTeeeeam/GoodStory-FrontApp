@@ -8,6 +8,7 @@ import {
   Text,
   TextInput,
   View,
+  ToastAndroid,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -38,9 +39,8 @@ function Posting() {
     [],
   );
   const navigation = useNavigation();
-  const [category, setCategory] = useState(categories[1]);
+  const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
-  const [topic, setTopic] = useState();
   const [content, setContent] = useState('');
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -136,22 +136,25 @@ function Posting() {
 
   const postBoard = async () => {
     const formData = new FormData();
-    formData.append('Category', 'Free');
-    formData.append('Title', '임시타이틀');
-    formData.append('Content', '임시컨텐츠');
+    formData.append('Category', category);
+    formData.append('Title', title);
+    formData.append('Content', content);
 
     formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
     formData.append('user[Account]', 'qksdnjswo@gmail.com');
     formData.append('user[Nickname]', '반원재');
 
-    formData.append('files', {
-      name: image[0].fileName,
-      topic: image[0].topic,
-      uri:
-        Platform.OS === 'ios'
-          ? image[0].uri.replace('file://', '')
-          : image[0].uri,
-    });
+    formData.append(
+      'files',
+      image.map(each => {
+        return {
+          name: each.fileName,
+          type: each.type,
+          uri:
+            Platform.OS === 'ios' ? each.uri.replace('file://', '') : each.uri,
+        };
+      }),
+    );
 
     try {
       // const result = await axios.post(
@@ -192,9 +195,10 @@ function Posting() {
       </View>
 
       <ScrollView
-        contentContainerStyle={{flexGrow: 0.9, backgroundColor: 'red'}}>
-        <View style={{paddingTop: vs(0), backgroundColor: 'blue', flex: 0.01}}>
-          <TypeModal topic={topic} handleSetTopic={setTopic} />
+        contentContainerStyle={{flexGrow: 0.9}}
+        showsVerticalScrollIndicator={false}>
+        <View style={{}}>
+          <TypeModal category={category} handleSetCategory={setCategory} />
         </View>
 
         <View
