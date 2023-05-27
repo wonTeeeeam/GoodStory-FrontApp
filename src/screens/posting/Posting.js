@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   View,
-  ToastAndroid,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,16 +17,10 @@ import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import TypeModal from 'components/TypeModal';
 import FastImage from 'react-native-fast-image';
+import {showToast} from 'utils/toast';
+import LoadingModal from 'components/LoadingModal';
 
 function Posting() {
-  const categories = [
-    'Tip',
-    'Backbiting',
-    'Salary',
-    'Turnover',
-    'Free',
-    'Humor',
-  ];
   const imageFlags = useMemo(
     () =>
       new RegExp(
@@ -42,17 +35,18 @@ function Posting() {
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (title.length > 0 && content.length > 0) {
+    if (title.length > 0 && content.length > 0 && category) {
       return setIsDisabled(false);
     }
     return setIsDisabled(true);
-  }, [title, content]);
+  }, [title, content, category]);
 
   const handleChoosePhoto = async () => {
     if (image.length >= 5) {
-      // 이미지는 5개 이상 업로드할 수 없습니다 경고하기.
+      showToast('이미지는 5개 이상 업로드할 수 없습니다');
       return;
     }
     // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
@@ -61,7 +55,6 @@ function Posting() {
       return;
     }
     setImage([...image, result.assets[0]]);
-    // setContent(`${content}${(<Image source={{uri: result.assets[0]}} />)}`);
     setContent(content + `image://${imagePlace}/`);
     setImagePlace(imagePlace + 1);
   };
@@ -145,15 +138,13 @@ function Posting() {
     );
 
     try {
-      // const result = await axios.post(
-      //   'http://3.35.111.44:3001/board/create',
-      //   formData,
-      // );
+      setIsLoading(true);
       const result = await axios.post('/board/create', formData, {
         headers: {
           'Content-topic': 'multipart/form-data',
         },
       });
+      setIsLoading(false);
       console.log(result);
     } catch (e) {
       console.log(e);
@@ -172,6 +163,8 @@ function Posting() {
           onPress={() => {
             if (!isDisabled) {
               postBoard();
+            } else {
+              showToast('제목, 내용, 카테고리를 입력해주세요');
             }
           }}
           disabled={false}>
@@ -262,6 +255,7 @@ function Posting() {
           />
         </View>
       </ScrollView>
+      <LoadingModal isVisible={isLoading} />
     </View>
   );
 }

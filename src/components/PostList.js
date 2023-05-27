@@ -6,6 +6,7 @@ import {
   Text,
   RefreshControl,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 
 import Post from './Post';
