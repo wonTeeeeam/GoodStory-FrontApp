@@ -29,13 +29,10 @@ function Posting() {
     'Humor',
   ];
   const imageFlags = useMemo(
-    () => [
-      new RegExp(/image:\/\/0\//, 'g'),
-      new RegExp(/image:\/\/1\//, 'g'),
-      new RegExp(/image:\/\/2\//, 'g'),
-      new RegExp(/image:\/\/3\//, 'g'),
-      new RegExp(/image:\/\/4\//, 'g'),
-    ],
+    () =>
+      new RegExp(
+        /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
+      ),
     [],
   );
   const navigation = useNavigation();
@@ -65,51 +62,56 @@ function Posting() {
     }
     setImage([...image, result.assets[0]]);
     // setContent(`${content}${(<Image source={{uri: result.assets[0]}} />)}`);
-    setContent(content + `\nimage://${imagePlace}/`);
+    setContent(content + `image://${imagePlace}/`);
     setImagePlace(imagePlace + 1);
   };
 
   const InsertImageInContent = useCallback(() => {
-    let tempArray = content.slice();
+    let copyContent = content.slice();
 
     const Result = [];
     let keyIndex = 0;
-
     for (let i = 0; i < 5; i++) {
-      const arrayOfTemp = tempArray.split(imageFlags[i]);
-      if (arrayOfTemp.length === 1) {
-        continue;
+      const matchInfo = imageFlags.exec(copyContent);
+      if (!matchInfo) {
+        Result.push(<Text key={keyIndex}>{copyContent}</Text>);
+        copyContent = null;
+        break;
       }
-      if (arrayOfTemp.length > 1) {
-        Result.push(<Text key={keyIndex}>{`${arrayOfTemp[0]}\n`}</Text>);
+      if (matchInfo.index !== 0) {
+        Result.push(
+          <Text key={keyIndex}>
+            {copyContent.slice(0, matchInfo.index - 1)}
+          </Text>,
+        );
         keyIndex += 1;
-        if (image[i]) {
-          Result.push(
+      }
+
+      image[parseInt(matchInfo[0][8], 10)]
+        ? Result.push(
             <FastImage
               key={keyIndex}
               style={{height: vs(300), width: hs(300)}}
               resizeMode="contain"
-              source={{uri: image[i].uri}}
+              source={{
+                uri: image[parseInt(matchInfo[0][8], 10)].uri,
+              }}
             />,
-          );
-        } else {
-          Result.push(
+          )
+        : Result.push(
             <MaterialIcons
               key={keyIndex}
               name="image-not-supported"
               color={'#4682B4'}
-              size={ss(30)}
+              size={ss(50)}
             />,
           );
-        }
-        keyIndex += 1;
-        tempArray = arrayOfTemp[1];
-      }
+      keyIndex += 1;
+      copyContent = copyContent.slice(matchInfo.index + 10);
     }
-    if (Result.length === 0) {
-      return [<Text key={keyIndex}>{content}</Text>];
+    if (copyContent) {
+      Result.push(<Text key={keyIndex}>{copyContent}</Text>);
     }
-
     return Result;
   }, [content, image, imageFlags]);
 
@@ -117,20 +119,6 @@ function Posting() {
     const newImages = [...image];
     newImages.splice(index, 1);
     setImage([...newImages]);
-    if (!image[index + 1]) {
-      setContent(content.replace(`\nimage://${index}/`, ''));
-    }
-    // 해당 인덱스를 기준으로 content뒤에 다른 인덱스가 있다면 하나씩 땡겨줘야함.
-    else {
-      let newContent = content.replace(`\nimage://${index}/`, '');
-      for (let i = index + 1; i < image.length; i++) {
-        newContent = newContent.replace(
-          `\nimage://${i}/`,
-          `\nimage://${i - 1}/`,
-        );
-      }
-      setContent(newContent);
-    }
     setImagePlace(imagePlace - 1);
   };
 
