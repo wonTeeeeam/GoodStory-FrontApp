@@ -9,21 +9,21 @@ import Posting from 'screens/posting/Posting';
 import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
   const accessToken = useSelector(state => state.user.accessToken);
 
   return (
-    <Tab.Navigator backBehavior="history">
+    <Tab.Navigator backBehavior="initialRoute">
       <Tab.Screen
         name="BoardStack"
         component={BoardStack}
         options={{
           headerShown: false,
           tabBarIcon: () => <Entypo name="home" color={'blue'} size={ss(20)} />,
-          tabBarShowLabel: false,
+          tabBarLabel: '홈',
         }}
       />
       <Tab.Screen
@@ -34,7 +34,7 @@ function BottomStack() {
           tabBarIcon: () => (
             <MaterialIcons name="topic" color={'blue'} size={ss(20)} />
           ),
-          tabBarShowLabel: false,
+          tabBarLabel: '주제별게시판',
         }}
       />
       <Tab.Screen
@@ -45,7 +45,7 @@ function BottomStack() {
           tabBarIcon: () => (
             <Entypo name="pencil" color={'blue'} size={ss(20)} />
           ),
-          tabBarShowLabel: false,
+          tabBarLabel: '글작성',
         }}
       />
       <Tab.Screen
@@ -56,7 +56,7 @@ function BottomStack() {
           tabBarIcon: () => (
             <Ionicons name="person" color={'blue'} size={ss(20)} />
           ),
-          tabBarShowLabel: false,
+          tabBarLabel: '마이페이지',
         }}
       />
 
