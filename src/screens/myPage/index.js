@@ -4,7 +4,11 @@ import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {hs, ss, vs} from 'utils/scailing';
+import ActivityFeed from 'components/myPage/ActivityFeed';
+import AccountSettingItem from 'components/myPage/AccountSettingItem';
 
 function MyPage() {
   const version = DeviceInfo.getVersion();
@@ -57,30 +61,39 @@ function MyPage() {
             />
             <Ionicons name="person-outline" color={'white'} size={ss(55)} />
           </Pressable>
-          <Pressable style={{alignSelf: 'flex-end', marginLeft: hs(10)}}>
-            <Text style={{color: 'black', fontSize: ss(15)}}>
-              반원재님{` >`}
-            </Text>
+          <Pressable
+            style={{
+              alignSelf: 'flex-end',
+              marginLeft: hs(10),
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'black', fontSize: ss(15)}}>반원재님</Text>
+            <MaterialIcons
+              name="arrow-forward-ios"
+              color={'black'}
+              size={ss(15)}
+              style={{marginLeft: hs(5)}}
+            />
           </Pressable>
         </View>
-        <Pressable>
-          <Text style={{color: 'black'}}>받은 좋아요</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={{color: 'black'}}>좋아요 누른 글</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={{color: 'black'}}>비밀번호 변경</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={{color: 'black'}}>버전{version}</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={{color: 'black'}}>도움말</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={{color: 'black'}}>로그아웃</Text>
-        </Pressable>
+        <View
+          style={{
+            marginTop: vs(20),
+            borderWidth: ss(1),
+            borderRadius: ss(10),
+          }}>
+          <ActivityFeed like={10} post={10} reply={10} />
+        </View>
+        <AccountSettingItem text={'비밀번호 변경'}>
+          <Entypo name="lock" color={'black'} size={ss(20)} />
+        </AccountSettingItem>
+        <AccountSettingItem text={'도움말'}>
+          <Entypo name="help" color={'black'} size={ss(20)} />
+        </AccountSettingItem>
+        <AccountSettingItem text={'로그아웃'}>
+          <Ionicons name="exit" color={'black'} size={ss(20)} />
+        </AccountSettingItem>
       </ScrollView>
     </View>
   );
