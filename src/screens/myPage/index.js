@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
@@ -25,10 +26,10 @@ function MyPage() {
         }}>
         <Text
           style={{
+            flex: 1,
             color: 'black',
             fontWeight: 'bold',
             fontSize: ss(20),
-            flex: 1,
           }}>
           마이페이지
         </Text>
@@ -36,8 +37,12 @@ function MyPage() {
           <Feather name="bell" color={'#696969'} size={ss(25)} />
         </View>
       </View>
-      <ScrollView>
-        <View style={{marginTop: vs(20), flexDirection: 'row'}}>
+      <ScrollView contentContainerStyle={{}}>
+        <View
+          style={{
+            marginTop: vs(20),
+            flexDirection: 'row',
+          }}>
           <Pressable
             style={{
               backgroundColor: '#D3D3D3',
@@ -85,15 +90,44 @@ function MyPage() {
           }}>
           <ActivityFeed like={10} post={10} reply={10} />
         </View>
-        <AccountSettingItem text={'비밀번호 변경'}>
-          <Entypo name="lock" color={'black'} size={ss(20)} />
-        </AccountSettingItem>
-        <AccountSettingItem text={'도움말'}>
-          <Entypo name="help" color={'black'} size={ss(20)} />
-        </AccountSettingItem>
-        <AccountSettingItem text={'로그아웃'}>
-          <Ionicons name="exit" color={'black'} size={ss(20)} />
-        </AccountSettingItem>
+        <View style={{marginTop: vs(50)}}>
+          <AccountSettingItem text={'비밀번호 변경'}>
+            <Entypo name="lock" color={'black'} size={ss(20)} />
+          </AccountSettingItem>
+          <View style={{marginTop: vs(30)}}>
+            <AccountSettingItem text={'공지사항'}>
+              <Entypo name="help" color={'black'} size={ss(20)} />
+            </AccountSettingItem>
+          </View>
+          <View style={{marginTop: vs(30)}}>
+            <AccountSettingItem text={'환경설정'}>
+              <AntDesign name="setting" color={'black'} size={ss(20)} />
+            </AccountSettingItem>
+          </View>
+          {/* <View style={{marginTop: vs(20)}}>
+            <AccountSettingItem text={'알림설정'}>
+              <MaterialCommunityIcons
+                name="alarm-light"
+                color={'black'}
+                size={ss(20)}
+              />
+            </AccountSettingItem>
+          </View> */}
+          <View style={{marginTop: vs(30)}}>
+            <AccountSettingItem text={'로그아웃'}>
+              <Ionicons name="exit" color={'black'} size={ss(20)} />
+            </AccountSettingItem>
+          </View>
+          <View style={{marginTop: vs(30)}}>
+            <AccountSettingItem text={'회원탈퇴'}>
+              <MaterialCommunityIcons
+                name="exit-run"
+                color={'black'}
+                size={ss(20)}
+              />
+            </AccountSettingItem>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
