@@ -3,9 +3,9 @@ import {Pressable, Text, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {hs, ss} from 'utils/scailing';
 
-function AccountSettingItem({children, text}) {
+function AccountSettingItem({children, text, onPress}) {
   return (
-    <Pressable>
+    <Pressable onPress={onPress}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View>{children}</View>
         <View

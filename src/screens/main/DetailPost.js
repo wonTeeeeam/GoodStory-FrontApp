@@ -180,7 +180,7 @@ export default function DetailPost({route, navigation}) {
             </Pressable>
           </View>
 
-          <ReplyList replyData={replyData} />
+          <ReplyList replyData={replyData} replyCnt={singleData.ReplyCount} />
 
           <View style={{...styles.grayBox, ...styles.pictureBox}}>
             <Pressable onPress={handleChoosePhoto}>

@@ -1,13 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  RefreshControl,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, FlatList, Text, RefreshControl} from 'react-native';
 
 import Post from './Post';
 

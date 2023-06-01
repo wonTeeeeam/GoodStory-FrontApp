@@ -10,7 +10,6 @@ import {TextColor} from 'styles/TextColor';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 
 export default function Post({singleData, navigation}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);

@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import BottomStack from './BottomStack';
+import MyPageStack from './MyPageStack';
 
 function MainStack() {
   const Stack = createNativeStackNavigator();
@@ -10,6 +11,11 @@ function MainStack() {
       <Stack.Screen
         name="BottomStack"
         component={BottomStack}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyPageStack"
+        component={MyPageStack}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

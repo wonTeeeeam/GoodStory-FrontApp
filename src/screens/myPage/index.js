@@ -10,9 +10,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
+import {useNavigation} from '@react-navigation/native';
 
 function MyPage() {
   const version = DeviceInfo.getVersion();
+  const navigation = useNavigation();
   return (
     <View style={{marginHorizontal: hs(20)}}>
       <View
@@ -91,16 +93,28 @@ function MyPage() {
           <ActivityFeed like={10} post={10} reply={10} />
         </View>
         <View style={{marginTop: vs(50)}}>
-          <AccountSettingItem text={'비밀번호 변경'}>
+          <AccountSettingItem
+            text={'비밀번호 변경'}
+            onPress={() =>
+              navigation.navigate('MyPageStack', {screen: 'ResetPassword'})
+            }>
             <Entypo name="lock" color={'black'} size={ss(20)} />
           </AccountSettingItem>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'공지사항'}>
+            <AccountSettingItem
+              text={'공지사항'}
+              onPress={() =>
+                navigation.navigate('MyPageStack', {screen: 'Announcement'})
+              }>
               <Entypo name="help" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'환경설정'}>
+            <AccountSettingItem
+              text={'환경설정'}
+              onPress={() =>
+                navigation.navigate('MyPageStack', {screen: 'Configuration'})
+              }>
               <AntDesign name="setting" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
@@ -119,7 +133,11 @@ function MyPage() {
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'회원탈퇴'}>
+            <AccountSettingItem
+              text={'회원탈퇴'}
+              onPress={() =>
+                navigation.navigate('MyPageStack', {screen: 'Withdrawal'})
+              }>
               <MaterialCommunityIcons
                 name="exit-run"
                 color={'black'}

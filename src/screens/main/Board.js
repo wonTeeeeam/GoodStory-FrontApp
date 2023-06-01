@@ -60,10 +60,6 @@ export default function Board({route}) {
           topic={route.params.boardTopic}
         />
       </View>
-      {/* <BottomTab.Navigator>
-        <BottomTab.Screen name="Home" component={Board} />
-        {/* <BottomTab.Screen name="Settings" component={SettingsScreen} /> */}
-      {/* </BottomTab.Navigator>  */}
     </View>
   );
 }

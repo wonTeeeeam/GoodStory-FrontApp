@@ -5,12 +5,7 @@ import {BackgroundColor} from 'styles/BackgroundColor';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
 
-export default function ReplyList({replyData}) {
-  const mockDatas = [
-    {
-      replyTitle: '안녕',
-    },
-  ];
+export default function ReplyList({replyData, replyCnt = 0}) {
   return (
     <View style={styles.replyBox}>
       <View style={{marginHorizontal: hs(5)}}>
@@ -21,6 +16,11 @@ export default function ReplyList({replyData}) {
             size={20}
           />
           <Text style={styles.replyList}>댓글목록</Text>
+          <Text style={{color: '#4682B4'}}>
+            {' ('}
+            {replyCnt ? replyCnt : undefined}
+            {')'}
+          </Text>
         </View>
         {replyData.map((singleData, index) => {
           return (
