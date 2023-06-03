@@ -17,9 +17,7 @@ export default function ReplyList({replyData, replyCnt = 0}) {
           />
           <Text style={styles.replyList}>댓글목록</Text>
           <Text style={{color: '#4682B4'}}>
-            {' ('}
-            {replyCnt ? replyCnt : undefined}
-            {')'}
+            {replyCnt ? ` (${replyCnt})` : undefined}
           </Text>
         </View>
         {replyData.map((singleData, index) => {
@@ -45,13 +43,14 @@ export default function ReplyList({replyData, replyCnt = 0}) {
 
 const styles = StyleSheet.create({
   replyBox: {
-    marginTop: 50,
+    marginTop: vs(50),
     borderColor: '#C0C0C0',
     borderWidth: 1,
     borderStyle: 'solid',
   },
   replyIconContainer: {
     flexDirection: 'row',
+    paddingVertical: vs(5),
   },
   replyList: {
     marginLeft: hs(5),
@@ -60,5 +59,6 @@ const styles = StyleSheet.create({
   flatList: {
     borderTopColor: BackgroundColor.lightGray,
     borderTopWidth: ss(3),
+    paddingVertical: vs(10),
   },
 });

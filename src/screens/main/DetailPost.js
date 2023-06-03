@@ -23,6 +23,8 @@ import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import BottomModal from 'components/BottomModal';
+import BottomModalElement from 'components/BottomModalElement';
 
 export default function DetailPost({route, navigation}) {
   const {singleData} = route.params;
@@ -231,24 +233,14 @@ export default function DetailPost({route, navigation}) {
           </View>
         </View>
       </ScrollView>
-      <Modal
-        isVisible={isModalVisible}
-        style={{justifyContent: 'flex-end', margin: 0}}
-        backdropColor="transparent"
-        onBackButtonPress={() => {
-          setIsModalVisible(false);
-        }}
-        onBackdropPress={() => {
-          setIsModalVisible(false);
-        }}>
-        <View style={{backgroundColor: BackgroundColor.white, padding: ss(10)}}>
-          <Pressable onPress={() => {}}>
-            <Text style={{color: TextColor.black, margin: ss(10)}}>
-              신고하기
-            </Text>
-          </Pressable>
-        </View>
-      </Modal>
+      <BottomModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}>
+        <BottomModalElement
+          onPress={() => setIsModalVisible(false)}
+          text={'신고하기'}
+        />
+      </BottomModal>
     </View>
   );
 }

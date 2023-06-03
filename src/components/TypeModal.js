@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal, Pressable, ScrollView, Text, View} from 'react-native';
+import {Pressable, ScrollView, Text, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {hs, ss, vs} from 'utils/scailing';
