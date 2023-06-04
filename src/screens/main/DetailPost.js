@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
-import Modal from 'react-native-modal';
 
 import OvalButton from 'components/OvalButton';
 import DetailPostMain from 'components/DetailPostMain';

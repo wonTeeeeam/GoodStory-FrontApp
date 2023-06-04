@@ -11,7 +11,7 @@ import JoinPassword from 'screens/cert/JoinPassword';
 import JoinName from 'screens/cert/JoinName';
 import JoinCamera from 'screens/cert/JoinCamera';
 import {useDispatch} from 'react-redux';
-import {handleIsUserStartJoin} from 'slice/userSlice';
+import {handleIsUserStartJoin} from 'slice/navigationSlice';
 
 const Stack = createNativeStackNavigator();
 

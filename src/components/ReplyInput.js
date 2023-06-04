@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {hs} from 'utils/scailing';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {hs, ss, vs} from 'utils/scailing';
 
 export default function ReplyInput({img}) {
   const [input, setInput] = useState('');
@@ -68,5 +69,8 @@ const styles = StyleSheet.create({
   },
   replyInputIcon: {
     flexDirection: 'row',
+    paddingVertical: vs(5),
+    borderBottomColor: BackgroundColor.lightGray,
+    borderBottomWidth: ss(3),
   },
 });

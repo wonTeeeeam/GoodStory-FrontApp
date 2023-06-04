@@ -13,7 +13,9 @@ import * as Keychain from 'react-native-keychain';
 import useLogin from 'hooks/useLogin';
 
 export default function RootNavigation() {
-  const isUserStartJoin = useSelector(state => state.user.isUserStartJoin);
+  const isUserStartJoin = useSelector(
+    state => state.navigation.isUserStartJoin,
+  );
   const {handleLogin} = useLogin();
   const dispatch = useDispatch();
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {useState} from 'react';
 import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
-import {handleAccessToken} from 'slice/userSlice';
+import {handleUserInfo} from 'slice/userSlice';
 
 function useLogin() {
   const [ID, setID] = useState('');
@@ -41,7 +41,7 @@ function useLogin() {
         'refreshToken',
         result.data.refresh_token,
       );
-      dispatch(handleAccessToken(result.data.access_token));
+      dispatch(handleUserInfo(result.data));
     } catch (error) {
       console.log(error);
     }

@@ -10,12 +10,14 @@ import {TextColor} from 'styles/TextColor';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import axios from 'axios';
+import useHandleImage from 'hooks/useHandleImage';
 
 export default function Post({singleData, navigation}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);
   const [isLikePressed, setIsLikePressed] = useState(false);
   // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
+  const {deleteImageFlagsInContent} = useHandleImage();
 
   // const renderLikeCnt = () => {
   //   if(postData.Like === 0) return '좋아요'
@@ -109,7 +111,9 @@ export default function Post({singleData, navigation}) {
               <Text style={styles.titleText}>{singleData.Title}</Text>
             </View>
             <View>
-              <Text style={styles.contextText}>{singleData.Content}</Text>
+              <Text style={styles.contextText}>
+                {deleteImageFlagsInContent(singleData.Content)}
+              </Text>
             </View>
           </View>
           <View style={{flex: 0.2, marginRight: hs(10)}}>

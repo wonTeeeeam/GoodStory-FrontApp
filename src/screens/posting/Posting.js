@@ -19,15 +19,17 @@ import TypeModal from 'components/TypeModal';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/LoadingModal';
+import {useSelector} from 'react-redux';
+import useHandleImage from 'hooks/useHandleImage';
 
 function Posting() {
-  const imageFlags = useMemo(
-    () =>
-      new RegExp(
-        /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
-      ),
-    [],
-  );
+  // const imageFlags = useMemo(
+  //   () =>
+  //     new RegExp(
+  //       /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
+  //     ),
+  //   [],
+  // );
   const navigation = useNavigation();
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -36,6 +38,8 @@ function Posting() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const {nickName, account, userId} = useSelector(state => state.user);
+  const {InsertImageInContent} = useHandleImage();
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -59,54 +63,54 @@ function Posting() {
     setImagePlace(imagePlace + 1);
   };
 
-  const InsertImageInContent = useCallback(() => {
-    let copyContent = content.slice();
+  // const InsertImageInContent = useCallback(() => {
+  //   let copyContent = content.slice();
 
-    const Result = [];
-    let keyIndex = 0;
-    for (let i = 0; i < 5; i++) {
-      const matchInfo = imageFlags.exec(copyContent);
-      if (!matchInfo) {
-        Result.push(<Text key={keyIndex}>{copyContent}</Text>);
-        copyContent = null;
-        break;
-      }
-      if (matchInfo.index !== 0) {
-        Result.push(
-          <Text key={keyIndex}>
-            {copyContent.slice(0, matchInfo.index - 1)}
-          </Text>,
-        );
-        keyIndex += 1;
-      }
+  //   const Result = [];
+  //   let keyIndex = 0;
+  //   for (let i = 0; i < 5; i++) {
+  //     const matchInfo = imageFlags.exec(copyContent);
+  //     if (!matchInfo) {
+  //       Result.push(<Text key={keyIndex}>{copyContent}</Text>);
+  //       copyContent = null;
+  //       break;
+  //     }
+  //     if (matchInfo.index !== 0) {
+  //       Result.push(
+  //         <Text key={keyIndex}>
+  //           {copyContent.slice(0, matchInfo.index - 1)}
+  //         </Text>,
+  //       );
+  //       keyIndex += 1;
+  //     }
 
-      image[parseInt(matchInfo[0][8], 10)]
-        ? Result.push(
-            <FastImage
-              key={keyIndex}
-              style={{height: vs(300), width: hs(300)}}
-              resizeMode="contain"
-              source={{
-                uri: image[parseInt(matchInfo[0][8], 10)].uri,
-              }}
-            />,
-          )
-        : Result.push(
-            <MaterialIcons
-              key={keyIndex}
-              name="image-not-supported"
-              color={'#4682B4'}
-              size={ss(50)}
-            />,
-          );
-      keyIndex += 1;
-      copyContent = copyContent.slice(matchInfo.index + 10);
-    }
-    if (copyContent) {
-      Result.push(<Text key={keyIndex}>{copyContent}</Text>);
-    }
-    return Result;
-  }, [content, image, imageFlags]);
+  //     image[parseInt(matchInfo[0][8], 10)]
+  //       ? Result.push(
+  //           <FastImage
+  //             key={keyIndex}
+  //             style={{height: vs(300), width: hs(300)}}
+  //             resizeMode="contain"
+  //             source={{
+  //               uri: image[parseInt(matchInfo[0][8], 10)].uri,
+  //             }}
+  //           />,
+  //         )
+  //       : Result.push(
+  //           <MaterialIcons
+  //             key={keyIndex}
+  //             name="image-not-supported"
+  //             color={'#4682B4'}
+  //             size={ss(50)}
+  //           />,
+  //         );
+  //     keyIndex += 1;
+  //     copyContent = copyContent.slice(matchInfo.index + 10);
+  //   }
+  //   if (copyContent) {
+  //     Result.push(<Text key={keyIndex}>{copyContent}</Text>);
+  //   }
+  //   return Result;
+  // }, [content, image, imageFlags]);
 
   const removeImageFromContent = index => {
     const newImages = [...image];
@@ -121,21 +125,18 @@ function Posting() {
     formData.append('Title', title);
     formData.append('Content', content);
 
-    formData.append('user[UserId]', 'f3128064-28a4-47c2-bda4-9e1b5987300f');
-    formData.append('user[Account]', 'qksdnjswo@gmail.com');
-    formData.append('user[Nickname]', '반원재');
+    formData.append('user[UserId]', userId);
+    formData.append('user[Account]', account);
+    formData.append('user[Nickname]', nickName);
 
-    formData.append(
-      'files',
-      image.map(each => {
-        return {
-          name: each.fileName,
-          type: each.type,
-          uri:
-            Platform.OS === 'ios' ? each.uri.replace('file://', '') : each.uri,
-        };
-      }),
-    );
+    image.forEach((photo, index) => {
+      formData.append('files', {
+        name: photo.fileName,
+        type: photo.type,
+        uri:
+          Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+      });
+    });
 
     try {
       setIsLoading(true);
@@ -190,7 +191,7 @@ function Posting() {
             marginTop: vs(20),
           }}>
           <View style={{}}>
-            <Text style={{color: 'black'}}>작성자: 한원석</Text>
+            <Text style={{color: 'black'}}>{`작성자: ${nickName}`}</Text>
           </View>
           <View
             style={{
@@ -223,7 +224,7 @@ function Posting() {
             <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
             {'\n'}
             {'\n'}
-            {InsertImageInContent()}
+            {InsertImageInContent(content, image)}
           </Text>
         </ScrollView>
         <View>
