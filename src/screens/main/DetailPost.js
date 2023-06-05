@@ -24,6 +24,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomModal from 'components/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
+import FastImage from 'react-native-fast-image';
+import {showToast} from 'utils/toast';
 
 export default function DetailPost({route, navigation}) {
   const {singleData} = route.params;
@@ -62,6 +64,10 @@ export default function DetailPost({route, navigation}) {
   }, [singleData.BoardId]);
 
   const handleChoosePhoto = async () => {
+    if (img.uri) {
+      showToast('이미지는 최대 1개만 가능합니다');
+      return;
+    }
     const result = await launchImageLibrary();
     setImage(result.assets[0]);
   };
@@ -119,77 +125,105 @@ export default function DetailPost({route, navigation}) {
         // keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
         <View style={{marginVertical: vs(20)}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View>
-              <Text style={{color: 'black'}}>사진</Text>
-            </View>
-            <View style={styles.userContainer}>
-              <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
-            </View>
-          </View>
-          <View style={styles.timeContainer}>
-            <Text style={styles.date}>
-              {convertTimeToStandardFormat(singleData.user.Created_date)}
-            </Text>
-          </View>
-
-          <DetailPostMain singleData={singleData} />
-
           <View
             style={{
-              flexDirection: 'row',
-              width: '100%',
-              // margin: ss(10),
-              marginTop: vs(30),
-              paddingHorizontal: ss(10),
-              justifyContent: 'space-between',
+              borderWidth: ss(1),
+              paddingBottom: vs(30),
+              paddingHorizontal: hs(10),
+              borderColor: '#C0C0C0',
             }}>
-            <Pressable
-              style={styles.bottomContainer}
-              onPress={() => handlePressLike()}>
-              <View style={styles.iconContainer}>
-                {isLikePressed ? (
-                  <AntDesignIcon name="heart" color={TextColor.red} />
-                ) : (
-                  <AntDesignIcon name="hearto" color={TextColor.gray} />
-                )}
-              </View>
-              {likeCnt === 0 ? (
-                <Text style={styles.likeText}>{'좋아요'}</Text>
-              ) : (
-                <Text style={styles.likeText}>{likeCnt}</Text>
-              )}
-            </Pressable>
-            <Pressable style={styles.bottomContainer}>
-              <View style={styles.iconContainer}>
-                <MaterialCommunityIcons
-                  name="message-reply-outline"
-                  color={TextColor.gray}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View>
+                <FastImage
+                  style={{
+                    height: vs(30),
+                    width: hs(30),
+                    borderRadius: ss(30),
+                    borderColor: '#D3D3D3',
+                    borderWidth: ss(1),
+                  }}
+                  source={{uri: singleData.user.ProfilePhoto}}
+                  resizeMode="contain"
                 />
               </View>
-              <Text style={styles.replyText}>
-                {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
-              </Text>
-            </Pressable>
-            <Pressable style={styles.bottomContainer}>
-              <View style={styles.iconContainer}>
-                <AntDesignIcon name="eyeo" color={TextColor.gray} />
+              <View style={styles.userContainer}>
+                <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
               </View>
-              <Text style={styles.viewText}>
-                {singleData.Views > 0 ? singleData.Views : '조회수'}
+            </View>
+            <View style={styles.timeContainer}>
+              <Text style={styles.date}>
+                {convertTimeToStandardFormat(singleData.user.Created_date)}
               </Text>
-            </Pressable>
+            </View>
+
+            <DetailPostMain singleData={singleData} />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                // margin: ss(10),
+                marginTop: vs(60),
+                paddingHorizontal: ss(10),
+                justifyContent: 'space-between',
+              }}>
+              <Pressable
+                style={styles.bottomContainer}
+                onPress={() => handlePressLike()}>
+                <View style={styles.iconContainer}>
+                  {isLikePressed ? (
+                    <AntDesignIcon name="heart" color={TextColor.red} />
+                  ) : (
+                    <AntDesignIcon name="hearto" color={TextColor.gray} />
+                  )}
+                </View>
+                {likeCnt === 0 ? (
+                  <Text style={styles.likeText}>{'좋아요'}</Text>
+                ) : (
+                  <Text style={styles.likeText}>{likeCnt}</Text>
+                )}
+              </Pressable>
+              <Pressable style={styles.bottomContainer}>
+                <View style={styles.iconContainer}>
+                  <MaterialCommunityIcons
+                    name="message-reply-outline"
+                    color={TextColor.gray}
+                  />
+                </View>
+                <Text style={styles.replyText}>
+                  {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+                </Text>
+              </Pressable>
+              <Pressable style={styles.bottomContainer}>
+                <View style={styles.iconContainer}>
+                  <AntDesignIcon name="eyeo" color={TextColor.gray} />
+                </View>
+                <Text style={styles.viewText}>
+                  {singleData.Views > 0 ? singleData.Views : '조회수'}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={{marginTop: vs(30)}}>
+            {singleData.ReplyCount > 0 ? (
+              <ReplyList
+                replyData={replyData}
+                replyCnt={singleData.ReplyCount}
+              />
+            ) : undefined}
+
+            <View
+              style={{
+                ...styles.grayBox,
+                ...styles.pictureBox,
+              }}>
+              <Pressable onPress={handleChoosePhoto}>
+                <AntDesignIcon name="picture" color={'#4682B4'} size={ss(20)} />
+              </Pressable>
+            </View>
           </View>
 
-          <ReplyList replyData={replyData} replyCnt={singleData.ReplyCount} />
-
-          <View style={{...styles.grayBox, ...styles.pictureBox}}>
-            <Pressable onPress={handleChoosePhoto}>
-              <AntDesignIcon name="picture" color={'#4682B4'} size={ss(20)} />
-            </Pressable>
-          </View>
-
-          <ReplyInput />
+          <ReplyInput imgURL={singleData.user.ProfilePhoto} />
           {img.uri ? (
             <View
               style={{
@@ -221,7 +255,7 @@ export default function DetailPost({route, navigation}) {
               marginTop: 20,
               justifyContent: 'flex-end',
             }}>
-            <View>
+            <View style={{marginBottom: vs(20)}}>
               <OvalButton
                 buttonColor={'#6495ED'}
                 text={'댓글등록'}
@@ -246,7 +280,7 @@ export default function DetailPost({route, navigation}) {
 
 const styles = StyleSheet.create({
   totalContainer: {
-    padding: ss(25),
+    padding: ss(20),
     marginVertical: 0,
   },
   userContainer: {

@@ -63,55 +63,6 @@ function Posting() {
     setImagePlace(imagePlace + 1);
   };
 
-  // const InsertImageInContent = useCallback(() => {
-  //   let copyContent = content.slice();
-
-  //   const Result = [];
-  //   let keyIndex = 0;
-  //   for (let i = 0; i < 5; i++) {
-  //     const matchInfo = imageFlags.exec(copyContent);
-  //     if (!matchInfo) {
-  //       Result.push(<Text key={keyIndex}>{copyContent}</Text>);
-  //       copyContent = null;
-  //       break;
-  //     }
-  //     if (matchInfo.index !== 0) {
-  //       Result.push(
-  //         <Text key={keyIndex}>
-  //           {copyContent.slice(0, matchInfo.index - 1)}
-  //         </Text>,
-  //       );
-  //       keyIndex += 1;
-  //     }
-
-  //     image[parseInt(matchInfo[0][8], 10)]
-  //       ? Result.push(
-  //           <FastImage
-  //             key={keyIndex}
-  //             style={{height: vs(300), width: hs(300)}}
-  //             resizeMode="contain"
-  //             source={{
-  //               uri: image[parseInt(matchInfo[0][8], 10)].uri,
-  //             }}
-  //           />,
-  //         )
-  //       : Result.push(
-  //           <MaterialIcons
-  //             key={keyIndex}
-  //             name="image-not-supported"
-  //             color={'#4682B4'}
-  //             size={ss(50)}
-  //           />,
-  //         );
-  //     keyIndex += 1;
-  //     copyContent = copyContent.slice(matchInfo.index + 10);
-  //   }
-  //   if (copyContent) {
-  //     Result.push(<Text key={keyIndex}>{copyContent}</Text>);
-  //   }
-  //   return Result;
-  // }, [content, image, imageFlags]);
-
   const removeImageFromContent = index => {
     const newImages = [...image];
     newImages.splice(index, 1);
@@ -146,9 +97,9 @@ function Posting() {
         },
       });
       setIsLoading(false);
-      console.log(result);
+      // console.log(result);
     } catch (e) {
-      console.log(e);
+      console.log(e.status);
     }
   };
 

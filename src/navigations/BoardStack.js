@@ -57,7 +57,7 @@ function BoardStack({route}) {
         }
         options={{
           headerShown: true,
-          headerTitle: '좋',
+          headerTitle: route?.params?.boardTopic || 'Free',
           headerTitleStyle: {},
           // animationTypeForReplace: 'push',
           animation: 'slide_from_right',

@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {BackgroundColor} from 'styles/BackgroundColor';
 import {hs, ss, vs} from 'utils/scailing';
 
-export default function ReplyInput({img}) {
+export default function ReplyInput({imgURL}) {
   const [input, setInput] = useState('');
   return (
     <View style={styles.replyInputBox}>
@@ -22,10 +23,21 @@ export default function ReplyInput({img}) {
         </View>
         <View
           style={{
+            marginTop: vs(10),
             flexDirection: 'row',
             flex: 1,
           }}>
-          <Text style={{color: 'black'}}>사진</Text>
+          <FastImage
+            style={{
+              height: vs(20),
+              width: hs(20),
+              borderRadius: ss(30),
+              borderColor: '#D3D3D3',
+              borderWidth: ss(1),
+            }}
+            source={{uri: imgURL}}
+            resizeMode="contain"
+          />
           <View
             style={{
               marginLeft: hs(10),

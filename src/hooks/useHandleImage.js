@@ -1,6 +1,6 @@
 import React from 'react';
 import {useMemo} from 'react';
-import {Text} from 'react-native';
+import {Modal, Pressable, Text} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import {hs, ss, vs} from 'utils/scailing';
@@ -44,14 +44,17 @@ function useHandleImage() {
 
       image[parseInt(matchInfo[0][8], 10)]
         ? Result.push(
-            <FastImage
-              key={keyIndex}
-              style={{height: vs(300), width: hs(300)}}
-              resizeMode="contain"
-              source={{
-                uri: image[parseInt(matchInfo[0][8], 10)].uri,
-              }}
-            />,
+            <Pressable key={keyIndex}>
+              <FastImage
+                style={{height: vs(300), width: hs(300)}}
+                resizeMode="contain"
+                source={{
+                  uri:
+                    image[parseInt(matchInfo[0][8], 10)].uri ||
+                    image[parseInt(matchInfo[0][8], 10)].URL,
+                }}
+              />
+            </Pressable>,
           )
         : Result.push(
             <MaterialIcons

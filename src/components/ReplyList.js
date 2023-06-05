@@ -43,7 +43,7 @@ export default function ReplyList({replyData, replyCnt = 0}) {
 
 const styles = StyleSheet.create({
   replyBox: {
-    marginTop: vs(50),
+    marginTop: vs(0),
     borderColor: '#C0C0C0',
     borderWidth: 1,
     borderStyle: 'solid',
