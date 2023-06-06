@@ -1,10 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, Modal} from 'react-native';
+import {ActivityIndicator, Modal, View} from 'react-native';
+// import Modal from 'react-native-modal';
 
 function LoadingModal({isVisible}) {
   return (
-    <Modal visible={isVisible}>
-      <ActivityIndicator size={'large'} />
+    <Modal visible={isVisible} transparent={true} style={{}}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size={'large'} style={{}} />
+      </View>
     </Modal>
   );
 }

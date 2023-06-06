@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList, Text, RefreshControl} from 'react-native';
+import LoadingModal from 'components/LoadingModal';
 
 import Post from './Post';
 
@@ -11,6 +12,7 @@ export default function PostList({filterValue, navigation, topic}) {
   const [skip, setSkip] = useState(0);
   const [listData, setListData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -39,6 +41,7 @@ export default function PostList({filterValue, navigation, topic}) {
     const top = 5;
 
     try {
+      setIsLoading(true);
       const nextData = await axios.get('/board/getAll', {
         params: {
           top: top,
@@ -46,11 +49,13 @@ export default function PostList({filterValue, navigation, topic}) {
           Category: topic,
         },
       });
+      setIsLoading(false);
       setSkip(skip + 5);
       skip === 0
         ? setListData([...nextData.data])
         : setListData([...listData, ...nextData.data]);
     } catch (e) {
+      setIsLoading(false);
       console.log(e);
     }
   }, [skip, listData, topic]);
@@ -72,6 +77,7 @@ export default function PostList({filterValue, navigation, topic}) {
         onEndReachedThreshold={0.1}
         onEndReached={fetchNextData}
       />
+      <LoadingModal isVisible={isLoading} />
     </View>
   );
 }

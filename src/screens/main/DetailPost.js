@@ -11,7 +11,6 @@ import {
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import OvalButton from 'components/OvalButton';
 import DetailPostMain from 'components/DetailPostMain';
 import ReplyInput from 'components/ReplyInput';
 import ReplyList from 'components/ReplyList';
@@ -22,6 +21,7 @@ import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomModal from 'components/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
@@ -108,16 +108,6 @@ export default function DetailPost({route, navigation}) {
     }
   };
 
-  const onPressFunction = async () => {
-    try {
-      const result = await axios.post('/reply/create', {
-        replyData,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <View style={{backgroundColor: BackgroundColor.snow, flex: 1}}>
       <ScrollView
@@ -134,17 +124,33 @@ export default function DetailPost({route, navigation}) {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View>
-                <FastImage
-                  style={{
-                    height: vs(30),
-                    width: hs(30),
-                    borderRadius: ss(30),
-                    borderColor: '#D3D3D3',
-                    borderWidth: ss(1),
-                  }}
-                  source={{uri: singleData.user.ProfilePhoto}}
-                  resizeMode="contain"
-                />
+                {singleData.user.ProfilePhoto ? (
+                  <FastImage
+                    style={{
+                      height: vs(30),
+                      width: hs(30),
+                      borderRadius: ss(30),
+                      borderColor: '#D3D3D3',
+                      borderWidth: ss(1),
+                    }}
+                    source={{uri: singleData.user.ProfilePhoto}}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Ionicons
+                    name="person-outline"
+                    color={'white'}
+                    size={ss(30)}
+                    style={{
+                      backgroundColor: '#D3D3D3',
+                      // width: '100%',
+                      alignItems: 'center',
+                      height: vs(30),
+                      width: hs(30),
+                      borderRadius: ss(100),
+                    }}
+                  />
+                )}
               </View>
               <View style={styles.userContainer}>
                 <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
@@ -248,22 +254,6 @@ export default function DetailPost({route, navigation}) {
               </View>
             </View>
           ) : undefined}
-
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              justifyContent: 'flex-end',
-            }}>
-            <View style={{marginBottom: vs(20)}}>
-              <OvalButton
-                buttonColor={'#6495ED'}
-                text={'댓글등록'}
-                textColor={'white'}
-                onPressFunction={onPressFunction}
-              />
-            </View>
-          </View>
         </View>
       </ScrollView>
       <BottomModal

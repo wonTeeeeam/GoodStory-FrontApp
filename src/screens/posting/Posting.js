@@ -12,11 +12,9 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import TypeModal from 'components/TypeModal';
-import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/LoadingModal';
 import {useSelector} from 'react-redux';

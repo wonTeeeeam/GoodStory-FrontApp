@@ -1,10 +1,10 @@
 import React from 'react';
 import {useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import Modal from 'react-native-modal';
 
 import FastImage from 'react-native-fast-image';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {BackgroundColor} from 'styles/BackgroundColor';
 import {TextColor} from 'styles/TextColor';
 
@@ -18,17 +18,34 @@ export default function Reply({singleData}) {
   return (
     <View style={{marginTop: vs(5), flex: 1}}>
       <View style={styles.replyNickName}>
-        <FastImage
-          style={{
-            height: vs(20),
-            width: hs(20),
-            borderRadius: ss(10),
-            borderColor: '#D3D3D3',
-            borderWidth: ss(1),
-          }}
-          source={{uri: singleData.user.ProfilePhoto}}
-          resizeMode="center"
-        />
+        {singleData.user.Nickname ? (
+          <FastImage
+            style={{
+              height: vs(20),
+              width: hs(20),
+              borderRadius: ss(10),
+              borderColor: '#D3D3D3',
+              borderWidth: ss(1),
+            }}
+            source={{uri: singleData.user.ProfilePhoto}}
+            resizeMode="center"
+          />
+        ) : (
+          <Ionicons
+            name="person-outline"
+            color={'white'}
+            size={ss(20)}
+            style={{
+              backgroundColor: '#D3D3D3',
+              // width: '100%',
+              alignItems: 'center',
+              height: vs(20),
+              width: hs(20),
+              borderRadius: ss(100),
+            }}
+          />
+        )}
+
         <View style={{marginLeft: hs(10), flexDirection: 'row'}}>
           <Text style={styles.user}>{singleData.user.Nickname}</Text>
           <View style={styles.replyDate}>

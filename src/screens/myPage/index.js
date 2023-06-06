@@ -11,10 +11,28 @@ import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import FastImage from 'react-native-fast-image';
+import useLogout from 'hooks/useLogout';
+import axios from 'axios';
 
 function MyPage() {
   const version = DeviceInfo.getVersion();
   const navigation = useNavigation();
+  const {nickName, account, profileImage, userId} = useSelector(
+    state => state.user,
+  );
+  const {handleLogout} = useLogout();
+
+  const handleWithdrawal = async () => {
+    try {
+      const result = await axios.delete('/user/delete', {id: userId});
+      await handleLogout();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={{marginHorizontal: hs(20)}}>
       <View
@@ -66,7 +84,17 @@ function MyPage() {
                 zIndex: 1,
               }}
             />
-            <Ionicons name="person-outline" color={'white'} size={ss(55)} />
+            {profileImage ? (
+              <FastImage
+                style={{height: '100%', width: '100%', borderRadius: ss(100)}}
+                // resizeMode="contain"
+                source={{
+                  uri: profileImage,
+                }}
+              />
+            ) : (
+              <Ionicons name="person-outline" color={'white'} size={ss(55)} />
+            )}
           </Pressable>
           <Pressable
             style={{
@@ -75,7 +103,7 @@ function MyPage() {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <Text style={{color: 'black', fontSize: ss(15)}}>반원재님</Text>
+            <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
             <MaterialIcons
               name="arrow-forward-ios"
               color={'black'}
@@ -128,7 +156,9 @@ function MyPage() {
             </AccountSettingItem>
           </View> */}
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'로그아웃'}>
+            <AccountSettingItem
+              text={'로그아웃'}
+              onPress={async () => await handleLogout()}>
               <Ionicons name="exit" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>

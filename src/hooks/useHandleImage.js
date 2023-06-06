@@ -1,11 +1,15 @@
 import React from 'react';
 import {useMemo} from 'react';
-import {Modal, Pressable, Text} from 'react-native';
+import {Modal, Pressable, Text, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import {hs, ss, vs} from 'utils/scailing';
+import {useState} from 'react';
+import ImageModal from 'components/ImageModal';
 
 function useHandleImage() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [url, setUrl] = useState('');
   const imageFlags = useMemo(
     () =>
       new RegExp(
@@ -41,35 +45,54 @@ function useHandleImage() {
         );
         keyIndex += 1;
       }
-
-      image[parseInt(matchInfo[0][8], 10)]
-        ? Result.push(
-            <Pressable key={keyIndex}>
+      if (image[parseInt(matchInfo[0][8], 10)]) {
+        const imgUrl =
+          image[parseInt(matchInfo[0][8], 10)].uri ||
+          image[parseInt(matchInfo[0][8], 10)].URL;
+        Result.push(
+          <View key={keyIndex}>
+            <Pressable
+              onPress={() => {
+                setIsModalVisible(true);
+                setUrl(imgUrl);
+              }}>
               <FastImage
                 style={{height: vs(300), width: hs(300)}}
                 resizeMode="contain"
                 source={{
-                  uri:
-                    image[parseInt(matchInfo[0][8], 10)].uri ||
-                    image[parseInt(matchInfo[0][8], 10)].URL,
+                  uri: imgUrl,
                 }}
               />
-            </Pressable>,
-          )
-        : Result.push(
-            <MaterialIcons
-              key={keyIndex}
-              name="image-not-supported"
-              color={'#4682B4'}
-              size={ss(50)}
-            />,
-          );
+            </Pressable>
+          </View>,
+        );
+      } else {
+        Result.push(
+          <MaterialIcons
+            key={keyIndex}
+            name="image-not-supported"
+            color={'#4682B4'}
+            size={ss(50)}
+          />,
+        );
+      }
+
       keyIndex += 1;
       copyContent = copyContent.slice(matchInfo.index + 10);
     }
     if (copyContent) {
       Result.push(<Text key={keyIndex}>{copyContent}</Text>);
+      keyIndex += 1;
     }
+    keyIndex += 1;
+    Result.push(
+      <ImageModal
+        key={keyIndex}
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        url={url}
+      />,
+    );
     return Result;
   };
   const deleteImageFlagsInContent = content => {
