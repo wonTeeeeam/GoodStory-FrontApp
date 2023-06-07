@@ -11,21 +11,14 @@ import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import axios from 'axios';
 import useHandleImage from 'hooks/useHandleImage';
+import {useSelector} from 'react-redux';
 
 export default function Post({singleData, navigation}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);
   const [isLikePressed, setIsLikePressed] = useState(false);
-  // const [replyCnt, setReplyCnt] = useState(postData.ReplyCount);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
   const {deleteImageFlagsInContent} = useHandleImage();
-
-  // const renderLikeCnt = () => {
-  //   if(postData.Like === 0) return '좋아요'
-  //   else if (likeCnt > postData.Like) return likeCnt;
-  //   else if (postData.Like > 0) return postData.Like;
-
-  //   return '좋아요';
-  // };
+  const {userId} = useSelector(state => state.user);
 
   const handlePressLike = async () => {
     !isLikePressed ? plusLike() : minusLike();
@@ -34,9 +27,9 @@ export default function Post({singleData, navigation}) {
   const plusLike = async () => {
     try {
       const result = await axios.post('/likeboard/presslikeboard', {
-        LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
+        LikeBoardNumber: singleData.BoardId,
         user: {
-          UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
+          UserId: userId,
         },
       });
       setLikeCnt(likeCnt + 1);
@@ -105,7 +98,7 @@ export default function Post({singleData, navigation}) {
             </Pressable>
           </View>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', flex: 1}}>
           <View style={{...styles.container, flex: 0.8}}>
             <View>
               <Text style={styles.titleText}>{singleData.Title}</Text>
@@ -129,12 +122,11 @@ export default function Post({singleData, navigation}) {
           style={{
             flexDirection: 'row',
             width: ss(270),
-            margin: singleData.BoardPhotos[0] ? ss(25) : ss(40),
+            marginBottom: vs(30),
             marginLeft: ss(50),
-            justifyContent: 'space-between',
           }}>
           <Pressable
-            style={styles.bottomContainer}
+            style={{...styles.bottomContainer}}
             onPress={() => handlePressLike()}>
             <View style={styles.iconContainer}>
               {isLikePressed ? (
@@ -149,7 +141,7 @@ export default function Post({singleData, navigation}) {
               <Text style={styles.likeText}>{likeCnt}</Text>
             )}
           </Pressable>
-          <Pressable style={styles.bottomContainer}>
+          <Pressable style={{...styles.bottomContainer, left: 120}}>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name="message-reply-outline"
@@ -160,7 +152,7 @@ export default function Post({singleData, navigation}) {
               {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
-          <Pressable style={styles.bottomContainer}>
+          <Pressable style={{...styles.bottomContainer, left: 240}}>
             <View style={styles.iconContainer}>
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
@@ -200,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: ss(50),
     justifyContent: 'space-between',
   },
-  bottomContainer: {flexDirection: 'row'},
+  bottomContainer: {flexDirection: 'row', position: 'absolute'},
   iconContainer: {justifyContent: 'center', marginRight: 5},
   topicText: {
     color: TextColor.black,
