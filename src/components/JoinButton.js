@@ -10,15 +10,15 @@ function JoinButton({destination, params}) {
     <View
       style={{
         backgroundColor: '#029BFE',
-        height: vs(50),
-        marginTop: vs(50),
+        height: vs(30),
+        marginTop: vs(30),
         marginHorizontal: hs(20),
-        borderRadius: ss(20),
+        // borderRadius: ss(20),
         justifyContent: 'center',
         alignItems: 'center',
       }}>
       <Pressable onPress={() => navigation.navigate(destination, {...params})}>
-        <Text style={{fontSize: ss(20)}}>다음</Text>
+        <Text style={{fontSize: ss(17)}}>다음</Text>
       </Pressable>
     </View>
   );

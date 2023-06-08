@@ -9,6 +9,9 @@ const initialState = {
   companyCode: '',
   companyName: '',
   accessToken: '',
+  likeBoards: [],
+  likeReReplys: [],
+  likeReplys: [],
 };
 
 export const userSlice = createSlice({
@@ -30,6 +33,9 @@ export const userSlice = createSlice({
       state.companyCode = action.payload.CompanyCode;
       state.companyName = action.payload.CompanyName;
       state.accessToken = action.payload.access_token;
+      state.likeBoards = action.payload.likeBoards;
+      state.likeReReplys = action.payload.likeReReplys;
+      state.likeReplys = action.payload.likeReplys;
     },
     initUserInfo: (state, action) => {
       return initialState;

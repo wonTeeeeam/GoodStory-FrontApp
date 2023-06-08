@@ -19,9 +19,15 @@ import axios from 'axios';
 function MyPage() {
   const version = DeviceInfo.getVersion();
   const navigation = useNavigation();
-  const {nickName, account, profileImage, userId} = useSelector(
-    state => state.user,
-  );
+  const {
+    nickName,
+    account,
+    profileImage,
+    userId,
+    likeBoards,
+    likeReReplys,
+    likeReplys,
+  } = useSelector(state => state.user);
   const {handleLogout} = useLogout();
 
   const handleWithdrawal = async () => {
@@ -118,7 +124,11 @@ function MyPage() {
             borderWidth: ss(1),
             borderRadius: ss(10),
           }}>
-          <ActivityFeed like={10} post={10} reply={10} />
+          <ActivityFeed
+            like={likeBoards.length + likeReReplys.length + likeReplys.length}
+            post={10}
+            reply={10}
+          />
         </View>
         <View style={{marginTop: vs(50)}}>
           <AccountSettingItem
