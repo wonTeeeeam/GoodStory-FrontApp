@@ -1,9 +1,32 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Pressable, Text, TextInput, View} from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {hs, ss, vs} from 'utils/scailing';
 
-function JoinTextInput({text, Icon, placeholder, value, setValue}) {
+function JoinTextInput({
+  text,
+  Icon,
+  placeholder,
+  value,
+  setValue,
+  maxLength,
+  setNeedAlert,
+  isPassword = false,
+  validateValue,
+}) {
+  const [isIconVisible, setIsIconVisible] = useState(false);
+  const [needSecure, setNeedSecure] = useState(isPassword ? true : false);
+  const textInputRef = useRef();
+  useEffect(() => {
+    if (value.length > 0) {
+      setIsIconVisible(true);
+    } else {
+      setIsIconVisible(false);
+    }
+  }, [value]);
+
   return (
     <View style={{marginHorizontal: hs(20)}}>
       <Text style={{color: 'black', marginTop: vs(30)}}>{text}</Text>
@@ -19,6 +42,7 @@ function JoinTextInput({text, Icon, placeholder, value, setValue}) {
         }}>
         {Icon}
         <TextInput
+          ref={textInputRef}
           style={{
             flex: 1,
             marginLeft: vs(5),
@@ -32,8 +56,41 @@ function JoinTextInput({text, Icon, placeholder, value, setValue}) {
           placeholderTextColor={'#B2B0B0'}
           value={value}
           onChangeText={setValue}
-          secureTextEntry={placeholder === '비밀번호' ? true : false}
+          secureTextEntry={needSecure ? true : false}
+          maxLength={maxLength}
+          onFocus={() => {
+            value.length > 0 && setIsIconVisible(true);
+            if (value.length > 0 && !validateValue(value)) {
+              setNeedAlert(true);
+            }
+          }}
+          onBlur={() => {
+            setIsIconVisible(false);
+            setNeedAlert(false);
+          }}
         />
+        {isIconVisible ? (
+          <View style={{flexDirection: 'row'}}>
+            {isPassword ? (
+              <Pressable onPress={() => setNeedSecure(!needSecure)}>
+                <Entypo
+                  name={needSecure ? 'eye' : 'eye-with-line'}
+                  size={ss(20)}
+                  color={'#B2B0B0'}
+                  style={{marginRight: hs(10)}}
+                />
+              </Pressable>
+            ) : null}
+            <Pressable onPress={() => setValue('')}>
+              <AntDesign
+                name="closecircle"
+                size={ss(20)}
+                color={'#B2B0B0'}
+                style={{marginRight: hs(10)}}
+              />
+            </Pressable>
+          </View>
+        ) : undefined}
       </View>
     </View>
   );

@@ -1,52 +1,65 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Keyboard,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import JoinTextInput from 'components/JoinTextInput';
 import JoinButton from 'components/JoinButton';
+import {validateEmail} from 'utils/regex';
 
 function JoinEmail() {
   const [email, setEmail] = useState('');
+  const alertMSG = [
+    `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
+    '65자 이상은 불가합니다.',
+  ];
+  const [alertMsgIndex, setAlertMsgIndex] = useState(0);
+  const [needAlert, setNeedAlert] = useState(false);
+  const [isAbled, setIsAbled] = useState(false);
+
+  useEffect(() => {
+    if (email.length > 64) {
+      setIsAbled(false);
+      setNeedAlert(true);
+      return setAlertMsgIndex(1);
+    }
+    if (email.length === 0) {
+      setIsAbled(false);
+      return setNeedAlert(false);
+    }
+    if (validateEmail(email)) {
+      setIsAbled(true);
+      return setNeedAlert(false);
+    }
+    setIsAbled(false);
+    setNeedAlert(true);
+    return setAlertMsgIndex(0);
+  }, [email]);
 
   return (
-    <Pressable onPress={() => Keyboard.dismiss()}>
-      <ScrollView>
+    <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+      <ScrollView
+        contentContainerStyle={{flex: 1}}
+        keyboardShouldPersistTaps={'always'}>
         <JoinTextInput
           text={'이메일을 입력해주세요'}
           Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'이메일'}
           value={email}
           setValue={setEmail}
+          maxLength={65}
+          setNeedAlert={setNeedAlert}
+          validateValue={validateEmail}
         />
-        <Pressable
-          onPress={() => {}}
-          style={{
-            backgroundColor: '#029BFE',
-            height: vs(30),
-            marginTop: vs(30),
-            marginHorizontal: hs(20),
-            // borderRadius: ss(20),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: ss(17)}}>인증번호 전송</Text>
-        </Pressable>
-        <JoinTextInput
-          text={'인증번호를 입력해주세요'}
-          Icon={<AntDesign name="check" size={ss(20)} color={'#B2B0B0'} />}
-          placeholder={'인증번호'}
-          value={email}
-          setValue={setEmail}
+        {needAlert ? (
+          <Text style={{color: 'red', marginHorizontal: hs(20)}}>
+            {alertMSG[alertMsgIndex]}
+          </Text>
+        ) : null}
+        <JoinButton
+          destination={'JoinPassword'}
+          params={{Email: email}}
+          isAbled={isAbled}
         />
-        <JoinButton destination={'JoinPassword'} params={{Email: email}} />
       </ScrollView>
     </Pressable>
   );
