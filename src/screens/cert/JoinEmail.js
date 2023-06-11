@@ -1,67 +1,119 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
-import {hs, ss, vs} from 'utils/scailing';
+import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
+import {hs, ss} from 'utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import JoinTextInput from 'components/JoinTextInput';
 import JoinButton from 'components/JoinButton';
 import {validateEmail} from 'utils/regex';
+import CommonModal from 'components/CommonMocal';
+import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import useTime from 'hooks/useTime';
 
 function JoinEmail() {
   const [email, setEmail] = useState('');
-  const alertMSG = [
+  const {time, startTime} = useTime();
+  const alertMSGForEmail = [
     `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
     '65자 이상은 불가합니다.',
   ];
-  const [alertMsgIndex, setAlertMsgIndex] = useState(0);
-  const [needAlert, setNeedAlert] = useState(false);
+  const [alertMSGIndexForEmail, setAlertMsgIndexForEmail] = useState(0);
+  const [needAlertForEmail, setNeedAlertForEmail] = useState(false);
+
+  const [emailCert, setEmailCert] = useState(false);
+  const alertMSGForCert = [
+    '잘못된 인증번호입니다.',
+    '인증번호가 만료되었습니다.',
+  ];
+  const [alertMSGIndexForCert, setAlertMSGIndexForCert] = useState(0);
+  const [needAlertForCert, setNeedAlertForCert] = useState(false);
+
   const [isAbled, setIsAbled] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (email.length > 64) {
       setIsAbled(false);
-      setNeedAlert(true);
-      return setAlertMsgIndex(1);
+      setNeedAlertForEmail(true);
+      return setAlertMsgIndexForEmail(1);
     }
     if (email.length === 0) {
       setIsAbled(false);
-      return setNeedAlert(false);
+      return setNeedAlertForEmail(false);
     }
     if (validateEmail(email)) {
       setIsAbled(true);
-      return setNeedAlert(false);
+      return setNeedAlertForEmail(false);
     }
     setIsAbled(false);
-    setNeedAlert(true);
-    return setAlertMsgIndex(0);
+    setNeedAlertForEmail(true);
+    return setAlertMsgIndexForEmail(0);
   }, [email]);
 
+  const checkEmailExist = async () => {
+    try {
+      const result = await axios.post('/user/validateEmail', {
+        Account: email,
+      });
+      if (!result.data) {
+        navigation.navigate('JoinPassword', {Email: email});
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
-      <ScrollView
-        contentContainerStyle={{flex: 1}}
-        keyboardShouldPersistTaps={'always'}>
-        <JoinTextInput
-          text={'이메일을 입력해주세요'}
-          Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
-          placeholder={'이메일'}
-          value={email}
-          setValue={setEmail}
-          maxLength={65}
-          setNeedAlert={setNeedAlert}
-          validateValue={validateEmail}
-        />
-        {needAlert ? (
-          <Text style={{color: 'red', marginHorizontal: hs(20)}}>
-            {alertMSG[alertMsgIndex]}
-          </Text>
-        ) : null}
-        <JoinButton
-          destination={'JoinPassword'}
-          params={{Email: email}}
-          isAbled={isAbled}
-        />
-      </ScrollView>
-    </Pressable>
+    <View style={{flex: 1}}>
+      <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+        <ScrollView
+          contentContainerStyle={{flex: 1}}
+          keyboardShouldPersistTaps={'always'}>
+          <JoinTextInput
+            text={'이메일을 입력해주세요'}
+            Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
+            placeholder={'이메일'}
+            value={email}
+            setValue={setEmail}
+            maxLength={65}
+            setNeedAlertForEmail={setNeedAlertForEmail}
+            validateValue={validateEmail}
+          />
+          <Text style={{color: 'red'}}>{time}</Text>
+          <JoinButton isAbled={isAbled} onPress={startTime(300)} />
+          {needAlertForEmail ? (
+            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
+              {alertMSGForEmail[alertMSGIndexForEmail]}
+            </Text>
+          ) : null}
+          <JoinTextInput
+            text={'인증번호를 입력해주세요.'}
+            Icon={<AntDesign name="check" size={ss(20)} color={'#B2B0B0'} />}
+            placeholder={'인증번호'}
+            value={email}
+            setValue={setEmail}
+            maxLength={65}
+            setNeedAlertForEmail={setNeedAlertForEmail}
+            validateValue={validateEmail}
+          />
+
+          {needAlertForEmail ? (
+            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
+              {alertMSGForEmail[alertMSGIndexForEmail]}
+            </Text>
+          ) : null}
+          <JoinButton isAbled={isAbled} onPress={checkEmailExist} />
+        </ScrollView>
+      </Pressable>
+      <CommonModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={'이메일 중복'}
+        body={'이미 존재하는 이메일입니다.'}
+      />
+    </View>
   );
 }
 

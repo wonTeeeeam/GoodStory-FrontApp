@@ -28,12 +28,10 @@ function JoinPassword({route, navigation}) {
   const [isAbled, setIsAbled] = useState(false);
 
   const validateRePWD = useCallback(() => {
-    if (rePassword && password !== rePassword) {
-      return false;
-    }
-    if (validatePWD(password) && password === rePassword) {
+    if (rePassword && password === rePassword) {
       return true;
     }
+    return false;
   }, [password, rePassword]);
 
   useEffect(() => {
@@ -67,14 +65,22 @@ function JoinPassword({route, navigation}) {
       setIsAbled(false);
       return setNeedAlertRePWD(false);
     }
-    if (validateRePWD()) {
+    if (validatePWD(password) && validateRePWD()) {
       setIsAbled(true);
       return setNeedAlertRePWD(false);
     } else {
       setIsAbled(false);
       return setNeedAlertRePWD(true);
     }
-  }, [rePassword, validateRePWD]);
+  }, [password, rePassword, validateRePWD]);
+
+  const goNextJoinNavigation = () => {
+    try {
+      navigation.navigate('JoinName', {Email: Email, Password: password});
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
@@ -111,11 +117,7 @@ function JoinPassword({route, navigation}) {
             {alertMSGForRePWD[alertMsgRePWDIndex]}
           </Text>
         ) : null}
-        <JoinButton
-          destination={'JoinName'}
-          params={{Email: Email, Password: password}}
-          isAbled={isAbled}
-        />
+        <JoinButton isAbled={isAbled} onPress={goNextJoinNavigation} />
       </ScrollView>
     </Pressable>
   );

@@ -1,11 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 
-function JoinButton({destination, params, isAbled}) {
-  const navigation = useNavigation();
-
+function JoinButton({isAbled, onPress}) {
   return (
     <Pressable
       style={{
@@ -17,7 +14,7 @@ function JoinButton({destination, params, isAbled}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      onPress={() => navigation.navigate(destination, {...params})}>
+      onPress={isAbled ? onPress : null}>
       <Text style={{fontSize: ss(17)}}>다음</Text>
     </Pressable>
   );
