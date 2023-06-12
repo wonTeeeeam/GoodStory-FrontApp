@@ -9,15 +9,15 @@ import {validateEmail} from 'utils/regex';
 import CommonModal from 'components/CommonMocal';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import useTime from 'hooks/useTime';
+import Timer from 'components/Timer';
 
 function JoinEmail() {
   const [email, setEmail] = useState('');
-  const {time, startTime} = useTime();
   const alertMSGForEmail = [
     `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
     '65자 이상은 불가합니다.',
   ];
+  const [isTimerVisible, setIsTimerVisible] = useState(false);
   const [alertMSGIndexForEmail, setAlertMsgIndexForEmail] = useState(0);
   const [needAlertForEmail, setNeedAlertForEmail] = useState(false);
 
@@ -81,8 +81,13 @@ function JoinEmail() {
             setNeedAlertForEmail={setNeedAlertForEmail}
             validateValue={validateEmail}
           />
-          <Text style={{color: 'red'}}>{time}</Text>
-          <JoinButton isAbled={isAbled} onPress={startTime(300)} />
+          {isTimerVisible ? <Timer startSeconds={300} /> : null}
+          <JoinButton
+            isAbled={isAbled}
+            onPress={() => {
+              setIsTimerVisible(true);
+            }}
+          />
           {needAlertForEmail ? (
             <Text style={{color: 'red', marginHorizontal: hs(20)}}>
               {alertMSGForEmail[alertMSGIndexForEmail]}
