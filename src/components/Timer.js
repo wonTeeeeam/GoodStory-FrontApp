@@ -1,26 +1,39 @@
 import React from 'react';
+import {useRef} from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {Text, View} from 'react-native';
 
 function Timer({startSeconds}) {
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const changeTimeToString = time => {
+    return time < 10 ? `0${time}` : `${time}`;
+  };
+
+  const [minutes, setMinutes] = useState(
+    changeTimeToString(Math.floor(startSeconds / 60)),
+  );
+  const [seconds, setSeconds] = useState(
+    changeTimeToString(Math.floor(startSeconds % 60)),
+  );
   let restTime = startSeconds;
+  const intervalRef = useRef(null);
 
   const calculateTime = () => {
     restTime -= 1;
-    if (restTime <= 0) {
-      return;
+
+    if (restTime === 0) {
+      setMinutes(`00`);
+      setSeconds(`00`);
+      clearInterval(intervalRef.current);
     }
-    setMinutes(Math.floor(restTime / 60));
-    setSeconds(Math.floor(restTime % 60));
+    setMinutes(changeTimeToString(Math.floor(restTime / 60)));
+    setSeconds(changeTimeToString(Math.floor(restTime % 60)));
   };
 
   useEffect(() => {
-    const interval = setInterval(() => calculateTime(), 1000);
+    intervalRef.current = setInterval(() => calculateTime(), 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalRef.current);
   }, []);
 
   return (

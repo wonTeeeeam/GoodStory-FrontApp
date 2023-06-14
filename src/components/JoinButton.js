@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 
-function JoinButton({isAbled, onPress}) {
+function JoinButton({isAbled, onPress, text = '다음'}) {
   return (
     <Pressable
       style={{
@@ -15,7 +15,7 @@ function JoinButton({isAbled, onPress}) {
         alignItems: 'center',
       }}
       onPress={isAbled ? onPress : null}>
-      <Text style={{fontSize: ss(17)}}>다음</Text>
+      <Text style={{fontSize: ss(17)}}>{text}</Text>
     </Pressable>
   );
 }

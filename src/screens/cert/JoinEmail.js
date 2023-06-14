@@ -81,8 +81,9 @@ function JoinEmail() {
             setNeedAlertForEmail={setNeedAlertForEmail}
             validateValue={validateEmail}
           />
-          {isTimerVisible ? <Timer startSeconds={300} /> : null}
+          {isTimerVisible ? <Timer startSeconds={10} /> : null}
           <JoinButton
+            text={'인증번호 전송'}
             isAbled={isAbled}
             onPress={() => {
               setIsTimerVisible(true);
