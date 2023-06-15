@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
-import {hs, ss} from 'utils/scailing';
+import {hs, ss, vs} from 'utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import JoinTextInput from 'components/JoinTextInput';
@@ -15,9 +15,9 @@ function JoinEmail() {
   const [email, setEmail] = useState('');
   const alertMSGForEmail = [
     `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
-    '65자 이상은 불가합니다.',
   ];
   const [isTimerVisible, setIsTimerVisible] = useState(false);
+  const [isEmailSended, setIsEmailSended] = useState(false);
   const [alertMSGIndexForEmail, setAlertMsgIndexForEmail] = useState(0);
   const [needAlertForEmail, setNeedAlertForEmail] = useState(false);
 
@@ -29,28 +29,33 @@ function JoinEmail() {
   const [alertMSGIndexForCert, setAlertMSGIndexForCert] = useState(0);
   const [needAlertForCert, setNeedAlertForCert] = useState(false);
 
-  const [isAbled, setIsAbled] = useState(false);
+  const [isEmailAbled, setIsEmailAbled] = useState(false);
+  const [isCertAbled, setIsCertAbled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (email.length > 64) {
-      setIsAbled(false);
-      setNeedAlertForEmail(true);
-      return setAlertMsgIndexForEmail(1);
-    }
+    setIsCertAbled(false);
+    setIsEmailSended(false);
     if (email.length === 0) {
-      setIsAbled(false);
+      setIsEmailAbled(false);
       return setNeedAlertForEmail(false);
     }
     if (validateEmail(email)) {
-      setIsAbled(true);
+      setIsEmailAbled(true);
       return setNeedAlertForEmail(false);
     }
-    setIsAbled(false);
+    setIsEmailAbled(false);
     setNeedAlertForEmail(true);
     return setAlertMsgIndexForEmail(0);
   }, [email]);
+
+  useEffect(() => {
+    if (emailCert.length === 6 && validateEmail(email)) {
+      return setIsCertAbled(true);
+    }
+    return setIsCertAbled(false);
+  }, [emailCert, email]);
 
   const checkEmailExist = async () => {
     try {
@@ -58,19 +63,24 @@ function JoinEmail() {
         Account: email,
       });
       if (!result.data) {
-        navigation.navigate('JoinPassword', {Email: email});
+        // navigation.navigate('JoinPassword', {Email: email});
       }
     } catch (e) {
       console.log(e);
     }
   };
 
+  const validateCert = value => {
+    if (value.lenth === 6) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <View style={{flex: 1}}>
-      <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
-        <ScrollView
-          contentContainerStyle={{flex: 1}}
-          keyboardShouldPersistTaps={'always'}>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
+        <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
           <JoinTextInput
             text={'이메일을 입력해주세요'}
             Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
@@ -78,41 +88,50 @@ function JoinEmail() {
             value={email}
             setValue={setEmail}
             maxLength={65}
-            setNeedAlertForEmail={setNeedAlertForEmail}
+            setNeedAlert={setNeedAlertForEmail}
             validateValue={validateEmail}
           />
-          {isTimerVisible ? <Timer startSeconds={10} /> : null}
+          {needAlertForEmail ? (
+            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
+              {alertMSGForEmail[alertMSGIndexForEmail]}
+            </Text>
+          ) : null}
           <JoinButton
-            text={'인증번호 전송'}
-            isAbled={isAbled}
+            text={isEmailSended ? '재전송' : '인증번호 전송'}
+            isAbled={isEmailAbled}
             onPress={() => {
               setIsTimerVisible(true);
             }}
           />
-          {needAlertForEmail ? (
-            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
-              {alertMSGForEmail[alertMSGIndexForEmail]}
-            </Text>
-          ) : null}
           <JoinTextInput
             text={'인증번호를 입력해주세요.'}
             Icon={<AntDesign name="check" size={ss(20)} color={'#B2B0B0'} />}
             placeholder={'인증번호'}
-            value={email}
-            setValue={setEmail}
-            maxLength={65}
-            setNeedAlertForEmail={setNeedAlertForEmail}
-            validateValue={validateEmail}
+            value={emailCert}
+            setValue={setEmailCert}
+            maxLength={6}
+            setNeedAlert={setNeedAlertForCert}
+            validateValue={validateCert}
+            isNumeric={true}
           />
-
-          {needAlertForEmail ? (
+          {isTimerVisible ? (
+            <View
+              style={{
+                alignItems: 'flex-end',
+                marginRight: hs(22),
+                marginTop: vs(10),
+              }}>
+              <Timer startSeconds={10} />
+            </View>
+          ) : null}
+          {needAlertForCert ? (
             <Text style={{color: 'red', marginHorizontal: hs(20)}}>
-              {alertMSGForEmail[alertMSGIndexForEmail]}
+              {alertMSGForCert[alertMSGIndexForCert]}
             </Text>
           ) : null}
-          <JoinButton isAbled={isAbled} onPress={checkEmailExist} />
-        </ScrollView>
-      </Pressable>
+          <JoinButton isAbled={isCertAbled} onPress={checkEmailExist} />
+        </Pressable>
+      </ScrollView>
       <CommonModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}

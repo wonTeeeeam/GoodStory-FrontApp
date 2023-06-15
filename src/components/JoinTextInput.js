@@ -15,6 +15,7 @@ function JoinTextInput({
   setNeedAlert,
   isPassword = false,
   validateValue,
+  isNumeric = false,
 }) {
   const [isIconVisible, setIsIconVisible] = useState(false);
   const [needSecure, setNeedSecure] = useState(isPassword ? true : false);
@@ -52,7 +53,9 @@ function JoinTextInput({
             color: '#B2B0B0',
             paddingLeft: hs(10),
           }}
+          keyboardType={isNumeric ? 'numeric' : 'default'}
           placeholder={placeholder}
+          autoCapitalize={'none'}
           placeholderTextColor={'#B2B0B0'}
           value={value}
           onChangeText={setValue}
