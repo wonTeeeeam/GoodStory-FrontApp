@@ -77,6 +77,12 @@ function JoinEmail() {
     return false;
   };
 
+  const endFunction = () => {
+    setAlertMSGIndexForCert(1);
+    setNeedAlertForCert(true);
+    setIsTimerVisible(false);
+  };
+
   return (
     <View style={{flex: 1}}>
       <ScrollView keyboardShouldPersistTaps={'always'}>
@@ -92,15 +98,23 @@ function JoinEmail() {
             validateValue={validateEmail}
           />
           {needAlertForEmail ? (
-            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
+            <Text
+              style={{
+                color: 'red',
+                marginHorizontal: hs(20),
+                marginTop: vs(10),
+              }}>
               {alertMSGForEmail[alertMSGIndexForEmail]}
             </Text>
           ) : null}
           <JoinButton
-            text={isEmailSended ? '재전송' : '인증번호 전송'}
+            text={'인증번호 전송'}
             isAbled={isEmailAbled}
             onPress={() => {
+              setIsEmailAbled(false);
               setIsTimerVisible(true);
+              setIsEmailSended(true);
+              setNeedAlertForCert(false);
             }}
           />
           <JoinTextInput
@@ -114,21 +128,29 @@ function JoinEmail() {
             validateValue={validateCert}
             isNumeric={true}
           />
-          {isTimerVisible ? (
-            <View
-              style={{
-                alignItems: 'flex-end',
-                marginRight: hs(22),
-                marginTop: vs(10),
-              }}>
-              <Timer startSeconds={10} />
-            </View>
-          ) : null}
-          {needAlertForCert ? (
-            <Text style={{color: 'red', marginHorizontal: hs(20)}}>
-              {alertMSGForCert[alertMSGIndexForCert]}
-            </Text>
-          ) : null}
+          <View style={{flexDirection: 'row'}}>
+            {needAlertForCert ? (
+              <Text
+                style={{
+                  color: 'red',
+                  marginHorizontal: hs(20),
+                  marginTop: vs(10),
+                }}>
+                {alertMSGForCert[alertMSGIndexForCert]}
+              </Text>
+            ) : null}
+            {isTimerVisible && isEmailSended ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  marginRight: hs(22),
+                  marginTop: vs(10),
+                }}>
+                <Timer startSeconds={10} endFunction={endFunction} />
+              </View>
+            ) : null}
+          </View>
           <JoinButton isAbled={isCertAbled} onPress={checkEmailExist} />
         </Pressable>
       </ScrollView>

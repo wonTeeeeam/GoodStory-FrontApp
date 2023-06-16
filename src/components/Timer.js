@@ -4,7 +4,7 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {Text, View} from 'react-native';
 
-function Timer({startSeconds}) {
+function Timer({startSeconds, endFunction}) {
   const changeTimeToString = time => {
     return time < 10 ? `0${time}` : `${time}`;
   };
@@ -25,6 +25,7 @@ function Timer({startSeconds}) {
       setMinutes(`00`);
       setSeconds(`00`);
       clearInterval(intervalRef.current);
+      endFunction();
     }
     setMinutes(changeTimeToString(Math.floor(restTime / 60)));
     setSeconds(changeTimeToString(Math.floor(restTime % 60)));
