@@ -1,15 +1,12 @@
-import React, {useState} from 'react';
-import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
-import JoinTextInput from 'components/JoinTextInput';
+import React, {useEffect, useCallback, useState} from 'react';
+import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
+import {validatePWD} from 'utils/regex';
+import JoinTextInput from './JoinTextInput';
+import JoinButton from './JoinButton';
 import {hs, ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import JoinButton from 'components/JoinButton';
-import {useEffect} from 'react';
-import {validatePWD} from 'utils/regex';
-import {useCallback} from 'react';
 
-function JoinPassword({route, navigation}) {
-  const {Email} = route.params;
+function PasswordRePassword() {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
@@ -27,10 +24,7 @@ function JoinPassword({route, navigation}) {
   const [isAbled, setIsAbled] = useState(false);
 
   const validateRePWD = useCallback(() => {
-    if (rePassword && password === rePassword) {
-      return true;
-    }
-    return false;
+    return rePassword && password === rePassword ? true : false;
   }, [password, rePassword]);
 
   useEffect(() => {
@@ -67,14 +61,6 @@ function JoinPassword({route, navigation}) {
       return setNeedAlertRePWD(true);
     }
   }, [password, rePassword, validateRePWD]);
-
-  const goNextJoinNavigation = () => {
-    try {
-      navigation.navigate('JoinName', {Email: Email, Password: password});
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
@@ -117,4 +103,4 @@ function JoinPassword({route, navigation}) {
   );
 }
 
-export default JoinPassword;
+export default PasswordRePassword;

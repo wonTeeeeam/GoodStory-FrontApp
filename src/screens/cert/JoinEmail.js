@@ -32,8 +32,16 @@ function JoinEmail() {
   const [isEmailAbled, setIsEmailAbled] = useState(false);
   const [isCertAbled, setIsCertAbled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const modalTitleList = [`이메일 중복`, `이메일 전송 실패`];
+  const modalBodyList = [
+    `이미 존재하는 이메일입니다.`,
+    `이메일 전송에 실패했습니다.`,
+  ];
+  const [modaltitle, setModalTitle] = useState(modalTitleList[0]);
+  const [modalBody, setModalBody] = useState(modalBodyList[0]);
   const navigation = useNavigation();
 
+  // 이메일 변경 관련 로직
   useEffect(() => {
     setIsCertAbled(false);
     setIsEmailSended(false);
@@ -50,12 +58,13 @@ function JoinEmail() {
     return setAlertMsgIndexForEmail(0);
   }, [email]);
 
+  // 인증번호 버튼 활성화
   useEffect(() => {
-    if (emailCert.length === 6 && validateEmail(email)) {
+    if (emailCert.length === 6 && validateEmail(email) && isEmailSended) {
       return setIsCertAbled(true);
     }
     return setIsCertAbled(false);
-  }, [emailCert, email]);
+  }, [emailCert, email, isEmailSended]);
 
   const checkEmailExist = async () => {
     try {
@@ -63,11 +72,46 @@ function JoinEmail() {
         Account: email,
       });
       if (!result.data) {
-        // navigation.navigate('JoinPassword', {Email: email});
+        return true;
+      } else {
+        setModalTitle(modalTitleList[0]);
+        setModalBody(modalBodyList[0]);
+        setIsModalVisible(true);
+        return false;
       }
     } catch (e) {
       console.log(e);
+      return false;
     }
+  };
+
+  const sendEmail = async () => {
+    try {
+      const result = await axios.post('/mail/authEmail', {});
+      if (!result.data) {
+        setModalTitle(modalTitleList[1]);
+        setModalBody(modalBodyList[1]);
+        setIsModalVisible(true);
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const handlePressSendButton = async () => {
+    try {
+      if (await checkEmailExist()) {
+        // if (await sendEmail()) {
+        setIsEmailAbled(false);
+        setIsTimerVisible(true);
+        setIsEmailSended(true);
+        setNeedAlertForCert(false);
+        // }
+      }
+    } catch (e) {}
   };
 
   const validateCert = value => {
@@ -81,6 +125,12 @@ function JoinEmail() {
     setAlertMSGIndexForCert(1);
     setNeedAlertForCert(true);
     setIsTimerVisible(false);
+    setIsEmailSended(false);
+  };
+
+  const handlePressNextButton = () => {
+    setIsTimerVisible(false);
+    navigation.navigate('JoinPassword', {Email: email});
   };
 
   return (
@@ -110,12 +160,7 @@ function JoinEmail() {
           <JoinButton
             text={'인증번호 전송'}
             isAbled={isEmailAbled}
-            onPress={() => {
-              setIsEmailAbled(false);
-              setIsTimerVisible(true);
-              setIsEmailSended(true);
-              setNeedAlertForCert(false);
-            }}
+            onPress={handlePressSendButton}
           />
           <JoinTextInput
             text={'인증번호를 입력해주세요.'}
@@ -151,14 +196,14 @@ function JoinEmail() {
               </View>
             ) : null}
           </View>
-          <JoinButton isAbled={isCertAbled} onPress={checkEmailExist} />
+          <JoinButton isAbled={isCertAbled} onPress={handlePressNextButton} />
         </Pressable>
       </ScrollView>
       <CommonModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
-        title={'이메일 중복'}
-        body={'이미 존재하는 이메일입니다.'}
+        title={modaltitle}
+        body={modalBody}
       />
     </View>
   );

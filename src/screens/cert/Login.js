@@ -12,6 +12,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import useLogin from 'hooks/useLogin';
+import {useEffect} from 'react';
+import {showToast} from 'utils/toast';
 
 function Login() {
   const dispatch = useDispatch();
@@ -24,6 +26,10 @@ function Login() {
     onChangeIsAutoLogin,
     handleLogin,
   } = useLogin();
+
+  useEffect(() => {
+    showToast('로그인이 필요한 서비스입니다.');
+  }, []);
 
   return (
     <ScrollView
@@ -60,6 +66,7 @@ function Login() {
             placeholderTextColor={'#B2B0B0'}
             value={ID}
             onChangeText={onChangeUserId}
+            autoCapitalize={'none'}
           />
         </View>
         <View
@@ -89,6 +96,7 @@ function Login() {
             placeholderTextColor={'#B2B0B0'}
             value={password}
             onChangeText={onChangeUserPassword}
+            autoCapitalize={'none'}
           />
         </View>
         <View style={{marginTop: hs(20)}}>

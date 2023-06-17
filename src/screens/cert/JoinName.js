@@ -6,6 +6,8 @@ import {hs, ss} from 'utils/scailing';
 import JoinButton from 'components/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {useEffect} from 'react';
+import axios from 'axios';
+import CommonModal from 'components/CommonMocal';
 
 function JoinName({route, navigation}) {
   const {Email, Password} = route.params;
@@ -14,19 +16,17 @@ function JoinName({route, navigation}) {
   const [needAlert, setNeedAlert] = useState(false);
   const alertMSG = [
     `올바른 형식의 닉네임을 입력해주세요(최소 2글자 이상의 한글, 영문자)`,
-    '20글자 이상은 불가합니다.',
+    `이미 존재하는 이메일입니다.`,
   ];
-  const [alertMsgIndex, setAlertIndex] = useState(1);
+  const [alertMsgIndex, setAlertIndex] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modaltitle, setModalTitle] = useState('');
+  const [modalBody, setModalBody] = useState('');
 
   useEffect(() => {
     if (!name) {
       setIsAbled(false);
       return setNeedAlert(false);
-    }
-    if (name.length > 20) {
-      setAlertIndex(2);
-      setIsAbled(false);
-      return setNeedAlert(true);
     }
     if (validateUserName(name)) {
       setNeedAlert(false);
@@ -37,15 +37,50 @@ function JoinName({route, navigation}) {
     return setAlertIndex(0);
   }, [name]);
 
+  // 2차개발.
   const goNextJoinNavigation = () => {
+    navigation.navigate('JoinCamera', {
+      Email: Email,
+      Password: Password,
+      Name: name,
+    });
+  };
+
+  const checkNickname = async () => {
     try {
-      navigation.navigate('JoinCamera', {
-        Email: Email,
+      const result = await axios.post('/user/validateNickname', {
+        Nickname: name,
+      });
+      if (result.data) {
+        return true;
+      }
+      console.log(result.data);
+      setNeedAlert(true);
+      setAlertIndex(1);
+      return false;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const registerUserInfo = async () => {
+    try {
+      const result = await axios.post('/user/create', {
+        Account: Email,
         Password: Password,
-        Name: name,
+        Nickname: name,
+        CompanyCode: '123123',
+        CompanyName: '좋좋소',
       });
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const handlePressButton = async () => {
+    if (!(await checkNickname())) {
+      // goNextJoinNavigation();
+      await registerUserInfo();
     }
   };
 
@@ -66,7 +101,13 @@ function JoinName({route, navigation}) {
           {alertMSG[alertMsgIndex]}
         </Text>
       ) : null}
-      <JoinButton isAbled={isAbled} onPress={goNextJoinNavigation} />
+      <JoinButton isAbled={isAbled} onPress={handlePressButton} />
+      <CommonModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={modaltitle}
+        body={modalBody}
+      />
     </Pressable>
   );
 }
