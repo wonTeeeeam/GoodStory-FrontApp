@@ -6,10 +6,14 @@ import JoinButton from './JoinButton';
 import {hs, ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-function PasswordRePassword() {
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
-
+function PasswordRePassword({
+  password,
+  setPassword,
+  rePassword,
+  setRePassword,
+  btnText,
+  onPress,
+}) {
   const alertMSGForPWD = [
     `올바른 형식의 비밀번호를 입력해주세요.(최소 영문자 1글자, 특수문자 또는 숫자 1글자. 공백 불가)`,
     '8자 이상 입력해주세요.',
@@ -97,7 +101,7 @@ function PasswordRePassword() {
             {alertMSGForRePWD[alertMsgRePWDIndex]}
           </Text>
         ) : null}
-        <JoinButton isAbled={isAbled} onPress={goNextJoinNavigation} />
+        <JoinButton isAbled={isAbled} onPress={onPress} text={btnText} />
       </ScrollView>
     </Pressable>
   );

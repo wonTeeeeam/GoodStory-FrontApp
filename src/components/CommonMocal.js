@@ -4,7 +4,13 @@ import Modal from 'react-native-modal';
 import {BackgroundColor} from 'styles/BackgroundColor';
 import {ss, vs} from 'utils/scailing';
 
-function CommonModal({isModalVisible, setIsModalVisible, title, body}) {
+async function CommonModal({
+  isModalVisible,
+  setIsModalVisible,
+  title,
+  body,
+  isConfirm,
+}) {
   return (
     <Modal
       isVisible={isModalVisible}
@@ -21,18 +27,23 @@ function CommonModal({isModalVisible, setIsModalVisible, title, body}) {
         <Text style={{color: '#B2B0B0', marginTop: vs(20), fontSize: ss(15)}}>
           {body}
         </Text>
-        <Pressable
-          onPress={() => setIsModalVisible(false)}
-          style={{
-            backgroundColor: '#029BFE',
-            alignItems: 'center',
-            marginTop: vs(20),
-            height: vs(30),
-            justifyContent: 'center',
-            borderRadius: ss(20),
-          }}>
-          <Text style={{color: 'white'}}>확인</Text>
-        </Pressable>
+
+        {isConfirm ? (
+          <Pressable
+            onPress={() => {}}
+            style={{
+              backgroundColor: '#029BFE',
+              alignItems: 'center',
+              marginTop: vs(20),
+              height: vs(30),
+              justifyContent: 'center',
+              borderRadius: ss(20),
+            }}>
+            <Text style={{color: 'white'}}>확인</Text>
+          </Pressable>
+        ) : (
+          <Pressable></Pressable>
+        )}
       </View>
     </Modal>
   );

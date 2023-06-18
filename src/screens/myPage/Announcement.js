@@ -1,12 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {FlatList, ScrollView, Text, View} from 'react-native';
 
 function Announcement() {
-  return (
-    <View>
-      <Text style={{color: 'black'}}>공지사항입니다.</Text>
-    </View>
-  );
+  return <View>{/* <FlatList renderItem={}/> */}</View>;
 }
 
 export default Announcement;

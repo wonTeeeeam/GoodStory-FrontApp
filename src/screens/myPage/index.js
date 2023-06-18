@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
@@ -15,8 +15,12 @@ import {useSelector} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
 import axios from 'axios';
+import CommonModal from 'components/CommonMocal';
 
 function MyPage() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const version = DeviceInfo.getVersion();
   const navigation = useNavigation();
   const {
@@ -39,6 +43,11 @@ function MyPage() {
     }
   };
 
+  const handlePressLogout = async () => {
+    setIsModalVisible(true);
+    await handleLogout();
+  };
+
   return (
     <View style={{marginHorizontal: hs(20)}}>
       <View
@@ -48,7 +57,6 @@ function MyPage() {
           borderBottomWidth: ss(1),
           borderBottomColor: '#D8D8D8',
           paddingBottom: vs(10),
-          // justifyContent: 'center',
         }}>
         <Text
           style={{
@@ -156,19 +164,8 @@ function MyPage() {
               <AntDesign name="setting" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
-          {/* <View style={{marginTop: vs(20)}}>
-            <AccountSettingItem text={'알림설정'}>
-              <MaterialCommunityIcons
-                name="alarm-light"
-                color={'black'}
-                size={ss(20)}
-              />
-            </AccountSettingItem>
-          </View> */}
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem
-              text={'로그아웃'}
-              onPress={async () => await handleLogout()}>
+            <AccountSettingItem text={'로그아웃'} onPress={handlePressLogout}>
               <Ionicons name="exit" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
@@ -187,6 +184,13 @@ function MyPage() {
           </View>
         </View>
       </ScrollView>
+      <CommonModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        title={title}
+        body={body}
+        // onPress={}
+      />
     </View>
   );
 }
