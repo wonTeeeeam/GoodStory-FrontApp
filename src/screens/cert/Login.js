@@ -14,8 +14,10 @@ import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import useLogin from 'hooks/useLogin';
 import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
+import LoadingModal from 'components/LoadingModal';
 
 function Login() {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const {
     ID,
@@ -30,6 +32,17 @@ function Login() {
   useEffect(() => {
     showToast('로그인이 필요한 서비스입니다.');
   }, []);
+
+  const handlePressLogin = async () => {
+    try {
+      setIsLoading(true);
+      await handleLogin(ID, password);
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      console.log(e);
+    }
+  };
 
   return (
     <ScrollView
@@ -148,10 +161,7 @@ function Login() {
             borderRadius: ss(20),
             backgroundColor: '#029BFE',
           }}>
-          <Pressable
-            onPress={async () => {
-              await handleLogin(ID, password);
-            }}>
+          <Pressable onPress={handlePressLogin}>
             <View
               style={{
                 height: vs(45),
@@ -163,6 +173,7 @@ function Login() {
           </Pressable>
         </View>
       </Pressable>
+      <LoadingModal isVisible={isLoading} />
     </ScrollView>
   );
 }

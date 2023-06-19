@@ -7,7 +7,7 @@ import JoinButton from 'components/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {useEffect} from 'react';
 import axios from 'axios';
-import CommonModal from 'components/CommonMocal';
+import {alert} from 'utils/alert';
 
 function JoinName({route, navigation}) {
   const {Email, Password} = route.params;
@@ -19,9 +19,6 @@ function JoinName({route, navigation}) {
     `이미 존재하는 이메일입니다.`,
   ];
   const [alertMsgIndex, setAlertIndex] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modaltitle, setModalTitle] = useState('');
-  const [modalBody, setModalBody] = useState('');
 
   useEffect(() => {
     if (!name) {
@@ -102,12 +99,6 @@ function JoinName({route, navigation}) {
         </Text>
       ) : null}
       <JoinButton isAbled={isAbled} onPress={handlePressButton} />
-      <CommonModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        title={modaltitle}
-        body={modalBody}
-      />
     </Pressable>
   );
 }

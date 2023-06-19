@@ -15,12 +15,11 @@ import {useSelector} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
 import axios from 'axios';
-import CommonModal from 'components/CommonMocal';
+import {alert} from 'utils/alert';
+import LoadingModal from 'components/LoadingModal';
 
 function MyPage() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const version = DeviceInfo.getVersion();
   const navigation = useNavigation();
   const {
@@ -36,16 +35,34 @@ function MyPage() {
 
   const handleWithdrawal = async () => {
     try {
-      const result = await axios.delete('/user/delete', {id: userId});
-      await handleLogout();
+      const result = await alert({
+        title: '회원탈퇴',
+        body: '회원탈퇴하시겠습니까?',
+        isConfirm: true,
+      });
+      if (result) {
+        setIsLoading(true);
+        const result = await axios.delete('/user/delete', {id: userId});
+        await handleLogout();
+        setIsLoading(false);
+      }
     } catch (e) {
+      setIsLoading(false);
       console.log(e);
     }
   };
 
   const handlePressLogout = async () => {
-    setIsModalVisible(true);
-    await handleLogout();
+    const result = await alert({
+      title: '로그아웃',
+      body: '로그아웃하시겠습니까?',
+      isConfirm: true,
+    });
+    if (result) {
+      setIsLoading(true);
+      await handleLogout();
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -170,11 +187,7 @@ function MyPage() {
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem
-              text={'회원탈퇴'}
-              onPress={() =>
-                navigation.navigate('MyPageStack', {screen: 'Withdrawal'})
-              }>
+            <AccountSettingItem text={'회원탈퇴'} onPress={handleWithdrawal}>
               <MaterialCommunityIcons
                 name="exit-run"
                 color={'black'}
@@ -184,13 +197,7 @@ function MyPage() {
           </View>
         </View>
       </ScrollView>
-      <CommonModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        title={title}
-        body={body}
-        // onPress={}
-      />
+      <LoadingModal isVisible={isLoading} />
     </View>
   );
 }

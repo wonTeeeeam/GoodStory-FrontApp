@@ -6,10 +6,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import JoinTextInput from 'components/JoinTextInput';
 import JoinButton from 'components/JoinButton';
 import {validateEmail} from 'utils/regex';
-import CommonModal from 'components/CommonMocal';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Timer from 'components/Timer';
+import {alert} from 'utils/alert';
 
 function JoinEmail() {
   const [email, setEmail] = useState('');
@@ -31,14 +31,6 @@ function JoinEmail() {
 
   const [isEmailAbled, setIsEmailAbled] = useState(false);
   const [isCertAbled, setIsCertAbled] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const modalTitleList = [`이메일 중복`, `이메일 전송 실패`];
-  const modalBodyList = [
-    `이미 존재하는 이메일입니다.`,
-    `이메일 전송에 실패했습니다.`,
-  ];
-  const [modaltitle, setModalTitle] = useState(modalTitleList[0]);
-  const [modalBody, setModalBody] = useState(modalBodyList[0]);
   const navigation = useNavigation();
 
   // 이메일 변경 관련 로직
@@ -74,9 +66,7 @@ function JoinEmail() {
       if (!result.data) {
         return true;
       } else {
-        setModalTitle(modalTitleList[0]);
-        setModalBody(modalBodyList[0]);
-        setIsModalVisible(true);
+        alert({title: '이메일 중복', body: '이미 존재하는 이메일입니다.'});
         return false;
       }
     } catch (e) {
@@ -89,9 +79,7 @@ function JoinEmail() {
     try {
       const result = await axios.post('/mail/authEmail', {});
       if (!result.data) {
-        setModalTitle(modalTitleList[1]);
-        setModalBody(modalBodyList[1]);
-        setIsModalVisible(true);
+        alert({title: '이메일 전송 실패', body: '이메일 전송에 실패했습니다.'});
         return false;
       } else {
         return true;
@@ -199,12 +187,6 @@ function JoinEmail() {
           <JoinButton isAbled={isCertAbled} onPress={handlePressNextButton} />
         </Pressable>
       </ScrollView>
-      <CommonModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        title={modaltitle}
-        body={modalBody}
-      />
     </View>
   );
 }
