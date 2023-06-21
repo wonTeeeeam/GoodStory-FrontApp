@@ -24,15 +24,15 @@ export default function ReplyList({replyData, replyCnt = 0}) {
           return (
             <View key={index} style={styles.flatList}>
               <Reply singleData={singleData} />
-              {index === replyData.length - 1 ? undefined : (
+              {/* {index === replyData.length - 1 ? undefined : (
                 <View
                   style={{
-                    backgroundColor: '#C0C0C0',
+                    // backgroundColor: '#C0C0C0',
                     alignSelf: 'stretch',
                     height: vs(1),
                   }}
                 />
-              )}
+              )} */}
             </View>
           );
         })}

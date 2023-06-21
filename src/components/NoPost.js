@@ -3,13 +3,8 @@ import {Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {ss, vs} from 'utils/scailing';
 import OvalButton from './OvalButton';
-import {useNavigation} from '@react-navigation/native';
 
-function NoPost() {
-  const navigation = useNavigation();
-  const onPress = () => {
-    navigation.navigate('Posting');
-  };
+function NoPost({onPress = null, btnText = null}) {
   return (
     <View
       style={{
@@ -21,15 +16,19 @@ function NoPost() {
       <Text style={{color: '#B2B0B0', marginTop: vs(10)}}>
         게시글이 존재하지 않습니다.
       </Text>
-      <Text style={{color: '#B2B0B0', marginBottom: vs(10)}}>
-        게시글을 등록해주세요!
-      </Text>
-      <OvalButton
-        buttonColor={'#6495ED'}
-        text={'게시글 등록'}
-        textColor={'white'}
-        onPressFunction={onPress}
-      />
+      {onPress && btnText ? (
+        <Text style={{color: '#B2B0B0', marginBottom: vs(10)}}>
+          게시글을 등록해주세요!
+        </Text>
+      ) : null}
+      {onPress && btnText ? (
+        <OvalButton
+          buttonColor={'#6495ED'}
+          text={btnText}
+          textColor={'white'}
+          onPressFunction={onPress}
+        />
+      ) : null}
     </View>
   );
 }

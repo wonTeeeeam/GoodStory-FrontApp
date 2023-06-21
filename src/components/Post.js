@@ -12,13 +12,26 @@ import {convertTimeToKorean} from 'utils/timeConverter';
 import axios from 'axios';
 import useHandleImage from 'hooks/useHandleImage';
 import {useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {useCallback} from 'react';
 
 export default function Post({singleData, navigation}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);
   const [isLikePressed, setIsLikePressed] = useState(false);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
   const {deleteImageFlagsInContent} = useHandleImage();
-  const {userId} = useSelector(state => state.user);
+  const {userId, likeBoards, likeReReplys, likeReplys} = useSelector(
+    state => state.user,
+  );
+  useEffect(() => {
+    checkIsLiked();
+  }, [checkIsLiked]);
+  const checkIsLiked = useCallback(() => {
+    const isLiked = likeBoards.find(
+      element => element.LikeBoardNumber === singleData.BoardId,
+    );
+    isLiked ? setIsLikePressed(true) : setIsLikePressed(false);
+  }, [likeBoards, singleData]);
 
   const handlePressLike = async () => {
     !isLikePressed ? plusLike() : minusLike();

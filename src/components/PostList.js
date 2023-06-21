@@ -1,29 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList, Text, RefreshControl} from 'react-native';
-
 import Post from './Post';
-
 import {BackgroundColor} from 'styles/BackgroundColor';
 import {ss} from 'utils/scailing';
-import axios from 'axios';
 import NoPost from './NoPost';
+import useFetchDataList from 'hooks/useFetchDataList';
 
 export default function PostList({filterValue, navigation, topic}) {
-  const [skip, setSkip] = useState(0);
-  const [listData, setListData] = useState([]);
-  const [isListDataExist, setIsListDataExist] = useState(undefined);
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    setSkip(0);
-    await fetchNextData();
-    setRefreshing(false);
-  }, [fetchNextData]);
-
-  useEffect(() => {
-    onRefresh();
-  }, [onRefresh]);
+  const {onRefresh, fetchNextData, listData, isListDataExist, refreshing} =
+    useFetchDataList({url: '/board/getAll', topic: topic});
 
   useEffect(() => {
     if (filterValue === '최신순') {
@@ -36,30 +21,6 @@ export default function PostList({filterValue, navigation, topic}) {
       });
     }
   }, [filterValue, listData]);
-
-  const fetchNextData = useCallback(async () => {
-    const top = 5;
-
-    try {
-      const nextData = await axios.get('/board/getAll', {
-        params: {
-          top: top,
-          skip: skip,
-          Category: topic,
-        },
-      });
-      setSkip(skip + 5);
-      skip === 0 && nextData.data.length === 0
-        ? setIsListDataExist(false)
-        : setIsListDataExist(true);
-
-      skip === 0
-        ? setListData([...nextData.data])
-        : setListData([...listData, ...nextData.data]);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [skip, listData, topic]);
 
   return (
     <View style={{flex: 1}}>
@@ -81,7 +42,12 @@ export default function PostList({filterValue, navigation, topic}) {
         />
       ) : null}
       {/* fetchNextData하고 난 뒤에 게시글 없을 때만 보여줘야함. undefined일 때는 보여주면 안됨.*/}
-      {isListDataExist === false ? <NoPost /> : null}
+      {isListDataExist === false ? (
+        <NoPost
+          onPress={() => navigation.navigate('Posting')}
+          btnText={'게시글 등록'}
+        />
+      ) : null}
     </View>
   );
 }
