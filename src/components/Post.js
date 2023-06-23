@@ -23,15 +23,16 @@ export default function Post({singleData, navigation}) {
   const {userId, likeBoards, likeReReplys, likeReplys} = useSelector(
     state => state.user,
   );
-  useEffect(() => {
-    checkIsLiked();
-  }, [checkIsLiked]);
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(
       element => element.LikeBoardNumber === singleData.BoardId,
     );
     isLiked ? setIsLikePressed(true) : setIsLikePressed(false);
   }, [likeBoards, singleData]);
+
+  useEffect(() => {
+    checkIsLiked();
+  }, [checkIsLiked]);
 
   const handlePressLike = async () => {
     !isLikePressed ? plusLike() : minusLike();

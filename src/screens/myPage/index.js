@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,16 +11,21 @@ import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
 import axios from 'axios';
 import {alert} from 'utils/alert';
 import LoadingModal from 'components/LoadingModal';
+import ImagePicker from 'react-native-image-crop-picker';
+import {changeProfile} from 'slice/userSlice';
+import {showToast} from 'utils/toast';
 
 function MyPage() {
   const [isLoading, setIsLoading] = useState(false);
   const version = DeviceInfo.getVersion();
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
   const {
     nickName,
@@ -65,6 +70,39 @@ function MyPage() {
     }
   };
 
+  const imagePicker = async () => {
+    const image = await ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      cropperCircleOverlay: true,
+      cropperToolbarTitle: '원안에 사진을 맞춰주세요!',
+      showCropGuidelines: true,
+    });
+    const formData = new FormData();
+    formData.append('files', {
+      name: image.modificationDate,
+      type: image.mime,
+      uri:
+        Platform.OS === 'ios' ? image.path.replace('file://', '') : image.path,
+    });
+    try {
+      setIsLoading(true);
+      const result = await axios.post('/user/updateProfilePhoto', formData, {
+        headers: {
+          'Content-topic': 'multipart/form-data',
+        },
+      });
+      dispatch(changeProfile(image.path));
+      setIsLoading(false);
+      showToast('프로필이 변경되었습니다');
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+      showToast('프로필 변경에 실패했습니다. 잠시후에 시도해주세요');
+    }
+  };
+
   return (
     <View style={{marginHorizontal: hs(20)}}>
       <View
@@ -101,7 +139,8 @@ function MyPage() {
               alignItems: 'center',
               height: vs(60),
               borderRadius: ss(100),
-            }}>
+            }}
+            onPress={imagePicker}>
             <AntDesign
               name="setting"
               color={'#DCDCDC'}

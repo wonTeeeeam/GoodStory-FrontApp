@@ -24,6 +24,9 @@ export const userSlice = createSlice({
     handleAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
+    changeProfile: (state, action) => {
+      state.profileImage = action.payload;
+    },
     handleUserInfo: (state, action) => {
       state.userId = action.payload.UserId;
       state.account = action.payload.Account;
@@ -44,6 +47,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {handleUserInfo, initUserInfo} = userSlice.actions;
+export const {handleUserInfo, initUserInfo, changeProfile} = userSlice.actions;
 
 export default userSlice.reducer;
