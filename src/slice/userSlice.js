@@ -29,11 +29,11 @@ export const userSlice = createSlice({
     },
     handleUserInfo: (state, action) => {
       state.userId = action.payload.UserId;
-      state.account = action.payload.Account;
+      // state.account = action.payload.Account;
       state.nickName = action.payload.Nickname;
       state.profileImage = action.payload.ProfilePhoto;
-      state.createdDate = action.payload.Created_date;
-      state.companyCode = action.payload.CompanyCode;
+      // state.createdDate = action.payload.Created_date;
+      // state.companyCode = action.payload.CompanyCode;
       state.companyName = action.payload.CompanyName;
       state.accessToken = action.payload.access_token;
       state.likeBoards = action.payload.likeBoards;

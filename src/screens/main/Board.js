@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, BackHandler} from 'react-native';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import FilterBar from 'components/FilterBar';
 import PostList from 'components/PostList';
@@ -10,7 +8,6 @@ import {BackgroundColor} from 'styles/BackgroundColor';
 import {showToast} from 'utils/toast';
 
 export default function Board({route}) {
-  const navigation = useNavigation();
   const [filterValue, setFilterValue] = useState('최신순');
   const [backPressCount, setBackPressCount] = useState(0);
 
@@ -54,11 +51,7 @@ export default function Board({route}) {
         />
       </View>
       <View style={styles.postList}>
-        <PostList
-          filterValue={filterValue}
-          navigation={navigation}
-          topic={route.params.boardTopic}
-        />
+        <PostList filterValue={filterValue} topic={route.params.boardTopic} />
       </View>
     </View>
   );

@@ -49,7 +49,7 @@ function BottomStack() {
         }}
       />
       <Tab.Screen
-        name="Login"
+        name="MyPage"
         component={accessToken ? MyPage : Login}
         options={{
           headerShown: false,

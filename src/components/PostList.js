@@ -5,10 +5,13 @@ import {BackgroundColor} from 'styles/BackgroundColor';
 import {ss} from 'utils/scailing';
 import NoPost from './NoPost';
 import useFetchDataList from 'hooks/useFetchDataList';
+import {useNavigation} from '@react-navigation/native';
 
-export default function PostList({filterValue, navigation, topic}) {
+export default function PostList({filterValue, topic}) {
   const {onRefresh, fetchNextData, listData, isListDataExist, refreshing} =
     useFetchDataList({url: '/board/getAll', topic: topic});
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (filterValue === '최신순') {
@@ -33,7 +36,7 @@ export default function PostList({filterValue, navigation, topic}) {
           renderItem={({item, index}) => {
             return (
               <View key={index} style={styles.container}>
-                <Post singleData={item} navigation={navigation} />
+                <Post singleData={item} />
               </View>
             );
           }}

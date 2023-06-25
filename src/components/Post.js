@@ -14,8 +14,9 @@ import useHandleImage from 'hooks/useHandleImage';
 import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
-export default function Post({singleData, navigation}) {
+export default function Post({singleData}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);
   const [isLikePressed, setIsLikePressed] = useState(false);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
@@ -23,6 +24,7 @@ export default function Post({singleData, navigation}) {
   const {userId, likeBoards, likeReReplys, likeReplys} = useSelector(
     state => state.user,
   );
+  const navigation = useNavigation();
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(
       element => element.LikeBoardNumber === singleData.BoardId,

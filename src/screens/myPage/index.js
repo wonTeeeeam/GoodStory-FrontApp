@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
@@ -23,20 +23,29 @@ import {showToast} from 'utils/toast';
 
 function MyPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState({});
   const version = DeviceInfo.getVersion();
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-  const {
-    nickName,
-    account,
-    profileImage,
-    userId,
-    likeBoards,
-    likeReReplys,
-    likeReplys,
-  } = useSelector(state => state.user);
+  const {nickName, profileImage, userId} = useSelector(state => state.user);
   const {handleLogout} = useLogout();
+
+  useEffect(() => {
+    async function fetchMypageData() {
+      try {
+        const result = await axios.get(`/user/myPage`, {
+          params: {
+            UserId: userId,
+          },
+        });
+        setUserData(result.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    fetchMypageData();
+  }, []);
 
   const handleWithdrawal = async () => {
     try {
@@ -80,12 +89,13 @@ function MyPage() {
       showCropGuidelines: true,
     });
     const formData = new FormData();
-    formData.append('files', {
+    formData.append('file', {
       name: image.modificationDate,
       type: image.mime,
       uri:
         Platform.OS === 'ios' ? image.path.replace('file://', '') : image.path,
     });
+    formData.append('Account', userData.account);
     try {
       setIsLoading(true);
       const result = await axios.post('/user/updateProfilePhoto', formData, {
@@ -159,7 +169,7 @@ function MyPage() {
                 style={{height: '100%', width: '100%', borderRadius: ss(100)}}
                 // resizeMode="contain"
                 source={{
-                  uri: profileImage,
+                  uri: profileImage + `?` + new Date(),
                 }}
               />
             ) : (
@@ -189,16 +199,19 @@ function MyPage() {
             borderRadius: ss(10),
           }}>
           <ActivityFeed
-            like={likeBoards.length + likeReReplys.length + likeReplys.length}
-            post={10}
-            reply={10}
+            like={userData.likeBoards}
+            post={userData.boards}
+            reply={userData.replies}
           />
         </View>
         <View style={{marginTop: vs(50)}}>
           <AccountSettingItem
             text={'비밀번호 변경'}
             onPress={() =>
-              navigation.navigate('MyPageStack', {screen: 'ResetPassword'})
+              navigation.navigate('MyPageStack', {
+                screen: 'ResetPassword',
+                params: {account: userData.Account},
+              })
             }>
             <Entypo name="lock" color={'black'} size={ss(20)} />
           </AccountSettingItem>

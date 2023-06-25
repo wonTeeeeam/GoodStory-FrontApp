@@ -6,6 +6,7 @@ import Announcement from 'screens/myPage/Announcement';
 import ResetPassword from 'screens/myPage/ResetPassword';
 import Configuration from 'screens/myPage/Configuration';
 import Withdrawal from 'screens/myPage/Withdrawal';
+import AnnouncementDetail from 'screens/myPage/AnnouncementDetail';
 
 function MyPageStack() {
   const Stack = createNativeStackNavigator();
@@ -20,6 +21,11 @@ function MyPageStack() {
       <Stack.Screen
         name="Announcement"
         component={Announcement}
+        options={{headerShown: true, headerTitle: '공지사항'}}
+      />
+      <Stack.Screen
+        name="AnnouncementDetail"
+        component={AnnouncementDetail}
         options={{headerShown: true, headerTitle: '공지사항'}}
       />
       <Stack.Screen
