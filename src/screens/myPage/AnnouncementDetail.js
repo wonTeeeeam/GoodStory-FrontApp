@@ -4,7 +4,6 @@ import {hs, ss, vs} from 'utils/scailing';
 
 function AnnouncementDetail({route}) {
   const singleData = route.params;
-  console.log(singleData);
   return (
     <View style={{marginTop: vs(20), marginHorizontal: hs(10)}}>
       <Text

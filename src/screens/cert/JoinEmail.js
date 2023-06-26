@@ -114,6 +114,9 @@ function JoinEmail() {
     setNeedAlertForCert(true);
     setIsTimerVisible(false);
     setIsEmailSended(false);
+    if (validateEmail(email)) {
+      setIsEmailAbled(true);
+    }
   };
 
   const handlePressNextButton = () => {
@@ -180,7 +183,7 @@ function JoinEmail() {
                   marginRight: hs(22),
                   marginTop: vs(10),
                 }}>
-                <Timer startSeconds={10} endFunction={endFunction} />
+                <Timer startSeconds={20} endFunction={endFunction} />
               </View>
             ) : null}
           </View>

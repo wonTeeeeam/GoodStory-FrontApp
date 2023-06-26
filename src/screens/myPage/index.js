@@ -34,7 +34,7 @@ function MyPage() {
   useEffect(() => {
     async function fetchMypageData() {
       try {
-        const result = await axios.get(`/user/myPage`, {
+        const result = await axios.get('/user/myPage', {
           params: {
             UserId: userId,
           },
@@ -79,7 +79,7 @@ function MyPage() {
     }
   };
 
-  const imagePicker = async () => {
+  const changeProfileImage = async () => {
     const image = await ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -150,7 +150,7 @@ function MyPage() {
               height: vs(60),
               borderRadius: ss(100),
             }}
-            onPress={imagePicker}>
+            onPress={changeProfileImage}>
             <AntDesign
               name="setting"
               color={'#DCDCDC'}

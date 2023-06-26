@@ -33,7 +33,6 @@ function Timer({startSeconds, endFunction}) {
 
   useEffect(() => {
     intervalRef.current = setInterval(() => calculateTime(), 1000);
-
     return () => clearInterval(intervalRef.current);
   }, []);
 

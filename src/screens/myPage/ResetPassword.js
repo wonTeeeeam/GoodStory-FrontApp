@@ -4,7 +4,8 @@ import PasswordRePassword from 'components/PasswordRePassword';
 import React from 'react';
 import {useState} from 'react';
 import {View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {alert} from 'utils/alert';
+import * as Keychain from 'react-native-keychain';
 
 function ResetPassword({route}) {
   const [password, setPassword] = useState('');
@@ -19,11 +20,19 @@ function ResetPassword({route}) {
         Account: account,
         changePassword: password,
       });
-      console.log(result);
+      const existedPassword = await Keychain.getInternetCredentials('password');
+      if (existedPassword) {
+        await Keychain.setInternetCredentials('password', 'password', password);
+      }
       setIsLoading(false);
+      alert({title: '비밀번호 변경', body: '비밀번호가 변경되었습니다'});
     } catch (e) {
       setIsLoading(false);
       console.log(e.response);
+      alert({
+        title: '비밀번호 변경 실패',
+        body: '비밀번호 변경에 실패했습니다.\n잠시후에 다시 시도해주세요.',
+      });
     }
   };
 
