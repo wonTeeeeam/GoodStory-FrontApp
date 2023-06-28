@@ -5,41 +5,41 @@ import {useState} from 'react';
 import {Text, View} from 'react-native';
 
 function Timer({startSeconds, endFunction}) {
-  const changeTimeToString = time => {
-    return time < 10 ? `0${time}` : `${time}`;
-  };
-
-  const [minutes, setMinutes] = useState(
-    changeTimeToString(Math.floor(startSeconds / 60)),
-  );
-  const [seconds, setSeconds] = useState(
-    changeTimeToString(Math.floor(startSeconds % 60)),
-  );
-  let restTime = startSeconds;
-  const intervalRef = useRef(null);
-
-  const calculateTime = () => {
-    restTime -= 1;
-
-    if (restTime === 0) {
-      setMinutes(`00`);
-      setSeconds(`00`);
-      clearInterval(intervalRef.current);
-      endFunction();
-    }
-    setMinutes(changeTimeToString(Math.floor(restTime / 60)));
-    setSeconds(changeTimeToString(Math.floor(restTime % 60)));
+  const timerRef = useRef(null);
+  const [time, setTime] = useState(startSeconds * 1000);
+  const startTimer = () => {
+    const finishTime = new Date().getTime() + startSeconds * 1000;
+    timerRef.current = setInterval(() => {
+      setTime(finishTime - new Date().getTime());
+    }, 1000);
+    return () => clearInterval(timerRef.current);
   };
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => calculateTime(), 1000);
-    return () => clearInterval(intervalRef.current);
+    startTimer();
   }, []);
+
+  useEffect(() => {
+    if (
+      Math.floor(time / 1000 / 60) === 0 &&
+      Math.floor((time / 1000) % 60) === 0
+    ) {
+      clearInterval(timerRef.current);
+    }
+  }, [time]);
+
+  const changeTimeToString = numberTime => {
+    if (numberTime < 10) {
+      return `0${numberTime}`;
+    }
+    return `${numberTime}`;
+  };
 
   return (
     <View>
       <Text style={{color: 'red'}}>
-        {minutes}:{seconds}
+        {changeTimeToString(Math.floor(time / 1000 / 60))}:
+        {changeTimeToString(Math.floor((time / 1000) % 60))}
       </Text>
     </View>
   );
