@@ -15,14 +15,16 @@ import useLogin from 'hooks/useLogin';
 import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/LoadingModal';
+import useApi from 'hooks/useApi';
 
 function Login() {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const {
     ID,
     password,
     isAutoLogin,
+    isLoading,
     onChangeUserId,
     onChangeUserPassword,
     onChangeIsAutoLogin,
@@ -34,14 +36,7 @@ function Login() {
   }, []);
 
   const handlePressLogin = async () => {
-    try {
-      setIsLoading(true);
-      await handleLogin(ID, password);
-      setIsLoading(false);
-    } catch (e) {
-      setIsLoading(false);
-      console.log(e);
-    }
+    await handleLogin(ID, password);
   };
 
   return (
