@@ -15,10 +15,8 @@ import useLogin from 'hooks/useLogin';
 import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/LoadingModal';
-import useApi from 'hooks/useApi';
 
 function Login() {
-  // const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const {
     ID,
@@ -36,7 +34,7 @@ function Login() {
   }, []);
 
   const handlePressLogin = async () => {
-    await handleLogin(ID, password);
+    await handleLogin();
   };
 
   return (
@@ -77,6 +75,7 @@ function Login() {
             autoCapitalize={'none'}
           />
         </View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -115,7 +114,6 @@ function Login() {
                 flexDirection: 'row',
                 width: '100%',
                 justifyContent: 'space-between',
-                // backgroundColor: 'red',
               }}>
               <View style={{flexDirection: 'row'}}>
                 <View

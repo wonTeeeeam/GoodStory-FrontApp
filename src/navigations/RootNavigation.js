@@ -16,28 +16,14 @@ export default function RootNavigation() {
   const isUserStartJoin = useSelector(
     state => state.navigation.isUserStartJoin,
   );
-  const {handleLogin} = useLogin();
-  const dispatch = useDispatch();
+  const {handleAutoLogin} = useLogin();
 
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const IDCredentials = await Keychain.getInternetCredentials('ID');
-        const passwordCredentials = await Keychain.getInternetCredentials(
-          'password',
-        );
-        if (IDCredentials.password && passwordCredentials.password) {
-          await handleLogin(
-            IDCredentials.password,
-            passwordCredentials.password,
-          );
-        }
-      } catch (e) {
-        console.log(e);
-      }
+    const autoLogin = async () => {
+      await handleAutoLogin();
     };
-    fetchAccessToken();
-  }, [handleLogin, dispatch]);
+    autoLogin();
+  }, []);
 
   return (
     // theme={scheme === 'dark' ? DarkTheme : DefaultTheme}

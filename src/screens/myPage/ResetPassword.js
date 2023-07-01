@@ -12,16 +12,16 @@ function ResetPassword({route}) {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const {account} = route.params;
-  const {isLoading, handleApi} = useApi();
+  const {isLoading, handleAsyncMethod} = useApi();
 
-  const asyncMethod = async () => {
-    const result = await axios.patch('/auth/changePassword', {
+  const patchPassword = async () => {
+    return await axios.patch('/auth/changePassword', {
       Account: account,
       changePassword: password,
     });
   };
 
-  const onSuccess = async () => {
+  const onSuccess = async result => {
     const existedPassword = await Keychain.getInternetCredentials('password');
     if (existedPassword) {
       await Keychain.setInternetCredentials('password', 'password', password);
@@ -29,7 +29,7 @@ function ResetPassword({route}) {
     alert({title: '비밀번호 변경', body: '비밀번호가 변경되었습니다'});
   };
 
-  const onError = () => {
+  const onError = error => {
     alert({
       title: '비밀번호 변경 실패',
       body: '비밀번호 변경에 실패했습니다.\n잠시후에 다시 시도해주세요.',
@@ -37,7 +37,7 @@ function ResetPassword({route}) {
   };
 
   const onPress = async () => {
-    handleApi(asyncMethod, onSuccess, onError);
+    handleAsyncMethod(patchPassword, onSuccess, onError);
   };
 
   return (

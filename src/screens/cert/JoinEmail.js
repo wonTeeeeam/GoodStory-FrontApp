@@ -3,7 +3,7 @@ import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import JoinTextInput from 'components/JoinTextInput';
+import UTextInput from 'components/UTextInput';
 import JoinButton from 'components/JoinButton';
 import {validateEmail} from 'utils/regex';
 import {useNavigation} from '@react-navigation/native';
@@ -128,7 +128,7 @@ function JoinEmail() {
     <View style={{flex: 1}}>
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
-          <JoinTextInput
+          <UTextInput
             text={'이메일을 입력해주세요'}
             Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
             placeholder={'이메일'}
@@ -153,7 +153,7 @@ function JoinEmail() {
             isAbled={isEmailAbled}
             onPress={handlePressSendButton}
           />
-          <JoinTextInput
+          <UTextInput
             text={'인증번호를 입력해주세요.'}
             Icon={<AntDesign name="check" size={ss(20)} color={'#B2B0B0'} />}
             placeholder={'인증번호'}

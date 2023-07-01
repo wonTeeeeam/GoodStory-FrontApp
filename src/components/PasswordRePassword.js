@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
 import {validatePWD} from 'utils/regex';
-import JoinTextInput from './JoinTextInput';
+import UTextInput from './UTextInput';
 import JoinButton from './JoinButton';
 import {hs, ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -69,7 +69,7 @@ function PasswordRePassword({
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
       <ScrollView keyboardShouldPersistTaps={'always'}>
-        <JoinTextInput
+        <UTextInput
           text={'비밀번호를 입력해주세요'}
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호'}
@@ -85,7 +85,7 @@ function PasswordRePassword({
             {alertMSGForPWD[alertMsgPWDIndex]}
           </Text>
         ) : null}
-        <JoinTextInput
+        <UTextInput
           text={'비밀번호를 재입력해주세요'}
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호 재입력'}

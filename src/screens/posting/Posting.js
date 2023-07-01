@@ -19,15 +19,10 @@ import {showToast} from 'utils/toast';
 import LoadingModal from 'components/LoadingModal';
 import {useSelector} from 'react-redux';
 import useHandleImage from 'hooks/useHandleImage';
+import useApi from 'hooks/useApi';
+import {alert} from 'utils/alert';
 
 function Posting() {
-  // const imageFlags = useMemo(
-  //   () =>
-  //     new RegExp(
-  //       /image:\/\/0\/|image:\/\/1\/|image:\/\/2\/|image:\/\/3\/|image:\/\/4\//,
-  //     ),
-  //   [],
-  // );
   const navigation = useNavigation();
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -35,9 +30,9 @@ function Posting() {
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const {nickName, account, userId} = useSelector(state => state.user);
   const {InsertImageInContent} = useHandleImage();
+  const {handleAsyncMethod, isLoading} = useApi();
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -68,7 +63,7 @@ function Posting() {
     setImagePlace(imagePlace - 1);
   };
 
-  const postBoard = async () => {
+  const makeFormData = () => {
     const formData = new FormData();
     formData.append('Category', category);
     formData.append('Title', title);
@@ -86,19 +81,31 @@ function Posting() {
           Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
       });
     });
+    return formData;
+  };
 
-    try {
-      setIsLoading(true);
-      const result = await axios.post('/board/create', formData, {
+  const onSuccessPosting = result => {
+    showToast('게시글 등록에 성공하였습니다.');
+    navigation.navigate('BoardStack', {boardTopic: category});
+  };
+
+  const onErrorPosting = error => {
+    alert({
+      title: '게시글 등록 실패',
+      body: '게시글 등록에 실패했습니다.\n잠시후에 시도해주세요.',
+    });
+  };
+
+  const postBoard = async () => {
+    const formData = makeFormData();
+    const postFormData = async () => {
+      return await axios.post('/board/create', formData, {
         headers: {
           'Content-topic': 'multipart/form-data',
         },
       });
-      setIsLoading(false);
-      // console.log(result);
-    } catch (e) {
-      console.log(e.status);
-    }
+    };
+    await handleAsyncMethod(postFormData, onSuccessPosting, onErrorPosting);
   };
 
   return (

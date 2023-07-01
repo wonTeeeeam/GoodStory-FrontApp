@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {hs, ss, vs} from 'utils/scailing';
 
-function JoinTextInput({
+function UTextInput({
   text,
   Icon,
   placeholder,
@@ -99,4 +99,4 @@ function JoinTextInput({
   );
 }
 
-export default JoinTextInput;
+export default UTextInput;

@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  useAnimatedValue,
+} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,49 +27,71 @@ import LoadingModal from 'components/LoadingModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
+import useApi from 'hooks/useApi';
 
 function MyPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({});
   const version = DeviceInfo.getVersion();
   const dispatch = useDispatch();
+  const {handleAsyncMethod, isLoading} = useApi();
 
   const navigation = useNavigation();
   const {nickName, profileImage, userId} = useSelector(state => state.user);
-  const {handleLogout} = useLogout();
+  const {handleLogout, logOut} = useLogout();
+
+  const fetchUserData = async () => {
+    return await axios.get('/user/myPage', {
+      params: {
+        UserId: userId,
+      },
+    });
+  };
+
+  const onSuccessFetchUserData = result => {
+    setUserData(result.data);
+  };
+
+  const onErrorFetchUserData = error => {
+    showToast('회원정보를 불러오는데 실패했습니다..');
+  };
 
   useEffect(() => {
     async function fetchMypageData() {
-      try {
-        const result = await axios.get('/user/myPage', {
-          params: {
-            UserId: userId,
-          },
-        });
-        setUserData(result.data);
-      } catch (e) {
-        console.log(e);
-      }
+      await handleAsyncMethod(
+        fetchUserData,
+        onSuccessFetchUserData,
+        onErrorFetchUserData,
+      );
     }
     fetchMypageData();
   }, []);
 
+  const withDrawal = async () => {
+    const result = await axios.delete('/user/delete', {id: userId});
+    return result;
+  };
+
+  const onSuccessWithDrawal = async result => {
+    await logOut();
+    alert({title: '회원탈퇴 성공', body: '회원 탈퇴되었습니다!'});
+  };
+
+  const onErrorWithDrawal = error => {
+    alert({title: '회원탈퇴 실패', body: error});
+  };
+
   const handleWithdrawal = async () => {
-    try {
-      const result = await alert({
-        title: '회원탈퇴',
-        body: '회원탈퇴하시겠습니까?',
-        isConfirm: true,
-      });
-      if (result) {
-        setIsLoading(true);
-        const result = await axios.delete('/user/delete', {id: userId});
-        await handleLogout();
-        setIsLoading(false);
-      }
-    } catch (e) {
-      setIsLoading(false);
-      console.log(e);
+    const result = await alert({
+      title: '회원탈퇴',
+      body: '회원탈퇴하시겠습니까?',
+      isConfirm: true,
+    });
+    if (result) {
+      await handleAsyncMethod(
+        withDrawal,
+        onSuccessWithDrawal,
+        onErrorWithDrawal,
+      );
     }
   };
 
@@ -72,14 +101,10 @@ function MyPage() {
       body: '로그아웃하시겠습니까?',
       isConfirm: true,
     });
-    if (result) {
-      setIsLoading(true);
-      await handleLogout();
-      setIsLoading(false);
-    }
+    result && (await handleLogout());
   };
 
-  const changeProfileImage = async () => {
+  const selectProfileImage = async () => {
     const image = await ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -95,22 +120,34 @@ function MyPage() {
       uri:
         Platform.OS === 'ios' ? image.path.replace('file://', '') : image.path,
     });
-    formData.append('Account', userData.account);
-    try {
-      setIsLoading(true);
+    formData.append('Account', userData.Account);
+    return formData;
+  };
+
+  const onSuccessChangeImage = result => {
+    dispatch(changeProfile(result.data));
+    showToast('프로필이 변경되었습니다');
+  };
+
+  const onErrorChangeImage = error => {
+    showToast('프로필 변경에 실패했습니다. 잠시후에 시도해주세요');
+  };
+
+  const changeProfileImage = async () => {
+    const formData = await selectProfileImage();
+    const postUserProfile = async () => {
       const result = await axios.post('/user/updateProfilePhoto', formData, {
         headers: {
           'Content-topic': 'multipart/form-data',
         },
       });
-      dispatch(changeProfile(image.path));
-      setIsLoading(false);
-      showToast('프로필이 변경되었습니다');
-    } catch (e) {
-      console.log(e);
-      setIsLoading(false);
-      showToast('프로필 변경에 실패했습니다. 잠시후에 시도해주세요');
-    }
+      return result;
+    };
+    handleAsyncMethod(
+      postUserProfile,
+      onSuccessChangeImage,
+      onErrorChangeImage,
+    );
   };
 
   return (
@@ -169,7 +206,7 @@ function MyPage() {
                 style={{height: '100%', width: '100%', borderRadius: ss(100)}}
                 // resizeMode="contain"
                 source={{
-                  uri: profileImage + `?` + new Date(),
+                  uri: profileImage + `?` + new Date().getTime(),
                 }}
               />
             ) : (

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 function useApi() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleApi = async (asyncMethod, onSuccess, onError) => {
+  const handleAsyncMethod = async (asyncMethod, onSuccess, onError) => {
     try {
       setIsLoading(true);
       const result = await asyncMethod();
@@ -16,7 +16,7 @@ function useApi() {
     }
   };
 
-  return {handleApi, isLoading, setIsLoading};
+  return {handleAsyncMethod, isLoading, setIsLoading};
 }
 
 export default useApi;

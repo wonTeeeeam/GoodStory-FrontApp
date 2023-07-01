@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Keyboard, Pressable, Text, View} from 'react-native';
-import JoinTextInput from 'components/JoinTextInput';
+import UTextInput from 'components/UTextInput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {hs, ss} from 'utils/scailing';
 import JoinButton from 'components/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {useEffect} from 'react';
 import axios from 'axios';
-import {alert} from 'utils/alert';
 
 function JoinName({route, navigation}) {
   const {Email, Password} = route.params;
@@ -83,7 +82,7 @@ function JoinName({route, navigation}) {
 
   return (
     <Pressable onPress={() => Keyboard.dismiss()} style={{flex: 1}}>
-      <JoinTextInput
+      <UTextInput
         text={'닉네임을 입력해주세요'}
         Icon={<Ionicons name="person" size={ss(20)} color={'#B2B0B0'} />}
         placeholder={'닉네임'}
