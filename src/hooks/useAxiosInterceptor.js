@@ -1,12 +1,15 @@
 import axios from 'axios';
 import {useEffect} from 'react';
 
-import {DialogStatic} from '@/utils/dialog';
-
 import useLogout from '../features/user/hooks/useLogout';
+import {alert} from 'utils/alert';
+import * as Keychain from 'react-native-keychain';
+import {useSelector} from 'react-redux';
 
 const useAxiosInterceptor = () => {
   const {handleLogout} = useLogout();
+
+  const {userId} = useSelector(state => state.user);
 
   useEffect(() => {
     axios.interceptors.response.use(
@@ -19,17 +22,27 @@ const useAxiosInterceptor = () => {
         return response;
       },
       async err => {
-        if (err.response?.status === 401) {
-          DialogStatic.alert({
-            title: '접근 권한 없습니다',
-            desc: `접근 권한이 없습니다.\n서비스 이용을 위해 다시 로그인 해주세요.`,
+        if (err.response?.status === 401 && err.response?.error === 'access') {
+          const refresh_token = await Keychain.getInternetCredentials('ID')
+            .password;
+          await axios.patch('/user/updateToken', {
+            UserId: userId,
+            refresh_token,
+          });
+        } else if (
+          err.response?.status === 401 &&
+          err.response?.error === 'refresh'
+        ) {
+          alert({
+            title: '로그인 유효기간 만료',
+            body: '로그인 유효기간이 만료되었습니다.\n재로그인이 필요합니다.',
           });
           await handleLogout();
         }
         return Promise.reject(err);
       },
     );
-  }, [handleLogout]);
+  }, [handleLogout, userId]);
 };
 
 export default useAxiosInterceptor;

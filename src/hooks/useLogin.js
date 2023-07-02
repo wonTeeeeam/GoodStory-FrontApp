@@ -33,7 +33,6 @@ function useLogin() {
   };
 
   const handleSetUserInfo = async result => {
-    axios.defaults.headers.common.Authorization = `Bearer ${result.data.access_token}`;
     await Keychain.setInternetCredentials(
       'refreshToken',
       'refreshToken',
@@ -53,7 +52,14 @@ function useLogin() {
   const onError = error => {
     alert({
       title: '로그인 실패',
-      body: error,
+      body: '로그인에 실패했습니다.',
+    });
+  };
+
+  const onErrorAutoLogin = error => {
+    alert({
+      title: '자동 로그인 실패',
+      body: '자동 로그인에 실패했습니다.',
     });
   };
 
@@ -69,7 +75,11 @@ function useLogin() {
           Password: passwordCredentials.password,
         });
       };
-      await handleAsyncMethod(fetchUserInfo, handleSetUserInfo, onError);
+      await handleAsyncMethod(
+        fetchUserInfo,
+        handleSetUserInfo,
+        onErrorAutoLogin,
+      );
     }
   };
 

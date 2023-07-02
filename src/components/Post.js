@@ -15,20 +15,20 @@ import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {BackgroundColor} from 'styles/BackgroundColor';
+import {showToast} from 'utils/toast';
 
 export default function Post({singleData}) {
   const [likeCnt, setLikeCnt] = useState(singleData.Like);
   const [isLikePressed, setIsLikePressed] = useState(false);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
   const {deleteImageFlagsInContent} = useHandleImage();
-  const {userId, likeBoards, likeReReplys, likeReplys} = useSelector(
+  const {userId, likeBoards, likeReReplies, likeReplies} = useSelector(
     state => state.user,
   );
   const navigation = useNavigation();
   const checkIsLiked = useCallback(() => {
-    const isLiked = likeBoards.find(
-      element => element.LikeBoardNumber === singleData.BoardId,
-    );
+    const isLiked = likeBoards.find(element => element === singleData.BoardId);
     isLiked ? setIsLikePressed(true) : setIsLikePressed(false);
   }, [likeBoards, singleData]);
 
@@ -36,7 +36,15 @@ export default function Post({singleData}) {
     checkIsLiked();
   }, [checkIsLiked]);
 
+  useEffect(() => {
+    setLikeCnt(singleData.Like);
+    setViewCnt(singleData.Views);
+  }, [singleData.Like, singleData.Views]);
+
   const handlePressLike = async () => {
+    if (!userId) {
+      showToast('로그인이 필요한 서비스입니다.');
+    }
     !isLikePressed ? plusLike() : minusLike();
   };
 
@@ -58,9 +66,9 @@ export default function Post({singleData}) {
   const minusLike = async () => {
     try {
       const result = await axios.delete('/likeboard/pressdislikeboard', {
-        data: {
-          LikeBoardNumber: '1fe34e61-ae32-4d59-b6ab-f69029e26a6b',
-          UserId: 'f3128064-28a4-47c2-bda4-9e1b5987300f',
+        params: {
+          LikeBoardNumber: singleData.BoardId,
+          UserId: userId,
         },
       });
       setLikeCnt(likeCnt - 1);
@@ -139,10 +147,13 @@ export default function Post({singleData}) {
             flexDirection: 'row',
             width: ss(270),
             marginBottom: vs(30),
-            marginLeft: ss(50),
+            marginLeft: ss(30),
           }}>
           <Pressable
-            style={{...styles.bottomContainer}}
+            style={({pressed}) => [
+              {...styles.bottomContainer},
+              {backgroundColor: pressed ? BackgroundColor.lightGray : null},
+            ]}
             onPress={() => handlePressLike()}>
             <View style={styles.iconContainer}>
               {isLikePressed ? (
@@ -157,7 +168,7 @@ export default function Post({singleData}) {
               <Text style={styles.likeText}>{likeCnt}</Text>
             )}
           </Pressable>
-          <Pressable style={{...styles.bottomContainer, left: 120}}>
+          <Pressable style={{...styles.bottomContainer, left: hs(120)}}>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name="message-reply-outline"
@@ -168,7 +179,7 @@ export default function Post({singleData}) {
               {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
-          <Pressable style={{...styles.bottomContainer, left: 240}}>
+          <Pressable style={{...styles.bottomContainer, left: hs(230)}}>
             <View style={styles.iconContainer}>
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
@@ -208,7 +219,15 @@ const styles = StyleSheet.create({
     marginLeft: ss(50),
     justifyContent: 'space-between',
   },
-  bottomContainer: {flexDirection: 'row', position: 'absolute'},
+  bottomContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    // backgroundColor: 'red',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderRadius: ss(20),
+    width: hs(70),
+  },
   iconContainer: {justifyContent: 'center', marginRight: 5},
   topicText: {
     color: TextColor.black,

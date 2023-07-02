@@ -13,23 +13,27 @@ export default function PostList({filterValue, topic}) {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
+  const changeOrder = listData => {
     if (filterValue === '최신순') {
       listData.sort((firstValue, secondValue) => {
-        return secondValue.Board_Created_date - firstValue.Board_Created_date;
+        //내림차순
+        return (
+          new Date(secondValue.Created_date) - new Date(firstValue.Created_date)
+        );
       });
     } else if (filterValue === '추천순') {
       listData.sort((firstValue, secondValue) => {
-        return secondValue.Board_Like - firstValue.Board_Like;
+        return secondValue.Like - firstValue.Like;
       });
     }
-  }, [filterValue, listData]);
+    return listData;
+  };
 
   return (
     <View style={{flex: 1}}>
       {isListDataExist === true ? (
         <FlatList
-          data={listData}
+          data={changeOrder(listData)}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

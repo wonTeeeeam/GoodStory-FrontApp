@@ -42,6 +42,12 @@ function useFetchDataList({url, topic = null}) {
       console.log(e);
     }
   }, [url, skip, listData, topic]);
-  return {onRefresh, fetchNextData, listData, isListDataExist, refreshing};
+  return {
+    onRefresh,
+    fetchNextData,
+    listData,
+    isListDataExist,
+    refreshing,
+  };
 }
 export default useFetchDataList;
