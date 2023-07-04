@@ -16,24 +16,27 @@ import {useEffect} from 'react';
 import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {BackgroundColor} from 'styles/BackgroundColor';
-import {showToast} from 'utils/toast';
 import usePressLike from 'hooks/usePressLike';
 
 export default function Post({singleData}) {
-  // const [likeCnt, setLikeCnt] = useState(singleData.Like);
-  const [isLikePressed, setIsLikePressed] = useState(false);
   const [viewCnt, setViewCnt] = useState(singleData.Views);
   const {deleteImageFlagsInContent} = useHandleImage();
   const {userId, likeBoards, likeReReplies, likeReplies} = useSelector(
     state => state.user,
   );
   const navigation = useNavigation();
-  const {handlePressLike, likeCnt, setLikeCnt} = usePressLike();
+  const {
+    handlePressLike,
+    likeCnt,
+    setLikeCnt,
+    isLikePressed,
+    setIsLikePressed,
+  } = usePressLike();
 
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(element => element === singleData.BoardId);
     isLiked ? setIsLikePressed(true) : setIsLikePressed(false);
-  }, [likeBoards, singleData]);
+  }, [likeBoards, singleData, setIsLikePressed]);
 
   useEffect(() => {
     checkIsLiked();
@@ -43,43 +46,6 @@ export default function Post({singleData}) {
     setLikeCnt(singleData.Like);
     setViewCnt(singleData.Views);
   }, [singleData.Like, singleData.Views, setLikeCnt]);
-
-  // const handlePressLike = async () => {
-  //   if (!userId) {
-  //     showToast('로그인이 필요한 서비스입니다.');
-  //   }
-  //   !isLikePressed ? plusLike() : minusLike();
-  // };
-
-  // const plusLike = async () => {
-  //   try {
-  //     const result = await axios.post('/likeboard/presslikeboard', {
-  //       LikeBoardNumber: singleData.BoardId,
-  //       user: {
-  //         UserId: userId,
-  //       },
-  //     });
-  //     setLikeCnt(likeCnt + 1);
-  //     setIsLikePressed(true);
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // };
-
-  // const minusLike = async () => {
-  //   try {
-  //     const result = await axios.delete('/likeboard/pressdislikeboard', {
-  //       params: {
-  //         LikeBoardNumber: singleData.BoardId,
-  //         UserId: userId,
-  //       },
-  //     });
-  //     setLikeCnt(likeCnt - 1);
-  //     setIsLikePressed(false);
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // };
 
   const handleNavigate = async () => {
     try {

@@ -26,14 +26,22 @@ import BottomModal from 'components/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
+import usePressLike from 'hooks/usePressLike';
 
 export default function DetailPost({route, navigation}) {
   const {singleData} = route.params;
   const [replyData, setReplyData] = useState([]);
   const [img, setImage] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [likeCnt, setLikeCnt] = useState(singleData.Like);
-  const [isLikePressed, setIsLikePressed] = useState(false);
+  const [viewCnt, setViewCnt] = useState(singleData.Views);
+
+  const {
+    handlePressLike,
+    likeCnt,
+    setLikeCnt,
+    isLikePressed,
+    setIsLikePressed,
+  } = usePressLike();
 
   const handleSetIsModalVisible = useCallback(() => {
     setIsModalVisible(!isModalVisible);
@@ -42,6 +50,11 @@ export default function DetailPost({route, navigation}) {
   useEffect(() => {
     fetchDetailData();
   }, [fetchDetailData]);
+
+  useEffect(() => {
+    setLikeCnt(singleData.Like);
+    setViewCnt(singleData.Views);
+  }, [singleData.Like, singleData.Views, setLikeCnt]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -70,42 +83,6 @@ export default function DetailPost({route, navigation}) {
     }
     const result = await launchImageLibrary();
     setImage(result.assets[0]);
-  };
-
-  const handlePressLike = async () => {
-    !isLikePressed ? plusLike() : minusLike();
-  };
-
-  const plusLike = () => {
-    try {
-      // const result = await axios.post(
-      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
-      //   {
-      //     BoardID: singleData.BoardId,
-      //     Like: likeCnt + 1,
-      //   },
-      // );
-      setLikeCnt(likeCnt + 1);
-      setIsLikePressed(true);
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-  const minusLike = () => {
-    try {
-      // const result = await axios.post(
-      //   'http://3.35.111.44:3001/likeboard/pressLikeboard',
-      //   {
-      //     BoardID: singleData.BoardId,
-      //     Like: likeCnt - 1,
-      //   },
-      // );
-      setLikeCnt(likeCnt - 1);
-      setIsLikePressed(false);
-    } catch (e) {
-      console.log(e.message);
-    }
   };
 
   return (
@@ -174,7 +151,10 @@ export default function DetailPost({route, navigation}) {
                 justifyContent: 'space-between',
               }}>
               <Pressable
-                style={styles.bottomContainer}
+                style={({pressed}) => [
+                  {...styles.bottomContainer},
+                  {backgroundColor: pressed ? BackgroundColor.lightGray : null},
+                ]}
                 onPress={() => handlePressLike()}>
                 <View style={styles.iconContainer}>
                   {isLikePressed ? (
@@ -189,7 +169,7 @@ export default function DetailPost({route, navigation}) {
                   <Text style={styles.likeText}>{likeCnt}</Text>
                 )}
               </Pressable>
-              <Pressable style={styles.bottomContainer}>
+              <Pressable style={{...styles.bottomContainer, left: hs(110)}}>
                 <View style={styles.iconContainer}>
                   <MaterialCommunityIcons
                     name="message-reply-outline"
@@ -200,7 +180,7 @@ export default function DetailPost({route, navigation}) {
                   {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
                 </Text>
               </Pressable>
-              <Pressable style={styles.bottomContainer}>
+              <Pressable style={{...styles.bottomContainer, left: hs(210)}}>
                 <View style={styles.iconContainer}>
                   <AntDesignIcon name="eyeo" color={TextColor.gray} />
                 </View>
@@ -325,7 +305,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  bottomContainer: {flexDirection: 'row'},
+  bottomContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderRadius: ss(20),
+    width: hs(70),
+  },
   iconContainer: {justifyContent: 'center', marginRight: 5},
   likeText: {color: TextColor.gray},
   replyText: {color: TextColor.gray},

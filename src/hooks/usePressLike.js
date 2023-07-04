@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {showToast} from 'utils/toast';
+import useApi from './useApi';
 
 function usePressLike() {
   const [isLikePressed, setIsLikePressed] = useState(false);
   const [likeCnt, setLikeCnt] = useState(0);
   const {userId} = useSelector(state => state.user);
+  const {handleAsyncMethod, isLoading, setIsLoading} = useApi();
 
   const handlePressLike = async singleData => {
     if (!userId) {
@@ -15,37 +17,61 @@ function usePressLike() {
     !isLikePressed ? await plusLike(singleData) : await minusLike(singleData);
   };
 
+  const onSuccessPlusLike = result => {
+    setLikeCnt(likeCnt + 1);
+    setIsLikePressed(true);
+  };
+
+  const onErrorPlusLike = error => {
+    console.log(error.message);
+    showToast('좋아요에 실패하였습니다. 잠시후에 다시 시도해주세요');
+  };
+
+  const onSuccessMinusLike = result => {
+    setLikeCnt(likeCnt - 1);
+    setIsLikePressed(false);
+  };
+
+  const onErrorMinusLike = error => {
+    console.log(error.message);
+    showToast('좋아요 취소에 실패하였습니다. 잠시후에 다시 시도해주세요');
+  };
+
   const plusLike = async singleData => {
-    try {
-      const result = await axios.post('/likeboard/presslikeboard', {
+    const plusLikeButton = async () => {
+      return await axios.post('/likeboard/presslikeboard', {
         LikeBoardNumber: singleData.BoardId,
         user: {
           UserId: userId,
         },
       });
-      setLikeCnt(likeCnt + 1);
-      setIsLikePressed(true);
-    } catch (e) {
-      console.log(e.message);
-    }
+    };
+    await handleAsyncMethod(plusLikeButton, onSuccessPlusLike, onErrorPlusLike);
   };
 
   const minusLike = async singleData => {
-    try {
-      const result = await axios.delete('/likeboard/pressdislikeboard', {
+    const minusLikeButton = async () => {
+      return await axios.post('/likeboard/pressdislikeboard', {
         params: {
           LikeBoardNumber: singleData.BoardId,
           UserId: userId,
         },
       });
-      setLikeCnt(likeCnt - 1);
-      setIsLikePressed(false);
-    } catch (e) {
-      console.log(e.message);
-    }
+    };
+    await handleAsyncMethod(
+      minusLikeButton,
+      onSuccessMinusLike,
+      onErrorMinusLike,
+    );
   };
 
-  return {handlePressLike, likeCnt, setLikeCnt};
+  return {
+    handlePressLike,
+    likeCnt,
+    setLikeCnt,
+    isLikePressed,
+    setIsLikePressed,
+  };
 }
 
 export default usePressLike;

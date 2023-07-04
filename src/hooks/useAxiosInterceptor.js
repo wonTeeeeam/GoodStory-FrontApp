@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {useEffect} from 'react';
 
-import useLogout from '../features/user/hooks/useLogout';
 import {alert} from 'utils/alert';
 import * as Keychain from 'react-native-keychain';
 import {useSelector} from 'react-redux';
+import useLogout from './useLogout';
 
 const useAxiosInterceptor = () => {
   const {handleLogout} = useLogout();
@@ -25,7 +25,7 @@ const useAxiosInterceptor = () => {
         if (err.response?.status === 401 && err.response?.error === 'access') {
           const refresh_token = await Keychain.getInternetCredentials('ID')
             .password;
-          await axios.patch('/user/updateToken', {
+          return await axios.patch('/user/updateToken', {
             UserId: userId,
             refresh_token,
           });

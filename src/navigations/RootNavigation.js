@@ -11,8 +11,10 @@ import JoinStack from './JoinStack';
 import {useColorScheme} from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import useLogin from 'hooks/useLogin';
+import useAxiosInterceptor from 'hooks/useAxiosInterceptor';
 
 export default function RootNavigation() {
+  useAxiosInterceptor();
   const isUserStartJoin = useSelector(
     state => state.navigation.isUserStartJoin,
   );
