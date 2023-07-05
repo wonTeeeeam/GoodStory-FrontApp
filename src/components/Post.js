@@ -9,7 +9,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {TextColor} from 'styles/TextColor';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
-import axios from 'axios';
 import useHandleImage from 'hooks/useHandleImage';
 import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
@@ -17,21 +16,27 @@ import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {BackgroundColor} from 'styles/BackgroundColor';
 import usePressLike from 'hooks/usePressLike';
+import usePlusView from 'hooks/usePlusView';
+import useLikeAndView from 'hooks/useLikeAndView';
 
 export default function Post({singleData}) {
-  const [viewCnt, setViewCnt] = useState(singleData.Views);
   const {deleteImageFlagsInContent} = useHandleImage();
   const {userId, likeBoards, likeReReplies, likeReplies} = useSelector(
     state => state.user,
   );
   const navigation = useNavigation();
+
   const {
     handlePressLike,
     likeCnt,
     setLikeCnt,
     isLikePressed,
     setIsLikePressed,
-  } = usePressLike();
+    viewCnt,
+    setViewCnt,
+    handlePlusView,
+    navigateDetailPost,
+  } = useLikeAndView();
 
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(element => element === singleData.BoardId);
@@ -45,20 +50,12 @@ export default function Post({singleData}) {
   useEffect(() => {
     setLikeCnt(singleData.Like);
     setViewCnt(singleData.Views);
-  }, [singleData.Like, singleData.Views, setLikeCnt]);
+  }, [singleData.Like, singleData.Views, setLikeCnt, setViewCnt]);
 
   const handleNavigate = async () => {
-    try {
-      const result = await axios.patch('/board/updateBoardViews', {
-        BoardId: singleData.BoardId,
-      });
-      setViewCnt(viewCnt + 1);
-    } catch (e) {
-      console.log(e);
-    }
-    navigation.navigate('DetailPost', {
-      singleData,
-    });
+    // 조회수 올리는데 실패해도 그냥 넘어갑시다.
+    await handlePlusView(singleData);
+    navigateDetailPost(singleData);
   };
 
   return (
@@ -153,7 +150,7 @@ export default function Post({singleData}) {
               <AntDesignIcon name="eyeo" color={TextColor.gray} />
             </View>
             <Text style={styles.viewText}>
-              {singleData.Views > 0 ? singleData.Views : '조회수'}
+              {singleData.Views > 0 ? viewCnt : '조회수'}
             </Text>
           </Pressable>
         </View>

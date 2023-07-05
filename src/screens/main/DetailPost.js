@@ -27,20 +27,21 @@ import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
 import usePressLike from 'hooks/usePressLike';
+import usePlusView from 'hooks/usePlusView';
 
 export default function DetailPost({route, navigation}) {
-  const {singleData} = route.params;
+  const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
+    route.params;
   const [replyData, setReplyData] = useState([]);
   const [img, setImage] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [viewCnt, setViewCnt] = useState(singleData.Views);
 
   const {
     handlePressLike,
     likeCnt,
     setLikeCnt,
-    isLikePressed,
     setIsLikePressed,
+    isLikePressed,
   } = usePressLike();
 
   const handleSetIsModalVisible = useCallback(() => {
@@ -48,13 +49,13 @@ export default function DetailPost({route, navigation}) {
   }, [isModalVisible]);
 
   useEffect(() => {
-    fetchDetailData();
-  }, [fetchDetailData]);
+    setLikeCnt(firstLikeCnt);
+    setIsLikePressed(firstIsLikePressed);
+  }, []);
 
   useEffect(() => {
-    setLikeCnt(singleData.Like);
-    setViewCnt(singleData.Views);
-  }, [singleData.Like, singleData.Views, setLikeCnt]);
+    fetchDetailData();
+  }, [fetchDetailData]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -185,7 +186,7 @@ export default function DetailPost({route, navigation}) {
                   <AntDesignIcon name="eyeo" color={TextColor.gray} />
                 </View>
                 <Text style={styles.viewText}>
-                  {singleData.Views > 0 ? singleData.Views : '조회수'}
+                  {firstViewCnt > 0 ? firstViewCnt : '조회수'}
                 </Text>
               </Pressable>
             </View>
