@@ -27,7 +27,6 @@ import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
 import usePressLike from 'hooks/usePressLike';
-import usePlusView from 'hooks/usePlusView';
 
 export default function DetailPost({route, navigation}) {
   const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
