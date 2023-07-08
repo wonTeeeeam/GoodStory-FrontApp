@@ -1,5 +1,6 @@
-import axios from 'axios';
 import React, {useState} from 'react';
+import axios from 'axios';
+
 import {useSelector} from 'react-redux';
 import {showToast} from 'utils/toast';
 import useApi from './useApi';
@@ -51,7 +52,7 @@ function usePressLike() {
 
   const minusLike = async singleData => {
     const minusLikeButton = async () => {
-      return await axios.post('/likeboard/pressdislikeboard', {
+      return await axios.delete('/likeboard/pressdislikeboard', {
         params: {
           LikeBoardNumber: singleData.BoardId,
           UserId: userId,

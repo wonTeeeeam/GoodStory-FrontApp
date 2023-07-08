@@ -82,6 +82,9 @@ export default function DetailPost({route, navigation}) {
       return;
     }
     const result = await launchImageLibrary();
+    if (result.didCancel) {
+      return;
+    }
     setImage(result.assets[0]);
   };
 
@@ -155,7 +158,7 @@ export default function DetailPost({route, navigation}) {
                   {...styles.bottomContainer},
                   {backgroundColor: pressed ? BackgroundColor.lightGray : null},
                 ]}
-                onPress={() => handlePressLike()}>
+                onPress={() => handlePressLike(singleData)}>
                 <View style={styles.iconContainer}>
                   {isLikePressed ? (
                     <AntDesignIcon name="heart" color={TextColor.red} />
@@ -209,7 +212,11 @@ export default function DetailPost({route, navigation}) {
             </View>
           </View>
 
-          <ReplyInput imgURL={singleData.user.ProfilePhoto} />
+          <ReplyInput
+            imgURL={singleData.user.ProfilePhoto}
+            inputImage={img}
+            singleData={singleData}
+          />
           {img.uri ? (
             <View
               style={{

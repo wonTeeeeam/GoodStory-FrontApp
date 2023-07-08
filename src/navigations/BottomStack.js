@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
-  const accessToken = useSelector(state => state.user.accessToken);
+  const {userId} = useSelector(state => state.user);
 
   return (
     <Tab.Navigator backBehavior="initialRoute">
@@ -39,7 +39,7 @@ function BottomStack() {
       />
       <Tab.Screen
         name="Posting"
-        component={accessToken ? Posting : Login}
+        component={userId ? Posting : Login}
         options={{
           headerShown: false,
           tabBarIcon: () => (
@@ -50,7 +50,7 @@ function BottomStack() {
       />
       <Tab.Screen
         name="MyPage"
-        component={accessToken ? MyPage : Login}
+        component={userId ? MyPage : Login}
         options={{
           headerShown: false,
           tabBarIcon: () => (

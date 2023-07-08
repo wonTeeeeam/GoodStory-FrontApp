@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {Platform, StyleSheet, Text, TextInput, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,19 +8,45 @@ import {BackgroundColor} from 'styles/BackgroundColor';
 import {hs, ss, vs} from 'utils/scailing';
 import OvalButton from './OvalButton';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
 
-export default function ReplyInput({imgURL}) {
+export default function ReplyInput({imgURL, inputImage, singleData}) {
   const [input, setInput] = useState('');
+  const {userId} = useSelector(state => state.user);
+
+  const makeFormData = () => {
+    const formData = new FormData();
+    formData.append('Content', input);
+    formData.append('user[UserId]', userId);
+    formData.append('board[BoardId]', singleData.BoardId);
+
+    inputImage &&
+      formData.append('file', {
+        name: inputImage.fileName,
+        type: inputImage.type,
+        uri:
+          Platform.OS === 'ios'
+            ? inputImage.uri.replace('file://', '')
+            : inputImage.uri,
+      });
+
+    return formData;
+  };
 
   const registerReply = async () => {
+    const formData = makeFormData();
     try {
-      const result = await axios.post('/reply/create', {
-        input,
+      const result = await axios.post('/reply/create', formData, {
+        headers: {
+          'Content-topic': 'multipart/form-data',
+        },
       });
+      console.log(result);
     } catch (e) {
       console.log(e);
     }
   };
+
   return (
     <View>
       <View style={styles.replyInputBox}>
