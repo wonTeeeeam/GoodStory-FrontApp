@@ -40,8 +40,6 @@ export default function Board({route}) {
     };
   }, [backPressCount]);
 
-  // const BottomTab = createBottomTabNavigator();
-
   return (
     <View style={styles.allContainer}>
       <View style={styles.filterBar}>
