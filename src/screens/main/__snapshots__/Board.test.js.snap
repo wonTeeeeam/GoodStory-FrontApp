@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Board 스냅샷 테스트 1`] = `
+exports[`Board 테스트 스냅샷 테스트 1`] = `
 <View
   style={
     Object {
