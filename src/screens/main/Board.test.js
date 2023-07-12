@@ -11,8 +11,8 @@ const data = {
       Category: 'Free',
       Created_date: '2023-07-02T05:46:27.466Z',
       Updated_date: '2023-07-08T08:27:26.087Z',
-      Title: '단건 저장 테스트',
-      Content: '제발요....',
+      Title: '1번게시글제목',
+      Content: '1번게시글내용',
       Like: 0,
       Views: 38,
       ReplyCount: 6,
@@ -35,8 +35,8 @@ const data = {
       Category: 'Free',
       Created_date: '2023-06-11T15:17:24.875Z',
       Updated_date: '2023-07-08T08:29:06.706Z',
-      Title: '임시타이틀',
-      Content: '임시컨텐츠',
+      Title: '2번게시글제목',
+      Content: '2번게시글내용',
       Like: 1,
       Views: 173,
       ReplyCount: 5,
@@ -65,8 +65,8 @@ const data = {
       Category: 'Free',
       Created_date: '2023-05-12T03:19:02.596Z',
       Updated_date: '2023-07-02T05:33:57.655Z',
-      Title: '단건 저장 테스트',
-      Content: '제발요....',
+      Title: '3번게시글제목',
+      Content: '3번게시글내용',
       Like: 0,
       Views: 23,
       ReplyCount: 0,
@@ -89,8 +89,8 @@ const data = {
       Category: 'Free',
       Created_date: '2023-05-12T03:09:47.283Z',
       Updated_date: '2023-07-08T08:23:18.708Z',
-      Title: '단건 저장 테스트',
-      Content: '제발요....',
+      Title: '4번게시글제목',
+      Content: '4번게시글내용',
       Like: 0,
       Views: 6,
       ReplyCount: 0,
@@ -113,8 +113,8 @@ const data = {
       Category: 'Free',
       Created_date: '2023-04-29T12:41:10.536Z',
       Updated_date: '2023-06-12T15:11:32.714Z',
-      Title: '임시타이틀',
-      Content: '임시컨텐츠',
+      Title: '5번게시글제목',
+      Content: '5번게시글내용',
       Like: 0,
       Views: 7,
       ReplyCount: 0,
@@ -170,5 +170,24 @@ describe('Board 테스트', () => {
       </Provider>,
     );
     await waitFor(() => expect(tree).toMatchSnapshot());
+  });
+
+  // 이렇게 말고 특정 게시글을 찾아서 해당 요소 안에 값이 무엇인지 체크하는 방식으로 가는게 맞을듯.
+  it('게시글 존재여부 테스트', async () => {
+    const {queryByText} = render(
+      <Provider store={store}>
+        <Board route={route} />
+      </Provider>,
+    );
+    await waitFor(() => expect(queryByText('1번게시글제목')).toBeTruthy());
+    await waitFor(() => expect(queryByText('2번게시글제목')).toBeTruthy());
+    await waitFor(() => expect(queryByText('3번게시글제목')).toBeTruthy());
+    await waitFor(() => expect(queryByText('4번게시글제목')).toBeTruthy());
+    await waitFor(() => expect(queryByText('5번게시글제목')).toBeTruthy());
+    await waitFor(() => expect(queryByText('1번게시글내용')).toBeTruthy());
+    await waitFor(() => expect(queryByText('2번게시글내용')).toBeTruthy());
+    await waitFor(() => expect(queryByText('3번게시글내용')).toBeTruthy());
+    await waitFor(() => expect(queryByText('4번게시글내용')).toBeTruthy());
+    await waitFor(() => expect(queryByText('5번게시글내용')).toBeTruthy());
   });
 });

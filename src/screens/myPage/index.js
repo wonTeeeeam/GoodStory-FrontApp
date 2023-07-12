@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-  useAnimatedValue,
-} from 'react-native';
+import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
