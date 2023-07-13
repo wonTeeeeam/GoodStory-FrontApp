@@ -1,8 +1,14 @@
 import React from 'react';
 import Board from './Board';
-import {render, waitFor} from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  within,
+} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 import store from 'store/store';
+import {convertTimeToKorean} from 'utils/timeConverter';
 
 const data = {
   data: [
@@ -172,22 +178,73 @@ describe('Board 테스트', () => {
     await waitFor(() => expect(tree).toMatchSnapshot());
   });
 
-  // 이렇게 말고 특정 게시글을 찾아서 해당 요소 안에 값이 무엇인지 체크하는 방식으로 가는게 맞을듯.
-  it('게시글 존재여부 테스트', async () => {
+  // 필터링 바 최신순에서 -> 추천순 바꾸고 반대도 가능한지 이벤트 테스트 하기.
+  it('필터링 바 잘 나오고 작동하는지 테스트', async () => {
     const {queryByText} = render(
       <Provider store={store}>
         <Board route={route} />
       </Provider>,
     );
-    await waitFor(() => expect(queryByText('1번게시글제목')).toBeTruthy());
-    await waitFor(() => expect(queryByText('2번게시글제목')).toBeTruthy());
-    await waitFor(() => expect(queryByText('3번게시글제목')).toBeTruthy());
-    await waitFor(() => expect(queryByText('4번게시글제목')).toBeTruthy());
-    await waitFor(() => expect(queryByText('5번게시글제목')).toBeTruthy());
-    await waitFor(() => expect(queryByText('1번게시글내용')).toBeTruthy());
-    await waitFor(() => expect(queryByText('2번게시글내용')).toBeTruthy());
-    await waitFor(() => expect(queryByText('3번게시글내용')).toBeTruthy());
-    await waitFor(() => expect(queryByText('4번게시글내용')).toBeTruthy());
-    await waitFor(() => expect(queryByText('5번게시글내용')).toBeTruthy());
+    await waitFor(() => expect(queryByText('최신순')).toBeTruthy());
+    // fireEvent(
+    //   queryByText('최신순' || '추천순'),
+    //   'onPress',
+    //   '추천순' || '최신순',
+    // );
+  });
+
+  it('게시글 제대로 나오는지 테스트', async () => {
+    const {queryAllByTestId, debug} = render(
+      <Provider store={store}>
+        <Board route={route} />
+      </Provider>,
+    );
+    await waitFor(() => {
+      const renderedItems = queryAllByTestId('flatListItems');
+      // 총 게시글 길이가 맞는지 체크
+      expect(renderedItems).toHaveLength(data.data.length);
+      renderedItems.forEach((item, index) => {
+        const {queryByText, queryByTestId} = within(item);
+        // 게시글 카테고리, 시간 잘 나오는가?
+        expect(queryByText(data.data[index].Category)).toBeTruthy();
+        expect(
+          queryByText(convertTimeToKorean(data.data[index].Created_date)),
+        ).toBeTruthy();
+
+        // 게시글 작성자 회사, 닉네임 잘 나오는가?
+        expect(queryByText(data.data[index].user.CompanyName)).toBeTruthy();
+        expect(queryByText(data.data[index].user.Nickname)).toBeTruthy();
+
+        // 게시글 제목, 내용, 사진 잘 나오는가?
+        expect(queryByText(data.data[index].Title)).toBeTruthy();
+        expect(queryByText(data.data[index].Content)).toBeTruthy();
+        if (data.data[index].BoardPhotos[0]) {
+          expect(queryByTestId('boardImage').props.source.uri).toBe(
+            data.data[index].BoardPhotos[0].URL,
+          );
+        }
+
+        // 좋아요, 조회수, 댓글 개수 잘 나오는가?
+        expect(
+          queryByText(
+            data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
+          ),
+        ).toBeTruthy();
+        expect(
+          queryByText(
+            data.data[index].Views
+              ? data.data[index].Views.toString()
+              : '조회수',
+          ),
+        ).toBeTruthy();
+        expect(
+          queryByText(
+            data.data[index].ReplyCount
+              ? data.data[index].ReplyCount.toString()
+              : '댓글',
+          ),
+        ).toBeTruthy();
+      });
+    });
   });
 });

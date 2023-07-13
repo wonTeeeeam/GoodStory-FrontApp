@@ -102,6 +102,7 @@ export default function Post({singleData}) {
           <View style={{flex: 0.2, marginRight: hs(10)}}>
             {singleData.BoardPhotos[0] && (
               <FastImage
+                testID="boardImage"
                 style={{height: vs(75)}}
                 source={{uri: singleData.BoardPhotos[0].URL}}
               />

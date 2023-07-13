@@ -39,7 +39,10 @@ export default function PostList({filterValue, topic}) {
           }
           renderItem={({item, index}) => {
             return (
-              <View key={index} style={styles.container}>
+              <View
+                testID={'flatListItems'}
+                key={index}
+                style={styles.container}>
                 <Post singleData={item} />
               </View>
             );
