@@ -1,13 +1,8 @@
 import React from 'react';
-import Board from './Board';
-import {
-  fireEvent,
-  render,
-  waitFor,
-  within,
-} from '@testing-library/react-native';
-import {Provider} from 'react-redux';
-import store from 'store/store';
+import Board from 'screens/main/Board';
+import {fireEvent, waitFor, within} from '@testing-library/react-native';
+import {renderWithProviders} from 'utils/test-utils';
+
 import {convertTimeToKorean} from 'utils/timeConverter';
 
 const data = {
@@ -149,6 +144,7 @@ const data = {
 
 jest.mock('axios', () => ({
   get: jest.fn(() => Promise.resolve(data)),
+  post: jest.fn(() => Promise.resolve(true)),
 }));
 
 jest.mock('@react-navigation/native', () => {
@@ -170,35 +166,33 @@ const route = {
 
 describe('Board 테스트', () => {
   it('스냅샷 테스트', async () => {
-    const tree = render(
-      <Provider store={store}>
-        <Board route={route} />
-      </Provider>,
-    );
+    const tree = renderWithProviders(<Board route={route} />);
     await waitFor(() => expect(tree).toMatchSnapshot());
   });
 
-  // 필터링 바 최신순에서 -> 추천순 바꾸고 반대도 가능한지 이벤트 테스트 하기.
-  it('필터링 바 잘 나오고 작동하는지 테스트', async () => {
-    const {queryByText} = render(
-      <Provider store={store}>
-        <Board route={route} />
-      </Provider>,
-    );
+  it('필터링 바 정상 렌더링 && 정상작동 테스트', async () => {
+    const {queryByText} = renderWithProviders(<Board route={route} />);
+    // 최초 filterValue는 '최신순'
     await waitFor(() => expect(queryByText('최신순')).toBeTruthy());
-    // fireEvent(
-    //   queryByText('최신순' || '추천순'),
-    //   'onPress',
-    //   '추천순' || '최신순',
-    // );
+
+    // filterValue를 '추천순'으로 변경합니다.
+    fireEvent.press(queryByText('최신순'));
+    fireEvent.press(queryByText('추천순'));
+
+    // filterValue가 '추천순'으로 바뀌었는지 체크합니다.
+    await waitFor(() => expect(queryByText('추천순')).toBeTruthy());
+
+    // filterValue를 다시 '최신순'으로 변경합니다.
+    fireEvent.press(queryByText('추천순'));
+    fireEvent.press(queryByText('최신순'));
+    await waitFor(() => expect(queryByText('최신순')).toBeTruthy());
   });
 
-  it('게시글 제대로 나오는지 테스트', async () => {
-    const {queryAllByTestId, debug} = render(
-      <Provider store={store}>
-        <Board route={route} />
-      </Provider>,
+  it('게시글 정상 렌더링 테스트', async () => {
+    const {queryAllByTestId, debug} = renderWithProviders(
+      <Board route={route} />,
     );
+
     await waitFor(() => {
       const renderedItems = queryAllByTestId('flatListItems');
       // 총 게시글 길이가 맞는지 체크
@@ -230,6 +224,7 @@ describe('Board 테스트', () => {
             data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
           ),
         ).toBeTruthy();
+
         expect(
           queryByText(
             data.data[index].Views
@@ -237,6 +232,7 @@ describe('Board 테스트', () => {
               : '조회수',
           ),
         ).toBeTruthy();
+
         expect(
           queryByText(
             data.data[index].ReplyCount
@@ -244,6 +240,47 @@ describe('Board 테스트', () => {
               : '댓글',
           ),
         ).toBeTruthy();
+      });
+    });
+  });
+
+  it('좋아요 변경 테스트', async () => {
+    const {queryAllByTestId, debug} = renderWithProviders(
+      <Board route={route} />,
+      {
+        preloadedState: {
+          user: {
+            userId: 'asdasd',
+            account: '',
+            nickName: '',
+            profileImage: '',
+            createdDate: '',
+            companyCode: '',
+            companyName: '',
+            accessToken: '',
+            likeBoards: [],
+            likeReReplies: [],
+            likeReplies: [],
+          },
+        },
+      },
+    );
+    await waitFor(() => {
+      const renderedItems = queryAllByTestId('flatListItems');
+      renderedItems.forEach((item, index) => {
+        const {queryByText} = within(item);
+
+        // 좋아요 플러스 작동하는가? -> 좀 더 수정해야함.
+        const likeButton = queryByText(
+          data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
+        );
+        fireEvent.press(likeButton);
+        console.log(likeButton);
+        expect(
+          queryByText((data.data[index].Like + 1).toString()),
+        ).toBeTruthy();
+        fireEvent.press(likeButton);
+        expect(queryByText(data.data[index].Like.toString())).toBeTruthy();
       });
     });
   });

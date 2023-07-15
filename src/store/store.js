@@ -8,3 +8,13 @@ export default configureStore({
     navigation: navigationReducer,
   },
 });
+
+export function setupStore(preloadedState) {
+  return configureStore({
+    reducer: {
+      user: userReducer,
+      navigation: navigationReducer,
+    },
+    preloadedState,
+  });
+}

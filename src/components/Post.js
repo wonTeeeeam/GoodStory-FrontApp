@@ -15,8 +15,6 @@ import {useEffect} from 'react';
 import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {BackgroundColor} from 'styles/BackgroundColor';
-import usePressLike from 'hooks/usePressLike';
-import usePlusView from 'hooks/usePlusView';
 import useLikeAndView from 'hooks/useLikeAndView';
 
 export default function Post({singleData}) {
