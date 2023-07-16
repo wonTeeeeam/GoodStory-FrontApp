@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray, white} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import Foundation from 'react-native-vector-icons/Foundation';
 
@@ -10,8 +10,8 @@ function AnnouncementItem({singleData}) {
   return (
     <Pressable
       style={{
-        backgroundColor: 'white',
-        borderBottomColor: BackgroundColor.lightGray,
+        backgroundColor: white.origin,
+        borderBottomColor: gray.lightGray,
         borderBottomWidth: ss(2),
         paddingLeft: hs(15),
       }}

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import {TextColor} from 'styles/TextColor';
+import {black, gray} from 'styles';
 import {ss, vs} from 'utils/scailing';
 import useHandleImage from 'hooks/useHandleImage';
 
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
   container: {},
   titleContainer: {},
   title: {
-    color: TextColor.black,
+    color: black.origin,
     fontSize: ss(20),
   },
   content: {
-    color: TextColor.gray,
+    color: gray.origin,
   },
   contentContainer: {
     marginTop: vs(40),

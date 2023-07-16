@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray} from 'styles';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     color: '#4682B4',
   },
   flatList: {
-    borderTopColor: BackgroundColor.lightGray,
+    borderTopColor: gray.lightGray,
     borderTopWidth: ss(3),
     paddingVertical: vs(10),
   },

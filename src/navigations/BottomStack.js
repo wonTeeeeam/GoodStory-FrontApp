@@ -10,13 +10,16 @@ import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';
 import {useSelector} from 'react-redux';
+import {white} from 'styles';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
   const {userId} = useSelector(state => state.user);
 
   return (
-    <Tab.Navigator backBehavior="initialRoute">
+    <Tab.Navigator
+      backBehavior="initialRoute"
+      screenOptions={{tabBarStyle: {backgroundColor: white.snow}}}>
       <Tab.Screen
         name="BoardStack"
         component={BoardStack}

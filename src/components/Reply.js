@@ -5,8 +5,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {BackgroundColor} from 'styles/BackgroundColor';
-import {TextColor} from 'styles/TextColor';
+import {black, gray, white} from 'styles';
 
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
@@ -36,7 +35,7 @@ export default function Reply({singleData}) {
             color={'white'}
             size={ss(20)}
             style={{
-              backgroundColor: '#D3D3D3',
+              backgroundColor: gray.lightGray,
               // width: '100%',
               alignItems: 'center',
               height: vs(20),
@@ -101,11 +100,11 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   modalContents: {
-    backgroundColor: BackgroundColor.white,
+    backgroundColor: white.origin,
     padding: ss(10),
   },
   modalText: {
-    color: TextColor.black,
+    color: black.origin,
     margin: ss(10),
   },
 });

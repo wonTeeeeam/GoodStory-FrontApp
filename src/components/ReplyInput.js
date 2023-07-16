@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import OvalButton from './OvalButton';
 import axios from 'axios';
@@ -85,7 +85,7 @@ export default function ReplyInput({imgURL, inputImage, singleData}) {
                 color={'white'}
                 size={ss(20)}
                 style={{
-                  backgroundColor: '#D3D3D3',
+                  backgroundColor: gray.lightGray,
                   // width: '100%',
                   alignItems: 'center',
                   height: vs(20),
@@ -104,7 +104,6 @@ export default function ReplyInput({imgURL, inputImage, singleData}) {
                 style={{
                   color: 'black',
                   padding: 0,
-                  // backgroundColor: 'red',
                 }}
                 // autoFocus={true}
                 placeholder={'댓글을 남겨주세요'}
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
   replyInputIcon: {
     flexDirection: 'row',
     paddingVertical: vs(5),
-    borderBottomColor: BackgroundColor.lightGray,
+    borderBottomColor: gray.lightGray,
     borderBottomWidth: ss(3),
   },
 });

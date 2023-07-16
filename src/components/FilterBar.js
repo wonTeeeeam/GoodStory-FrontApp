@@ -3,7 +3,7 @@ import {View, Text, Pressable, StyleSheet} from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import {TextColor} from 'styles/TextColor';
+import {gray, black} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import BottomModal from './BottomModal';
 import BottomModalElement from './BottomModalElement';
@@ -16,7 +16,7 @@ export default function FilterBar({filterValue, changeFilterValue}) {
       <Pressable onPress={() => setIsModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
-          <Icon name="down" size={ss(20)} color={TextColor.gray} />
+          <Icon name="down" size={ss(20)} color={gray.origin} />
         </View>
       </Pressable>
       <BottomModal
@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
     marginRight: ss(20),
   },
   text: {
-    color: TextColor.gray,
+    color: gray.origin,
   },
   modalText: {
-    color: TextColor.black,
+    color: black.origin,
     margin: ss(10),
   },
 });

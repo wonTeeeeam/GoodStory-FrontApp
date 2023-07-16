@@ -6,7 +6,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {TextColor} from 'styles/TextColor';
+import {black, red} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import useHandleImage from 'hooks/useHandleImage';
@@ -14,7 +14,7 @@ import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray} from 'styles';
 import useLikeAndView from 'hooks/useLikeAndView';
 
 export default function Post({singleData}) {
@@ -74,11 +74,10 @@ export default function Post({singleData}) {
                 {singleData.user.CompanyName}
               </Text>
             </Pressable>
-            <EntypoIcon
+            {/* <EntypoIcon
               name="dot-single"
-              size={ss(20)}
-              color={TextColor.gray}
-            />
+              size={ss(15)}
+=            /> */}
             <Pressable>
               <Text style={styles.nickNameText}>
                 {singleData.user.Nickname}
@@ -86,22 +85,27 @@ export default function Post({singleData}) {
             </Pressable>
           </View>
         </View>
-        <View style={{flexDirection: 'row', flex: 1}}>
+        <View style={{flexDirection: 'row', flex: 0.7}}>
           <View style={{...styles.container, flex: 0.8}}>
             <View>
               <Text style={styles.titleText}>{singleData.Title}</Text>
             </View>
-            <View>
+            <View style={{marginTop: vs(10), paddingLeft: hs(3)}}>
               <Text style={styles.contextText}>
                 {deleteImageFlagsInContent(singleData.Content)}
               </Text>
             </View>
           </View>
-          <View style={{flex: 0.2, marginRight: hs(10)}}>
+          <View
+            style={{
+              flex: 0.2,
+              marginRight: hs(10),
+              marginTop: vs(15),
+            }}>
             {singleData.BoardPhotos[0] && (
               <FastImage
                 testID="boardImage"
-                style={{height: vs(75)}}
+                style={{height: vs(62), borderRadius: ss(10)}}
                 source={{uri: singleData.BoardPhotos[0].URL}}
               />
             )}
@@ -110,21 +114,19 @@ export default function Post({singleData}) {
         <View
           style={{
             flexDirection: 'row',
-            width: ss(270),
-            marginBottom: vs(30),
-            marginLeft: ss(30),
+            marginTop: vs(30),
           }}>
           <Pressable
             style={({pressed}) => [
-              {...styles.bottomContainer},
-              {backgroundColor: pressed ? BackgroundColor.lightGray : null},
+              {...styles.bottomContainer, left: hs(20)},
+              {backgroundColor: pressed ? gray.lightGray : null},
             ]}
             onPress={async () => await handlePressLike(singleData)}>
             <View style={styles.iconContainer}>
               {isLikePressed ? (
-                <AntDesignIcon name="heart" color={TextColor.red} />
+                <AntDesignIcon name="heart" color={red.hotLips} />
               ) : (
-                <AntDesignIcon name="hearto" color={TextColor.gray} />
+                <AntDesignIcon name="hearto" color={gray.origin} />
               )}
             </View>
             {likeCnt === 0 ? (
@@ -133,20 +135,20 @@ export default function Post({singleData}) {
               <Text style={styles.likeText}>{likeCnt}</Text>
             )}
           </Pressable>
-          <Pressable style={{...styles.bottomContainer, left: hs(120)}}>
+          <Pressable style={{...styles.bottomContainer, left: hs(140)}}>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name="message-reply-outline"
-                color={TextColor.gray}
+                color={gray.origin}
               />
             </View>
             <Text style={styles.replyText}>
               {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
             </Text>
           </Pressable>
-          <Pressable style={{...styles.bottomContainer, left: hs(230)}}>
+          <Pressable style={{...styles.bottomContainer, left: hs(250)}}>
             <View style={styles.iconContainer}>
-              <AntDesignIcon name="eyeo" color={TextColor.gray} />
+              <AntDesignIcon name="eyeo" color={gray.origin} />
             </View>
             <Text style={styles.viewText}>
               {singleData.Views > 0 ? viewCnt : '조회수'}
@@ -160,7 +162,7 @@ export default function Post({singleData}) {
 
 const styles = StyleSheet.create({
   allContainer: {
-    height: vs(200),
+    height: vs(180),
   },
   container: {
     margin: ss(15),
@@ -168,46 +170,39 @@ const styles = StyleSheet.create({
   },
   firstDetailContainer: {
     flexDirection: 'row',
-    width: ss(105),
+    width: ss(70),
     justifyContent: 'space-between',
   },
   secondDetailContainer: {
     flexDirection: 'row',
-    marginTop: ss(5),
-    width: ss(105),
-    justifyContent: 'space-between',
-  },
-  iconsContainer: {
-    flexDirection: 'row',
-    width: ss(270),
-    margin: ss(40),
-    marginLeft: ss(50),
+    marginTop: ss(0),
+    width: ss(70),
     justifyContent: 'space-between',
   },
   bottomContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    // backgroundColor: 'red',
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: ss(20),
-    width: hs(70),
+    width: hs(75),
   },
-  iconContainer: {justifyContent: 'center', marginRight: 5},
+  iconContainer: {justifyContent: 'center', marginRight: ss(5)},
   topicText: {
-    color: TextColor.black,
+    color: black.origin,
     fontWeight: 'bold',
+    fontSize: ss(10),
   },
-  timeText: {color: TextColor.silver},
-  companyNameText: {color: TextColor.gray},
-  nickNameText: {color: TextColor.gray},
+  timeText: {color: gray.silver, fontSize: ss(10)},
+  companyNameText: {color: gray.origin, fontSize: ss(10)},
+  nickNameText: {color: gray.origin, fontSize: ss(10)},
   titleText: {
-    color: TextColor.black,
+    color: black.origin,
     fontWeight: 'bold',
-    fontSize: ss(20),
+    fontSize: ss(18),
   },
-  contextText: {color: TextColor.gray, fontSize: ss(15)},
-  likeText: {color: TextColor.gray},
-  replyText: {color: TextColor.gray},
-  viewText: {color: TextColor.gray},
+  contextText: {color: gray.origin, fontSize: ss(13)},
+  likeText: {color: gray.origin},
+  replyText: {color: gray.origin},
+  viewText: {color: gray.origin},
 });

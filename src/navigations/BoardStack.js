@@ -2,8 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import Board from 'screens/main/Board';
 import DetailPost from 'screens/main/DetailPost';
-import {BackgroundColor} from 'styles/BackgroundColor';
-import {TextColor} from 'styles/TextColor';
+import {black, white} from 'styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
@@ -15,12 +14,12 @@ function BoardStack({route}) {
     <Stack.Navigator
       initialRouteName="Board"
       screenOptions={{
-        headerStyle: {backgroundColor: BackgroundColor.snow},
+        headerStyle: {backgroundColor: white.snow},
         headerLeft: () => {
           return (
             <Ionicons
               name="chevron-back"
-              color={TextColor.black}
+              color={black.origin}
               size={20}
               onPress={() => {
                 navigation.navigate('Board');

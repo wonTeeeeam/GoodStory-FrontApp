@@ -145,6 +145,7 @@ const data = {
 jest.mock('axios', () => ({
   get: jest.fn(() => Promise.resolve(data)),
   post: jest.fn(() => Promise.resolve(true)),
+  delete: jest.fn(() => Promise.resolve(true)),
 }));
 
 jest.mock('@react-navigation/native', () => {
@@ -245,7 +246,7 @@ describe('Board 테스트', () => {
   });
 
   it('좋아요 변경 테스트', async () => {
-    const {queryAllByTestId, debug} = renderWithProviders(
+    const {queryAllByTestId, rerender, debug} = renderWithProviders(
       <Board route={route} />,
       {
         preloadedState: {
@@ -267,20 +268,49 @@ describe('Board 테스트', () => {
     );
     await waitFor(() => {
       const renderedItems = queryAllByTestId('flatListItems');
+      expect(renderedItems).toHaveLength(data.data.length);
       renderedItems.forEach((item, index) => {
         const {queryByText} = within(item);
 
-        // 좋아요 플러스 작동하는가? -> 좀 더 수정해야함.
-        const likeButton = queryByText(
-          data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
+        // 좋아요 플러스 작동
+        fireEvent.press(
+          queryByText(
+            data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
+          ),
         );
+      });
+    });
+    // 좋아요 state의 변화로 rerender
+    rerender(<Board route={route} />);
+
+    await waitFor(() => {
+      const renderedItems = queryAllByTestId('flatListItems');
+      expect(renderedItems).toHaveLength(data.data.length);
+      renderedItems.forEach((item, index) => {
+        const {queryByText} = within(item);
+        // 좋아요 1개씩 올라갔는지 테스트
+        const likeButton = queryByText((data.data[index].Like + 1).toString());
+        expect(likeButton).toBeTruthy();
+
+        // 좋아요 다시 취소하기.
         fireEvent.press(likeButton);
-        console.log(likeButton);
+      });
+    });
+
+    // 좋아요 state의 변화로 rerender
+    rerender(<Board route={route} />);
+
+    await waitFor(() => {
+      const renderedItems = queryAllByTestId('flatListItems');
+      expect(renderedItems).toHaveLength(data.data.length);
+      renderedItems.forEach((item, index) => {
+        const {queryByText} = within(item);
+        // 좋아요 다시 원래대로 돌아왔는지 테스트
         expect(
-          queryByText((data.data[index].Like + 1).toString()),
+          queryByText(
+            data.data[index].Like ? data.data[index].Like.toString() : '좋아요',
+          ),
         ).toBeTruthy();
-        fireEvent.press(likeButton);
-        expect(queryByText(data.data[index].Like.toString())).toBeTruthy();
       });
     });
   });

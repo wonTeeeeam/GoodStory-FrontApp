@@ -14,8 +14,8 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import DetailPostMain from 'components/DetailPostMain';
 import ReplyInput from 'components/ReplyInput';
 import ReplyList from 'components/ReplyList';
-import {BackgroundColor} from 'styles/BackgroundColor';
-import {TextColor} from 'styles/TextColor';
+import {black, gray, red, white} from 'styles';
+import {TextColor} from 'styles';
 import {ss, vs, hs} from 'utils/scailing';
 import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
@@ -61,7 +61,7 @@ export default function DetailPost({route, navigation}) {
       headerRight: () => (
         <Entypo
           name="dots-three-vertical"
-          color={TextColor.black}
+          color={black.origin}
           size={20}
           onPress={handleSetIsModalVisible}
         />
@@ -89,7 +89,7 @@ export default function DetailPost({route, navigation}) {
   };
 
   return (
-    <View style={{backgroundColor: BackgroundColor.snow, flex: 1}}>
+    <View style={{backgroundColor: white.snow, flex: 1}}>
       <ScrollView
         style={styles.totalContainer}
         // keyboardShouldPersistTaps={'handled'}
@@ -122,7 +122,7 @@ export default function DetailPost({route, navigation}) {
                     color={'white'}
                     size={ss(30)}
                     style={{
-                      backgroundColor: '#D3D3D3',
+                      backgroundColor: gray.lightGray,
                       // width: '100%',
                       alignItems: 'center',
                       height: vs(30),
@@ -156,14 +156,14 @@ export default function DetailPost({route, navigation}) {
               <Pressable
                 style={({pressed}) => [
                   {...styles.bottomContainer},
-                  {backgroundColor: pressed ? BackgroundColor.lightGray : null},
+                  {backgroundColor: pressed ? gray.lightGray : null},
                 ]}
                 onPress={() => handlePressLike(singleData)}>
                 <View style={styles.iconContainer}>
                   {isLikePressed ? (
-                    <AntDesignIcon name="heart" color={TextColor.red} />
+                    <AntDesignIcon name="heart" color={red.hotLips} />
                   ) : (
-                    <AntDesignIcon name="hearto" color={TextColor.gray} />
+                    <AntDesignIcon name="hearto" color={gray.origin} />
                   )}
                 </View>
                 {likeCnt === 0 ? (
@@ -176,7 +176,7 @@ export default function DetailPost({route, navigation}) {
                 <View style={styles.iconContainer}>
                   <MaterialCommunityIcons
                     name="message-reply-outline"
-                    color={TextColor.gray}
+                    color={gray.origin}
                   />
                 </View>
                 <Text style={styles.replyText}>
@@ -185,7 +185,7 @@ export default function DetailPost({route, navigation}) {
               </Pressable>
               <Pressable style={{...styles.bottomContainer, left: hs(210)}}>
                 <View style={styles.iconContainer}>
-                  <AntDesignIcon name="eyeo" color={TextColor.gray} />
+                  <AntDesignIcon name="eyeo" color={gray.origin} />
                 </View>
                 <Text style={styles.viewText}>
                   {firstViewCnt > 0 ? firstViewCnt : '조회수'}
@@ -269,14 +269,14 @@ const styles = StyleSheet.create({
   nickName: {
     fontWeight: '400',
     fontSize: ss(15),
-    color: TextColor.black,
+    color: black.origin,
   },
   userLike: {
-    color: TextColor.gray,
+    color: gray.origin,
   },
   timeContainer: {marginVertical: ss(30)},
   date: {
-    color: TextColor.gray,
+    color: gray.origin,
   },
   likeContainer: {
     marginTop: vs(20),
@@ -285,14 +285,14 @@ const styles = StyleSheet.create({
 
   likeBox: {
     flexDirection: 'row',
-    backgroundColor: BackgroundColor.lightGray,
+    backgroundColor: gray.lightGray,
     width: ss(60),
     borderRadius: 10,
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   user: {
-    color: TextColor.black,
+    color: black.origin,
   },
   grayBox: {
     borderColor: '#C0C0C0',
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     width: hs(70),
   },
   iconContainer: {justifyContent: 'center', marginRight: 5},
-  likeText: {color: TextColor.gray},
-  replyText: {color: TextColor.gray},
-  viewText: {color: TextColor.gray},
+  likeText: {color: gray.origin},
+  replyText: {color: gray.origin},
+  viewText: {color: gray.origin},
 });

@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {BackgroundColor} from 'styles/BackgroundColor';
-import {TextColor} from 'styles/TextColor';
+import {black, white} from 'styles';
+import {TextColor} from 'styles';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
@@ -23,12 +23,12 @@ export default function JoinStack() {
     <Stack.Navigator
       initialRouteName="JoinEmail"
       screenOptions={{
-        headerStyle: {backgroundColor: BackgroundColor.snow},
+        headerStyle: {backgroundColor: white.snow},
         headerLeft: () => {
           return (
             <Ionicons
               name="chevron-back"
-              color={TextColor.black}
+              color={black.origin}
               size={20}
               onPress={() => {
                 const stackLength = navigation.getState().routes.length;

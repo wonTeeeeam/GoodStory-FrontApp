@@ -174,7 +174,13 @@ function Posting() {
           </View>
         </View>
         <ScrollView
-          style={{borderWidth: ss(1), flex: 0.8}}
+          style={{
+            borderWidth: ss(1),
+            flex: 0.8,
+            borderRadius: ss(10),
+            marginTop: ss(10),
+            borderColor: 'darkgray',
+          }}
           nestedScrollEnabled={true}>
           <Text style={{color: 'black'}}>
             <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
@@ -185,7 +191,13 @@ function Posting() {
         </ScrollView>
         <View>
           <TextInput
-            style={{color: 'black', borderWidth: ss(1), marginTop: vs(20)}}
+            style={{
+              color: 'black',
+              borderWidth: ss(1),
+              marginTop: vs(20),
+              borderRadius: ss(10),
+              borderColor: 'darkgray',
+            }}
             placeholder="제목을 입력해주세요"
             placeholderTextColor={'black'}
             maxLength={50}
@@ -195,7 +207,13 @@ function Posting() {
         </View>
         <View>
           <TextInput
-            style={{color: 'black', borderWidth: ss(1), marginTop: vs(20)}}
+            style={{
+              color: 'black',
+              borderWidth: ss(1),
+              marginTop: vs(20),
+              borderRadius: ss(10),
+              borderColor: 'darkgray',
+            }}
             placeholder="내용을 입력해주세요"
             placeholderTextColor={'black'}
             maxLength={500}

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList, Text, RefreshControl} from 'react-native';
 import Post from './Post';
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 import NoPost from './NoPost';
 import useFetchDataList from 'hooks/useFetchDataList';
@@ -64,7 +64,7 @@ export default function PostList({filterValue, topic}) {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: BackgroundColor.lightGray,
-    borderBottomWidth: ss(3),
+    borderBottomColor: gray.lightGray,
+    borderBottomWidth: ss(1),
   },
 });

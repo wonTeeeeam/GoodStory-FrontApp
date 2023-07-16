@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, BackHandler} from 'react-native';
 import FilterBar from 'components/FilterBar';
 import PostList from 'components/PostList';
 
-import {BackgroundColor} from 'styles/BackgroundColor';
+import {gray, white} from 'styles';
 import {showToast} from 'utils/toast';
 
 export default function Board({route}) {
@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   },
   filterBar: {
     flex: 0.04,
-    backgroundColor: BackgroundColor.lightGray,
+    backgroundColor: gray.lightGray,
     justifyContent: 'center',
   },
   postList: {
     flex: 0.96,
-    backgroundColor: BackgroundColor.snow,
+    backgroundColor: white.snow,
   },
 });
