@@ -163,7 +163,7 @@ export default function DetailPost({route, navigation}) {
                   {isLikePressed ? (
                     <AntDesignIcon name="heart" color={red.hotLips} />
                   ) : (
-                    <AntDesignIcon name="hearto" color={gray.origin} />
+                    <AntDesignIcon name="hearto" color={gray.dimGray} />
                   )}
                 </View>
                 {likeCnt === 0 ? (
@@ -176,7 +176,7 @@ export default function DetailPost({route, navigation}) {
                 <View style={styles.iconContainer}>
                   <MaterialCommunityIcons
                     name="message-reply-outline"
-                    color={gray.origin}
+                    color={gray.dimGray}
                   />
                 </View>
                 <Text style={styles.replyText}>
@@ -185,7 +185,7 @@ export default function DetailPost({route, navigation}) {
               </Pressable>
               <Pressable style={{...styles.bottomContainer, left: hs(210)}}>
                 <View style={styles.iconContainer}>
-                  <AntDesignIcon name="eyeo" color={gray.origin} />
+                  <AntDesignIcon name="eyeo" color={gray.dimGray} />
                 </View>
                 <Text style={styles.viewText}>
                   {firstViewCnt > 0 ? firstViewCnt : '조회수'}
@@ -272,11 +272,11 @@ const styles = StyleSheet.create({
     color: black.origin,
   },
   userLike: {
-    color: gray.origin,
+    color: gray.dimGray,
   },
   timeContainer: {marginVertical: ss(30)},
   date: {
-    color: gray.origin,
+    color: gray.dimGray,
   },
   likeContainer: {
     marginTop: vs(20),
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     width: hs(70),
   },
   iconContainer: {justifyContent: 'center', marginRight: 5},
-  likeText: {color: gray.origin},
-  replyText: {color: gray.origin},
-  viewText: {color: gray.origin},
+  likeText: {color: gray.dimGray},
+  replyText: {color: gray.dimGray},
+  viewText: {color: gray.dimGray},
 });

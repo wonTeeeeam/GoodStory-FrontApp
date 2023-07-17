@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import Modal from 'react-native-modal';
-import {white} from 'styles';
+import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 
 function BottomModal({isModalVisible, setIsModalVisible, children}) {
@@ -12,7 +12,7 @@ function BottomModal({isModalVisible, setIsModalVisible, children}) {
       backdropColor="transparent"
       onBackButtonPress={() => setIsModalVisible(false)}
       onBackdropPress={() => setIsModalVisible(false)}>
-      <View style={{backgroundColor: white.white, padding: ss(10)}}>
+      <View style={{backgroundColor: gray.lightGray, padding: ss(10)}}>
         {children}
       </View>
     </Modal>

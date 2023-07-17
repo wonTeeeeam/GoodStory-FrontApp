@@ -126,7 +126,7 @@ export default function Post({singleData}) {
               {isLikePressed ? (
                 <AntDesignIcon name="heart" color={red.hotLips} />
               ) : (
-                <AntDesignIcon name="hearto" color={gray.origin} />
+                <AntDesignIcon name="hearto" color={gray.dimGray} />
               )}
             </View>
             {likeCnt === 0 ? (
@@ -139,7 +139,7 @@ export default function Post({singleData}) {
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name="message-reply-outline"
-                color={gray.origin}
+                color={gray.dimGray}
               />
             </View>
             <Text style={styles.replyText}>
@@ -148,7 +148,7 @@ export default function Post({singleData}) {
           </Pressable>
           <Pressable style={{...styles.bottomContainer, left: hs(250)}}>
             <View style={styles.iconContainer}>
-              <AntDesignIcon name="eyeo" color={gray.origin} />
+              <AntDesignIcon name="eyeo" color={gray.dimGray} />
             </View>
             <Text style={styles.viewText}>
               {singleData.Views > 0 ? viewCnt : '조회수'}
@@ -193,16 +193,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: ss(10),
   },
-  timeText: {color: gray.silver, fontSize: ss(10)},
-  companyNameText: {color: gray.origin, fontSize: ss(10)},
-  nickNameText: {color: gray.origin, fontSize: ss(10)},
+  timeText: {color: gray.gainsboro, fontSize: ss(10)},
+  companyNameText: {color: gray.dimGray, fontSize: ss(10)},
+  nickNameText: {color: gray.dimGray, fontSize: ss(10)},
   titleText: {
     color: black.origin,
     fontWeight: 'bold',
     fontSize: ss(18),
   },
-  contextText: {color: gray.origin, fontSize: ss(13)},
-  likeText: {color: gray.origin},
-  replyText: {color: gray.origin},
-  viewText: {color: gray.origin},
+  contextText: {color: gray.dimGray, fontSize: ss(13)},
+  likeText: {color: gray.dimGray},
+  replyText: {color: gray.dimGray},
+  viewText: {color: gray.dimGray},
 });

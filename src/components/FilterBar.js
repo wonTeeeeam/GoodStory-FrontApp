@@ -16,7 +16,7 @@ export default function FilterBar({filterValue, changeFilterValue}) {
       <Pressable onPress={() => setIsModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
-          <Icon name="down" size={ss(20)} color={gray.origin} />
+          <Icon name="down" size={ss(20)} color={gray.dimGray} />
         </View>
       </Pressable>
       <BottomModal
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginRight: ss(20),
   },
   text: {
-    color: gray.origin,
+    color: gray.dimGray,
   },
   modalText: {
     color: black.origin,

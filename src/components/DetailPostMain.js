@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: ss(20),
   },
   content: {
-    color: gray.origin,
+    color: gray.dimGray,
   },
   contentContainer: {
     marginTop: vs(40),
