@@ -10,7 +10,7 @@ import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';
 import {useSelector} from 'react-redux';
-import {white} from 'styles';
+import {black, gray, white} from 'styles';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
@@ -19,13 +19,20 @@ function BottomStack() {
   return (
     <Tab.Navigator
       backBehavior="initialRoute"
-      screenOptions={{tabBarStyle: {backgroundColor: white.snow}}}>
+      screenOptions={{
+        tabBarStyle: {backgroundColor: white.snow},
+        // tabBarLabelStyle: {color: black.Onyx},
+        tabBarActiveTintColor: black.origin,
+        tabBarInactiveTintColor: gray.dimGray,
+      }}>
       <Tab.Screen
         name="BoardStack"
         component={BoardStack}
         options={{
           headerShown: false,
-          tabBarIcon: () => <Entypo name="home" color={'blue'} size={ss(20)} />,
+          tabBarIcon: ({focused, color}) => (
+            <Entypo focused={focused} name="home" color={color} size={ss(20)} />
+          ),
           tabBarLabel: '홈',
         }}
       />
@@ -34,8 +41,13 @@ function BottomStack() {
         component={Topic}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <MaterialIcons name="topic" color={'blue'} size={ss(20)} />
+          tabBarIcon: ({focused, color}) => (
+            <MaterialIcons
+              focused={focused}
+              name="topic"
+              color={color}
+              size={ss(20)}
+            />
           ),
           tabBarLabel: '주제별게시판',
         }}
@@ -45,8 +57,13 @@ function BottomStack() {
         component={userId ? Posting : Login}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <Entypo name="pencil" color={'blue'} size={ss(20)} />
+          tabBarIcon: ({focused, color}) => (
+            <Entypo
+              focued={focused}
+              name="pencil"
+              color={color}
+              size={ss(20)}
+            />
           ),
           tabBarLabel: '글작성',
         }}
@@ -56,14 +73,17 @@ function BottomStack() {
         component={userId ? MyPage : Login}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <Ionicons name="person" color={'blue'} size={ss(20)} />
+          tabBarIcon: ({focused, color}) => (
+            <Ionicons
+              focused={focused}
+              name="person"
+              color={color}
+              size={ss(20)}
+            />
           ),
           tabBarLabel: '마이페이지',
         }}
       />
-
-      {/* <Tab.Screen name="Settings" component={} /> */}
     </Tab.Navigator>
   );
 }

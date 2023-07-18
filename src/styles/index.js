@@ -11,6 +11,7 @@ export const white = {
 
 export const black = {
   origin: '#000000',
+  Onyx: '#353935',
 };
 
 export const red = {
