@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {Text, View} from 'react-native';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -11,6 +13,7 @@ import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';
 import {useSelector} from 'react-redux';
 import {black, gray, white} from 'styles';
+import BottomTabBar from 'components/BottomTabBar';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator();
@@ -18,13 +21,26 @@ function BottomStack() {
 
   return (
     <Tab.Navigator
-      backBehavior="initialRoute"
-      screenOptions={{
-        tabBarStyle: {backgroundColor: white.snow},
-        // tabBarLabelStyle: {color: black.Onyx},
-        tabBarActiveTintColor: black.origin,
-        tabBarInactiveTintColor: gray.dimGray,
-      }}>
+      tabBar={props => <BottomTabBar {...props} />}
+      // backBehavior="initialRoute"
+      // screenOptions={{
+      //   tabBarStyle: {
+      //     backgroundColor: white.snow,
+      //     borderTopWidth: 0,
+      //     borderTopLeftRadius: ss(10),
+      //     borderTopRightRadius: ss(10),
+      //     position: 'absolute',
+      //   },
+      //   tabBarLabelStyle: {},
+      //   tabBarItemStyle: {
+      //     margin: 5,
+      //     borderRadius: 10,
+      //   },
+      // tabBarActiveTintColor: black.origin,
+      // tabBarInactiveTintColor: gray.dimGray,
+      // tabBarLabelPosition: 'beside-icon',
+      // }}
+    >
       <Tab.Screen
         name="BoardStack"
         component={BoardStack}
