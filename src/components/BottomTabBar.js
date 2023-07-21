@@ -91,38 +91,103 @@ import {ss, vs} from 'utils/scailing';
 // }
 
 function BottomTabBar({state, descriptors, navigation}) {
-  const RenderingIcons = index => {
+  const RenderingIcons = (index, isFocused) => {
     switch (index) {
       case 0:
-        return <Feather name="home" color={black.origin} size={ss(25)} />;
+        return (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Feather
+              name="home"
+              color={isFocused ? black.origin : gray.dimGray}
+              size={ss(25)}
+            />
+            <Text
+              style={{
+                color: isFocused ? black.origin : gray.dimGray,
+                fontSize: ss(12),
+              }}>
+              홈
+            </Text>
+          </View>
+        );
       case 1:
         return (
-          <MaterialCommunityIcons
-            name="clipboard-list-outline"
-            color={black.origin}
-            size={ss(25)}
-          />
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MaterialCommunityIcons
+              name="clipboard-list-outline"
+              color={isFocused ? black.origin : gray.dimGray}
+              size={ss(25)}
+            />
+            <Text
+              style={{
+                color: isFocused ? black.origin : gray.dimGray,
+                fontSize: ss(12),
+              }}>
+              주제별게시판
+            </Text>
+          </View>
         );
       case 2:
         return (
-          <MaterialCommunityIcons
-            name="pencil-outline"
-            color={black.origin}
-            size={ss(25)}
-          />
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MaterialCommunityIcons
+              name="pencil-outline"
+              color={isFocused ? black.origin : gray.dimGray}
+              size={ss(25)}
+            />
+            <Text
+              style={{
+                color: isFocused ? black.origin : gray.dimGray,
+                fontSize: ss(12),
+              }}>
+              글작성
+            </Text>
+          </View>
         );
       case 3:
-        return <Octicons name="person" color={black.origin} size={ss(25)} />;
+        return (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Octicons
+              name="person"
+              color={isFocused ? black.origin : gray.dimGray}
+              size={ss(25)}
+            />
+            <Text
+              style={{
+                color: isFocused ? black.origin : gray.dimGray,
+                fontSize: ss(12),
+              }}>
+              마이페이지
+            </Text>
+          </View>
+        );
     }
   };
 
   const elementRatio = 1 / state.routeNames.length;
 
-  const elementFlex = Math.floor(elementRatio / 100) / 100;
-  console.log(elementFlex);
-
   return (
-    <View style={{flexDirection: 'row', height: vs(25)}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        height: vs(40),
+      }}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -154,7 +219,18 @@ function BottomTabBar({state, descriptors, navigation}) {
           });
         };
 
-        return <View style={{flex: elementFlex}}>{RenderingIcons(index)}</View>;
+        return (
+          <Animated.View
+            style={{
+              flex: elementRatio,
+              backgroundColor: isFocused ? gray.lightGray : undefined,
+              borderRadius: ss(10),
+            }}>
+            <Pressable onPress={onPress}>
+              {RenderingIcons(index, isFocused)}
+            </Pressable>
+          </Animated.View>
+        );
       })}
     </View>
   );

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import LoadingModal from 'components/LoadingModal';
+import LoadingModal from 'components/modal/LoadingModal';
 import PasswordRePassword from 'components/PasswordRePassword';
 import React from 'react';
 import {useState} from 'react';

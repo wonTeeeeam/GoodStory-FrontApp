@@ -2,7 +2,7 @@ import React, {useEffect, useCallback, useState} from 'react';
 import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
 import {validatePWD} from 'utils/regex';
 import UTextInput from './UTextInput';
-import JoinButton from './JoinButton';
+import JoinButton from './button/JoinButton';
 import {hs, ss} from 'utils/scailing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 

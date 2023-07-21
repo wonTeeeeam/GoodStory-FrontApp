@@ -14,7 +14,7 @@ import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import useLogin from 'hooks/useLogin';
 import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
-import LoadingModal from 'components/LoadingModal';
+import LoadingModal from 'components/modal/LoadingModal';
 
 function Login() {
   const dispatch = useDispatch();

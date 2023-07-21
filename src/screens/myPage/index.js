@@ -16,7 +16,7 @@ import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
 import axios from 'axios';
 import {alert} from 'utils/alert';
-import LoadingModal from 'components/LoadingModal';
+import LoadingModal from 'components/modal/LoadingModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';

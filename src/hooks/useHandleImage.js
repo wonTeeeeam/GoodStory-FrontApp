@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import {hs, ss, vs} from 'utils/scailing';
 import {useState} from 'react';
-import ImageModal from 'components/ImageModal';
+import ImageModal from 'components/modal/ImageModal';
 
 function useHandleImage() {
   const [isModalVisible, setIsModalVisible] = useState(false);

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {gray} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
-import OvalButton from './OvalButton';
+import OvalButton from './button/OvalButton';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 

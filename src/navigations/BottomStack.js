@@ -22,7 +22,7 @@ function BottomStack() {
   return (
     <Tab.Navigator
       tabBar={props => <BottomTabBar {...props} />}
-      // backBehavior="initialRoute"
+      backBehavior="initialRoute"
       // screenOptions={{
       //   tabBarStyle: {
       //     backgroundColor: white.snow,
@@ -31,14 +31,13 @@ function BottomStack() {
       //     borderTopRightRadius: ss(10),
       //     position: 'absolute',
       //   },
-      //   tabBarLabelStyle: {},
       //   tabBarItemStyle: {
       //     margin: 5,
       //     borderRadius: 10,
       //   },
-      // tabBarActiveTintColor: black.origin,
-      // tabBarInactiveTintColor: gray.dimGray,
-      // tabBarLabelPosition: 'beside-icon',
+      //   tabBarActiveTintColor: black.origin,
+      //   tabBarInactiveTintColor: gray.dimGray,
+      //   tabBarActiveBackgroundColor: gray.lightGray,
       // }}
     >
       <Tab.Screen

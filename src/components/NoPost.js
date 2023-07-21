@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {ss, vs} from 'utils/scailing';
-import OvalButton from './OvalButton';
+import OvalButton from './button/OvalButton';
 import {white} from 'styles';
 
 function NoPost({onPress = null, btnText = null}) {

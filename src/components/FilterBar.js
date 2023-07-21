@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import {gray, black} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
-import BottomModal from './BottomModal';
+import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
 
 export default function FilterBar({filterValue, changeFilterValue}) {

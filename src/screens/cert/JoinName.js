@@ -3,7 +3,7 @@ import {Keyboard, Pressable, Text, View} from 'react-native';
 import UTextInput from 'components/UTextInput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {hs, ss} from 'utils/scailing';
-import JoinButton from 'components/JoinButton';
+import JoinButton from 'components/button/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {useEffect} from 'react';
 import axios from 'axios';

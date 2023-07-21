@@ -4,7 +4,7 @@ import {hs, ss, vs} from 'utils/scailing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import UTextInput from 'components/UTextInput';
-import JoinButton from 'components/JoinButton';
+import JoinButton from 'components/button/JoinButton';
 import {validateEmail} from 'utils/regex';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';

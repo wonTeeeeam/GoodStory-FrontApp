@@ -9,7 +9,7 @@ import {black, gray, white} from 'styles';
 
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
-import BottomModal from './BottomModal';
+import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
 
 export default function Reply({singleData}) {

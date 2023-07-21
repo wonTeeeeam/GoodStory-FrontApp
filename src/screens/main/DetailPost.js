@@ -15,14 +15,13 @@ import DetailPostMain from 'components/DetailPostMain';
 import ReplyInput from 'components/ReplyInput';
 import ReplyList from 'components/ReplyList';
 import {black, gray, red, white} from 'styles';
-import {TextColor} from 'styles';
 import {ss, vs, hs} from 'utils/scailing';
 import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import BottomModal from 'components/BottomModal';
+import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
