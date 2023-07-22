@@ -12,6 +12,7 @@ import {useColorScheme} from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import useLogin from 'hooks/useLogin';
 import useAxiosInterceptor from 'hooks/useAxiosInterceptor';
+import {white} from 'styles';
 
 export default function RootNavigation() {
   useAxiosInterceptor();
@@ -29,7 +30,7 @@ export default function RootNavigation() {
 
   return (
     // theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
-    <NavigationContainer>
+    <NavigationContainer theme={{colors: {background: white.snow}}}>
       {isUserStartJoin ? <JoinStack /> : <MainStack />}
     </NavigationContainer>
   );
