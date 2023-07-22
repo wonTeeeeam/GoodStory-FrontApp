@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {MaterialIcons} from 'utils/react-native-vector-helper';
 import {hs, ss} from 'utils/scailing';
 
 function AccountSettingItem({children, text, onPress}) {

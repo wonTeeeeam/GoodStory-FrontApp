@@ -2,10 +2,6 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import {black, red} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
@@ -16,6 +12,10 @@ import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {gray} from 'styles';
 import useLikeAndView from 'hooks/useLikeAndView';
+import {
+  AntDesign,
+  MaterialCommunityIcons,
+} from 'utils/react-native-vector-helper';
 
 export default function Post({singleData}) {
   const {deleteImageFlagsInContent} = useHandleImage();
@@ -124,9 +124,9 @@ export default function Post({singleData}) {
             onPress={async () => await handlePressLike(singleData)}>
             <View style={styles.iconContainer}>
               {isLikePressed ? (
-                <AntDesignIcon name="heart" color={red.hotLips} />
+                <AntDesign name="heart" color={red.hotLips} />
               ) : (
-                <AntDesignIcon name="hearto" color={gray.dimGray} />
+                <AntDesign name="hearto" color={gray.dimGray} />
               )}
             </View>
             {likeCnt === 0 ? (
@@ -148,7 +148,7 @@ export default function Post({singleData}) {
           </Pressable>
           <Pressable style={{...styles.bottomContainer, left: hs(250)}}>
             <View style={styles.iconContainer}>
-              <AntDesignIcon name="eyeo" color={gray.dimGray} />
+              <AntDesign name="eyeo" color={gray.dimGray} />
             </View>
             <Text style={styles.viewText}>
               {singleData.Views > 0 ? viewCnt : '조회수'}

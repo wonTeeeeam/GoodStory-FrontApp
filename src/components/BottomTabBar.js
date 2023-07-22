@@ -1,9 +1,12 @@
 import React, {useRef, useEffect} from 'react';
 import {Animated, Dimensions, Pressable, Text, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {black, gray, white} from 'styles';
+import {
+  Feather,
+  MaterialCommunityIcons,
+  Octicons,
+} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 
 function BottomTabBar({state, descriptors, navigation}) {

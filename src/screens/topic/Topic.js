@@ -1,13 +1,15 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import HandleTopicCard from 'components/HandleTopicCard';
+import {
+  FontAwesome,
+  Fontisto,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from 'utils/react-native-vector-helper';
 
 function Topic() {
   return (

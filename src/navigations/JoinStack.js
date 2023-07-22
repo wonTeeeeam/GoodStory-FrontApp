@@ -4,7 +4,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {black, white} from 'styles';
 import {TextColor} from 'styles';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import JoinEmail from 'screens/cert/JoinEmail';
 import JoinPassword from 'screens/cert/JoinPassword';
@@ -12,6 +11,7 @@ import JoinName from 'screens/cert/JoinName';
 import JoinCamera from 'screens/cert/JoinCamera';
 import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from 'slice/navigationSlice';
+import {Ionicons} from 'utils/react-native-vector-helper';
 
 const Stack = createNativeStackNavigator();
 

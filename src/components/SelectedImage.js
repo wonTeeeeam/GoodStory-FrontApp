@@ -1,9 +1,9 @@
 import React from 'react';
 import {hs, vs} from 'utils/scailing';
 import FastImage from 'react-native-fast-image';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {View} from 'react-native';
+import {AntDesign} from 'utils/react-native-vector-helper';
 
 function SelectedImage({images, setImage, removeImageFromContent}) {
   return images.map((image, index) => {

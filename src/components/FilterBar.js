@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 
-import Icon from 'react-native-vector-icons/AntDesign';
-
 import {gray, black} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
+import {AntDesign} from 'utils/react-native-vector-helper';
 
 export default function FilterBar({filterValue, changeFilterValue}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -16,7 +15,7 @@ export default function FilterBar({filterValue, changeFilterValue}) {
       <Pressable onPress={() => setIsModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
-          <Icon name="down" size={ss(20)} color={gray.dimGray} />
+          <AntDesign name="down" size={ss(20)} color={gray.dimGray} />
         </View>
       </Pressable>
       <BottomModal

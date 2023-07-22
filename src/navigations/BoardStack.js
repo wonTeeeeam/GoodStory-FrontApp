@@ -3,8 +3,8 @@ import React from 'react';
 import Board from 'screens/main/Board';
 import DetailPost from 'screens/main/DetailPost';
 import {black, white} from 'styles';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {Ionicons} from 'utils/react-native-vector-helper';
 
 function BoardStack({route}) {
   const Stack = createNativeStackNavigator();

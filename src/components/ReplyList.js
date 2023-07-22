@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {gray} from 'styles';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
+import {MaterialCommunityIcons} from 'utils/react-native-vector-helper';
 
 export default function ReplyList({replyData, replyCnt = 0}) {
   return (

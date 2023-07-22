@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {Keyboard, Pressable, Text, View} from 'react-native';
 import UTextInput from 'components/UTextInput';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {hs, ss} from 'utils/scailing';
 import JoinButton from 'components/button/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {useEffect} from 'react';
 import axios from 'axios';
+import {Ionicons} from 'utils/react-native-vector-helper';
 
 function JoinName({route, navigation}) {
   const {Email, Password} = route.params;

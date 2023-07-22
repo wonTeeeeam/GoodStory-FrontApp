@@ -3,14 +3,14 @@ import {useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {black, gray, white} from 'styles';
 
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
+import {Entypo, Ionicons} from 'utils/react-native-vector-helper';
 
 export default function Reply({singleData}) {
   const [isModalVisible, setIsModalVisible] = useState(false);

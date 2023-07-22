@@ -1,8 +1,8 @@
 import React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {Pressable, Text, TextInput, View} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {AntDesign, Entypo} from 'utils/react-native-vector-helper';
+
 import {hs, ss, vs} from 'utils/scailing';
 
 function UTextInput({

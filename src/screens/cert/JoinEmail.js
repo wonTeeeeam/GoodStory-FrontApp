@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import UTextInput from 'components/UTextInput';
 import JoinButton from 'components/button/JoinButton';
 import {validateEmail} from 'utils/regex';
@@ -10,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Timer from 'components/Timer';
 import {alert} from 'utils/alert';
+import {AntDesign, Fontisto} from 'utils/react-native-vector-helper';
 
 function JoinEmail() {
   const [email, setEmail] = useState('');

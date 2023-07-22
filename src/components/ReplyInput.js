@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import {Platform, StyleSheet, Text, TextInput, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {gray} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import OvalButton from './button/OvalButton';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+} from 'utils/react-native-vector-helper';
 
 export default function ReplyInput({imgURL, inputImage, singleData}) {
   const [input, setInput] = useState('');

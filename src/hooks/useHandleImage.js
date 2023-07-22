@@ -1,11 +1,11 @@
 import React from 'react';
 import {useMemo} from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import {hs, ss, vs} from 'utils/scailing';
 import {useState} from 'react';
 import ImageModal from 'components/modal/ImageModal';
+import {MaterialIcons} from 'utils/react-native-vector-helper';
 
 function useHandleImage() {
   const [isModalVisible, setIsModalVisible] = useState(false);

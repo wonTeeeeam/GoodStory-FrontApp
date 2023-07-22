@@ -8,13 +8,13 @@ import {
   View,
 } from 'react-native';
 import {hs, vs, ss} from 'utils/scailing';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import useLogin from 'hooks/useLogin';
 import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
+import {AntDesign} from 'utils/react-native-vector-helper';
 
 function Login() {
   const dispatch = useDispatch();

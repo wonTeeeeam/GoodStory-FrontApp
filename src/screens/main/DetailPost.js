@@ -8,7 +8,6 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import DetailPostMain from 'components/DetailPostMain';
@@ -18,14 +17,17 @@ import {black, gray, red, white} from 'styles';
 import {ss, vs, hs} from 'utils/scailing';
 import {convertTimeToStandardFormat} from 'utils/timeConverter';
 
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
 import {showToast} from 'utils/toast';
 import usePressLike from 'hooks/usePressLike';
+import {
+  AntDesign,
+  Entypo,
+  Ionicons,
+  MaterialCommunityIcons,
+} from 'utils/react-native-vector-helper';
 
 export default function DetailPost({route, navigation}) {
   const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
@@ -160,9 +162,9 @@ export default function DetailPost({route, navigation}) {
                 onPress={() => handlePressLike(singleData)}>
                 <View style={styles.iconContainer}>
                   {isLikePressed ? (
-                    <AntDesignIcon name="heart" color={red.hotLips} />
+                    <AntDesign name="heart" color={red.hotLips} />
                   ) : (
-                    <AntDesignIcon name="hearto" color={gray.dimGray} />
+                    <AntDesign name="hearto" color={gray.dimGray} />
                   )}
                 </View>
                 {likeCnt === 0 ? (
@@ -184,7 +186,7 @@ export default function DetailPost({route, navigation}) {
               </Pressable>
               <Pressable style={{...styles.bottomContainer, left: hs(210)}}>
                 <View style={styles.iconContainer}>
-                  <AntDesignIcon name="eyeo" color={gray.dimGray} />
+                  <AntDesign name="eyeo" color={gray.dimGray} />
                 </View>
                 <Text style={styles.viewText}>
                   {firstViewCnt > 0 ? firstViewCnt : '조회수'}
@@ -206,7 +208,7 @@ export default function DetailPost({route, navigation}) {
                 ...styles.pictureBox,
               }}>
               <Pressable onPress={handleChoosePhoto}>
-                <AntDesignIcon name="picture" color={'#4682B4'} size={ss(20)} />
+                <AntDesign name="picture" color={'#4682B4'} size={ss(20)} />
               </Pressable>
             </View>
           </View>
@@ -229,7 +231,7 @@ export default function DetailPost({route, navigation}) {
               }}>
               <Image source={{uri: img.uri}} style={{width: 50, height: 50}} />
               <View style={{marginLeft: hs(52), position: 'absolute'}}>
-                <AntDesignIcon
+                <AntDesign
                   name="closecircle"
                   color={'#4682B4'}
                   size={15}

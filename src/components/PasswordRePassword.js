@@ -4,7 +4,7 @@ import {validatePWD} from 'utils/regex';
 import UTextInput from './UTextInput';
 import JoinButton from './button/JoinButton';
 import {hs, ss} from 'utils/scailing';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {AntDesign} from 'utils/react-native-vector-helper';
 
 function PasswordRePassword({
   password,

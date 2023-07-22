@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {AntDesign} from 'utils/react-native-vector-helper';
 
 import {hs, ss, vs} from 'utils/scailing';
 import {changeTopicToKorean} from 'utils/translation';

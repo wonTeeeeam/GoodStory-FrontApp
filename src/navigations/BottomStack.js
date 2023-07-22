@@ -2,10 +2,7 @@ import * as React from 'react';
 import {Text, View} from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {ss} from 'utils/scailing';
+
 import Login from 'screens/cert/Login';
 import Posting from 'screens/posting/Posting';
 import Topic from 'screens/topic/Topic';
@@ -40,7 +37,7 @@ function BottomStack() {
       />
       <Tab.Screen
         name="Posting"
-        component={userId ? Posting : Login}
+        component={userId ? Posting : Posting}
         options={{
           headerShown: false,
           tabBarLabel: '글작성',

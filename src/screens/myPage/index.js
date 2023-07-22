@@ -1,12 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
@@ -21,6 +16,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
 import useApi from 'hooks/useApi';
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from 'utils/react-native-vector-helper';
 
 function MyPage() {
   const [userData, setUserData] = useState({});

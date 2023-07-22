@@ -2,8 +2,8 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {gray, white} from 'styles';
+import {Foundation} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
-import Foundation from 'react-native-vector-icons/Foundation';
 
 function AnnouncementItem({singleData}) {
   const navigation = useNavigation();
