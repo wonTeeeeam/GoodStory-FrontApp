@@ -10,21 +10,18 @@ import {
   View,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {
-  AntDesign,
-  MaterialCommunityIcons,
-} from 'utils/react-native-vector-helper';
+import {AntDesign} from 'utils/react-native-vector-helper';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
-import TypeModal from 'components/modal/TypeModal';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
 import {useSelector} from 'react-redux';
 import useHandleImage from 'hooks/useHandleImage';
 import useApi from 'hooks/useApi';
 import {alert} from 'utils/alert';
+import {black, gray} from 'styles';
 
-function Posting() {
+function PostingMain() {
   const navigation = useNavigation();
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -111,13 +108,19 @@ function Posting() {
   };
 
   return (
-    <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(10)}}>
+    <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(20)}}>
       <View
         style={{
-          alignItems: 'flex-end',
-          flexGrow: 0.1,
-          justifyContent: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         }}>
+        <View style={{}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: ss(15),
+            }}>{`작성자: ${nickName || undefined}`}</Text>
+        </View>
         <Pressable
           onPress={() => {
             if (!isDisabled) {
@@ -128,43 +131,35 @@ function Posting() {
           }}
           disabled={false}>
           <Text
-            style={{color: isDisabled ? 'gray' : 'black', fontSize: ss(15)}}>
-            등록
+            style={{
+              color: isDisabled ? gray.gainsboro : black.origin,
+              fontSize: ss(15),
+            }}>
+            다음
           </Text>
         </Pressable>
       </View>
 
       <ScrollView
-        contentContainerStyle={{flexGrow: 0.9}}
+        // contentContainerStyle={{flex: 1}}
         showsVerticalScrollIndicator={false}>
-        <View style={{}}>
+        {/* <View style={{}}>
           <TypeModal category={category} handleSetCategory={setCategory} />
-        </View>
+        </View> */}
 
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: vs(20),
+            marginTop: vs(0),
           }}>
-          <View style={{}}>
-            <Text style={{color: 'black'}}>{`작성자: ${nickName}`}</Text>
-          </View>
           <View
             style={{
-              borderColor: '#C0C0C0',
-              borderWidth: 1,
-              borderStyle: 'solid',
               flexDirection: 'row',
-            }}>
-            <Pressable
-              onPress={() => {
-                handleChoosePhoto();
-              }}>
-              <AntDesign name="picture" color={'#4682B4'} size={ss(30)} />
-            </Pressable>
-            <View style={{marginLeft: hs(10)}}>
+            }}> */}
+
+        {/* <View style={{marginLeft: hs(10)}}>
               <Pressable onPress={() => {}}>
                 <MaterialCommunityIcons
                   name="vote"
@@ -172,10 +167,10 @@ function Posting() {
                   size={ss(30)}
                 />
               </Pressable>
-            </View>
-          </View>
-        </View>
-        <ScrollView
+            </View> */}
+        {/* </View> */}
+        {/* </View> */}
+        {/* <ScrollView
           style={{
             borderWidth: ss(1),
             flex: 0.8,
@@ -190,34 +185,37 @@ function Posting() {
             {'\n'}
             {InsertImageInContent(content, image)}
           </Text>
-        </ScrollView>
+        </ScrollView> */}
         <View>
           <TextInput
             style={{
-              color: 'black',
-              borderWidth: ss(1),
+              color: black.origin,
               marginTop: vs(20),
-              borderRadius: ss(10),
-              borderColor: 'darkgray',
+              fontSize: ss(15),
             }}
-            placeholder="제목을 입력해주세요"
-            placeholderTextColor={'black'}
+            placeholder="제목을 입력해주세요(최대 50자)."
+            placeholderTextColor={gray.gainsboro}
             maxLength={50}
             multiline={true}
             onChangeText={setTitle}
+            autoFocus={true}
           />
         </View>
+        <Pressable
+          style={{alignSelf: 'flex-end'}}
+          onPress={() => {
+            handleChoosePhoto();
+          }}>
+          <AntDesign name="picture" color={gray.dimGray} size={ss(25)} />
+        </Pressable>
         <View>
           <TextInput
             style={{
               color: 'black',
-              borderWidth: ss(1),
-              marginTop: vs(20),
-              borderRadius: ss(10),
-              borderColor: 'darkgray',
+              marginTop: vs(10),
             }}
-            placeholder="내용을 입력해주세요"
-            placeholderTextColor={'black'}
+            placeholder="내용을 입력해주세요(최대 500자)."
+            placeholderTextColor={gray.gainsboro}
             maxLength={500}
             multiline={true}
             onChangeText={setContent}
@@ -237,4 +235,4 @@ function Posting() {
   );
 }
 
-export default Posting;
+export default PostingMain;

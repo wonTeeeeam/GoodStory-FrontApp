@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from 'screens/cert/Login';
-import Posting from 'screens/posting/Posting';
+import Posting from 'screens/posting/PostingMain';
 import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';

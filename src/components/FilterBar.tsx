@@ -2,17 +2,31 @@ import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 
 import {gray, black} from 'styles';
-import {hs, ss, vs} from 'utils/scailing';
+import {ss} from 'utils/scailing';
 import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
 import {AntDesign} from 'utils/react-native-vector-helper';
 
-export default function FilterBar({filterValue, changeFilterValue}) {
+export type Props = {
+  filterValue: string;
+  changeFilterValue: (newFilterValue: string) => void;
+};
+
+const FilterBar: React.FC<Props> = ({filterValue, changeFilterValue}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const changeModalVisible = (newValue: boolean) => {
+    setIsModalVisible(newValue);
+  };
+
+  const handleFilterValueChange = (newValue: string) => {
+    changeFilterValue(newValue);
+    changeModalVisible(false);
+  };
 
   return (
     <View style={{}}>
-      <Pressable onPress={() => setIsModalVisible(true)}>
+      <Pressable onPress={() => changeModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
           <AntDesign name="down" size={ss(20)} color={gray.dimGray} />
@@ -22,23 +36,17 @@ export default function FilterBar({filterValue, changeFilterValue}) {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}>
         <BottomModalElement
-          onPress={() => {
-            changeFilterValue('최신순');
-            setIsModalVisible(false);
-          }}
+          onPress={() => handleFilterValueChange('최신순')}
           text={'최신순'}
         />
         <BottomModalElement
-          onPress={() => {
-            changeFilterValue('추천순');
-            setIsModalVisible(false);
-          }}
+          onPress={() => handleFilterValueChange('추천순')}
           text={'추천순'}
         />
       </BottomModal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   textContainer: {
@@ -54,3 +62,5 @@ const styles = StyleSheet.create({
     margin: ss(10),
   },
 });
+
+export default FilterBar;

@@ -3,15 +3,18 @@ import {View, Text, StyleSheet, BackHandler} from 'react-native';
 
 import FilterBar from 'components/FilterBar';
 import PostList from 'components/PostList';
-
 import {gray, white} from 'styles';
 import {showToast} from 'utils/toast';
 
-export default function Board({route}) {
+export type Props = {
+  route: {key: string; name: string; params: {boardTopic: string}};
+};
+
+const Board: React.FC<Props> = ({route}) => {
   const [filterValue, setFilterValue] = useState('최신순');
   const [backPressCount, setBackPressCount] = useState(0);
 
-  const changeFilterValue = newFilterValue => {
+  const changeFilterValue = (newFilterValue: string) => {
     setFilterValue(newFilterValue);
   };
 
@@ -41,31 +44,33 @@ export default function Board({route}) {
   }, [backPressCount]);
 
   return (
-    <View style={styles.allContainer}>
-      <View style={styles.filterBar}>
+    <View style={styles.mainContainer}>
+      <View style={styles.filterBarContainer}>
         <FilterBar
           filterValue={filterValue}
           changeFilterValue={changeFilterValue}
         />
       </View>
-      <View style={styles.postList}>
+      <View style={styles.postListContainer}>
         <PostList filterValue={filterValue} topic={route.params.boardTopic} />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  allContainer: {
+  mainContainer: {
     flex: 1,
   },
-  filterBar: {
+  filterBarContainer: {
     flex: 0.04,
     backgroundColor: gray.lightGray,
     justifyContent: 'center',
   },
-  postList: {
+  postListContainer: {
     flex: 0.96,
     backgroundColor: white.snow,
   },
 });
+
+export default Board;
