@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, BackHandler} from 'react-native';
+import {View, StyleSheet, BackHandler} from 'react-native';
 
 import FilterBar from 'components/FilterBar';
 import PostList from 'components/PostList';

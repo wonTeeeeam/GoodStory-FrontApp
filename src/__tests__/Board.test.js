@@ -157,6 +157,11 @@ jest.mock('@react-navigation/native', () => {
   };
 });
 
+jest.mock(
+  'react-native/Libraries/Components/Touchable/TouchableOpacity',
+  () => 'TouchableOpacity',
+);
+
 const route = {
   key: 'Board-MAkMB4XImCVfcaiQH-caF',
   name: 'Board',

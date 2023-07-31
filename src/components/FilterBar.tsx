@@ -34,7 +34,7 @@ const FilterBar: React.FC<Props> = ({filterValue, changeFilterValue}) => {
       </Pressable>
       <BottomModal
         isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}>
+        changeModalVisible={changeModalVisible}>
         <BottomModalElement
           onPress={() => handleFilterValueChange('최신순')}
           text={'최신순'}
