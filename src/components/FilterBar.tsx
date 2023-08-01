@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {gray, black} from 'styles';
 import {ss} from 'utils/scailing';
@@ -26,12 +26,12 @@ const FilterBar: React.FC<Props> = ({filterValue, changeFilterValue}) => {
 
   return (
     <View style={{}}>
-      <Pressable onPress={() => changeModalVisible(true)}>
+      <TouchableOpacity onPress={() => changeModalVisible(true)}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{filterValue}</Text>
           <AntDesign name="down" size={ss(20)} color={gray.dimGray} />
         </View>
-      </Pressable>
+      </TouchableOpacity>
       <BottomModal
         isModalVisible={isModalVisible}
         changeModalVisible={changeModalVisible}>

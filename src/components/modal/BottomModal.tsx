@@ -7,7 +7,7 @@ import {ss} from 'utils/scailing';
 export type Props = {
   isModalVisible: boolean;
   changeModalVisible: (newValue: boolean) => void;
-  children: any;
+  children: React.ReactNode;
 };
 
 const BottomModal: React.FC<Props> = ({

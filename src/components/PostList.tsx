@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View, StyleSheet, FlatList, Text, RefreshControl} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import Post from './Post';
 import {gray} from 'styles';
 import {ss} from 'utils/scailing';
@@ -7,7 +7,12 @@ import NoPost from './NoPost';
 import useFetchDataList from 'hooks/useFetchDataList';
 import {useNavigation} from '@react-navigation/native';
 
-export default function PostList({filterValue, topic}) {
+export type Props = {
+  filterValue: string;
+  topic: string;
+};
+
+const PostList: React.FC<Props> = ({filterValue, topic}) => {
   const {onRefresh, fetchNextData, listData, isListDataExist, refreshing} =
     useFetchDataList({url: '/board/getAll', topic: topic});
 
@@ -60,7 +65,7 @@ export default function PostList({filterValue, topic}) {
       ) : null}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -68,3 +73,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: ss(1),
   },
 });
+
+export default PostList;

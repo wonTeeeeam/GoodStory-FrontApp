@@ -52,7 +52,7 @@ const Board: React.FC<Props> = ({route}) => {
         />
       </View>
       <View style={styles.postListContainer}>
-        <PostList filterValue={filterValue} topic={route.params.boardTopic} />
+        <PostList filterValue={filterValue} topic={route?.params?.boardTopic} />
       </View>
     </View>
   );

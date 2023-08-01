@@ -20,19 +20,8 @@ exports[`Board 테스트 스냅샷 테스트 1`] = `
     <View
       style={Object {}}
     >
-      <View
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+      <TouchableOpacity
+        onPress={[Function]}
       >
         <View
           style={
@@ -74,7 +63,7 @@ exports[`Board 테스트 스냅샷 테스트 1`] = `
             
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <Modal
         animationType="none"
         deviceHeight={null}
