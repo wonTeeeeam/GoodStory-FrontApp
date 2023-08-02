@@ -5,7 +5,9 @@ import OvalButton from './button/OvalButton';
 import {white} from 'styles';
 import {Entypo} from 'utils/react-native-vector-helper';
 
-function NoPost({onPress = null, btnText = null}) {
+type Props = {onPress: () => void; btnText: string};
+
+const NoPost: React.FC<Props> = ({onPress = null, btnText = null}) => {
   return (
     <View
       style={{
@@ -32,6 +34,6 @@ function NoPost({onPress = null, btnText = null}) {
       ) : null}
     </View>
   );
-}
+};
 
 export default NoPost;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useCallback, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {useEffect} from 'react';
 
 type Props = {
@@ -7,41 +7,11 @@ type Props = {
   topic: string;
 };
 
-type BoardPhotoList = {
-  BoardPhotoID: string;
-  URL: string;
-  Created_date: string;
-};
-
-export type ListData = {
-  BoardId: string;
-  Category: string;
-  Created_date: string;
-  Updated_date: string;
-  Title: string;
-  Content: string;
-  Like: number;
-  Views: number;
-  ReplyCount: number;
-  user: {
-    UserId: string;
-    Nickname: string;
-    Role: string;
-    CompanyCode: string;
-    CompanyName: string;
-    Created_date: string;
-    Updated_date: string;
-    Deleted_date: string | null;
-    ProfilePhoto: string;
-  };
-  BoardPhotos: BoardPhotoList[];
-};
-
 const useFetchDataList = ({url, topic}: Props) => {
   const [skip, setSkip] = useState(0);
-  const [listData, setListData] = useState<any[]>();
+  const [listData, setListData] = useState<any[]>([]);
   const [isListDataExist, setIsListDataExist] = useState<boolean>();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchNextData = useCallback(async () => {
     const top = 5;
@@ -76,7 +46,7 @@ const useFetchDataList = ({url, topic}: Props) => {
 
   useEffect(() => {
     onRefresh();
-  }, [onRefresh]);
+  }, []);
 
   return {
     onRefresh,

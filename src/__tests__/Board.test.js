@@ -5,6 +5,10 @@ import {renderWithProviders} from 'utils/test-utils';
 
 import {convertTimeToKorean} from 'utils/timeConverter';
 
+// 필터바 게시글 순서 잘 바뀌는지 테스트 코드 추가해야함!!!
+// '2023-07-02T05:46:27.466Z', '2023-06-11T15:17:24.875Z', '2023-05-12T03:19:02.596Z', '2023-05-12T03:09:47.283Z', '2023-04-29T12:41:10.536Z'
+// 0, 1, 0, 0, 0
+
 const data = {
   data: [
     {
