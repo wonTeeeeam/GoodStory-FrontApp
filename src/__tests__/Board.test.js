@@ -5,10 +5,6 @@ import {renderWithProviders} from 'utils/test-utils';
 
 import {convertTimeToKorean} from 'utils/timeConverter';
 
-// 필터바 게시글 순서 잘 바뀌는지 테스트 코드 추가해야함!!!
-// '2023-07-02T05:46:27.466Z', '2023-06-11T15:17:24.875Z', '2023-05-12T03:19:02.596Z', '2023-05-12T03:09:47.283Z', '2023-04-29T12:41:10.536Z'
-// 0, 1, 0, 0, 0
-
 const data = {
   data: [
     {
@@ -18,7 +14,7 @@ const data = {
       Updated_date: '2023-07-08T08:27:26.087Z',
       Title: '1번게시글제목',
       Content: '1번게시글내용',
-      Like: 0,
+      Like: 1,
       Views: 38,
       ReplyCount: 6,
       user: {
@@ -26,7 +22,7 @@ const data = {
         Nickname: '홍길동',
         Role: 'Admin',
         CompanyCode: '321321',
-        CompanyName: '좆소',
+        CompanyName: '기업',
         Created_date: '2023-03-31T12:24:45.043Z',
         Updated_date: '2023-07-11T12:03:44.205Z',
         Deleted_date: null,
@@ -42,7 +38,7 @@ const data = {
       Updated_date: '2023-07-08T08:29:06.706Z',
       Title: '2번게시글제목',
       Content: '2번게시글내용',
-      Like: 1,
+      Like: 2,
       Views: 173,
       ReplyCount: 5,
       user: {
@@ -50,7 +46,7 @@ const data = {
         Nickname: '홍길동',
         Role: 'Admin',
         CompanyCode: '321321',
-        CompanyName: '좆소',
+        CompanyName: '기업',
         Created_date: '2023-03-31T12:24:45.043Z',
         Updated_date: '2023-07-11T12:03:44.205Z',
         Deleted_date: null,
@@ -72,7 +68,7 @@ const data = {
       Updated_date: '2023-07-02T05:33:57.655Z',
       Title: '3번게시글제목',
       Content: '3번게시글내용',
-      Like: 0,
+      Like: 3,
       Views: 23,
       ReplyCount: 0,
       user: {
@@ -80,7 +76,7 @@ const data = {
         Nickname: '홍길동',
         Role: 'Admin',
         CompanyCode: '321321',
-        CompanyName: '좆소',
+        CompanyName: '기업',
         Created_date: '2023-03-31T12:24:45.043Z',
         Updated_date: '2023-07-11T12:03:44.205Z',
         Deleted_date: null,
@@ -96,7 +92,7 @@ const data = {
       Updated_date: '2023-07-08T08:23:18.708Z',
       Title: '4번게시글제목',
       Content: '4번게시글내용',
-      Like: 0,
+      Like: 4,
       Views: 6,
       ReplyCount: 0,
       user: {
@@ -104,7 +100,7 @@ const data = {
         Nickname: '홍길동',
         Role: 'Admin',
         CompanyCode: '321321',
-        CompanyName: '좆소',
+        CompanyName: '기업',
         Created_date: '2023-03-31T12:24:45.043Z',
         Updated_date: '2023-07-11T12:03:44.205Z',
         Deleted_date: null,
@@ -120,7 +116,7 @@ const data = {
       Updated_date: '2023-06-12T15:11:32.714Z',
       Title: '5번게시글제목',
       Content: '5번게시글내용',
-      Like: 0,
+      Like: 5,
       Views: 7,
       ReplyCount: 0,
       user: {
@@ -128,7 +124,7 @@ const data = {
         Nickname: '홍길동',
         Role: 'Admin',
         CompanyCode: '321321',
-        CompanyName: '좆소',
+        CompanyName: '기업',
         Created_date: '2023-03-31T12:24:45.043Z',
         Updated_date: '2023-07-11T12:03:44.205Z',
         Deleted_date: null,
@@ -181,16 +177,71 @@ describe('Board 테스트', () => {
   });
 
   it('필터링 바 정상 렌더링 && 정상작동 테스트', async () => {
-    const {queryByText} = renderWithProviders(<Board route={route} />);
+    const {queryAllByTestId, debug, queryByText} = renderWithProviders(
+      <Board route={route} />,
+    );
+
     // 최초 filterValue는 '최신순'
-    await waitFor(() => expect(queryByText('최신순')).toBeTruthy());
+    await waitFor(() => {
+      expect(queryByText('최신순')).toBeTruthy();
+      const renderedItems = queryAllByTestId('flatListItems');
+      // 길이 체크
+      expect(renderedItems).toHaveLength(data.data.length);
+      // 최신순으로 게시글 순서가 잘 나오나요?
+      renderedItems.forEach((item, index) => {
+        const {queryByText} = within(item);
+        switch (index) {
+          case 0:
+            expect(queryByText(data.data[0].Title)).toBeTruthy();
+            break;
+          case 1:
+            expect(queryByText(data.data[1].Title)).toBeTruthy();
+            break;
+          case 2:
+            expect(queryByText(data.data[2].Title)).toBeTruthy();
+            break;
+          case 3:
+            expect(queryByText(data.data[3].Title)).toBeTruthy();
+            break;
+          case 4:
+            expect(queryByText(data.data[4].Title)).toBeTruthy();
+            break;
+        }
+      });
+    });
 
     // filterValue를 '추천순'으로 변경합니다.
     fireEvent.press(queryByText('최신순'));
     fireEvent.press(queryByText('추천순'));
 
     // filterValue가 '추천순'으로 바뀌었는지 체크합니다.
-    await waitFor(() => expect(queryByText('추천순')).toBeTruthy());
+    await waitFor(() => {
+      expect(queryByText('추천순')).toBeTruthy();
+      const renderedItems = queryAllByTestId('flatListItems');
+      // 길이 체크
+      expect(renderedItems).toHaveLength(data.data.length);
+      // 추천순으로 게시글 순서가 잘 나오나요?
+      renderedItems.forEach((item, index) => {
+        const {queryByText} = within(item);
+        switch (index) {
+          case 0:
+            expect(queryByText(data.data[4].Title)).toBeTruthy();
+            break;
+          case 1:
+            expect(queryByText(data.data[3].Title)).toBeTruthy();
+            break;
+          case 2:
+            expect(queryByText(data.data[2].Title)).toBeTruthy();
+            break;
+          case 3:
+            expect(queryByText(data.data[1].Title)).toBeTruthy();
+            break;
+          case 4:
+            expect(queryByText(data.data[0].Title)).toBeTruthy();
+            break;
+        }
+      });
+    });
 
     // filterValue를 다시 '최신순'으로 변경합니다.
     fireEvent.press(queryByText('추천순'));
