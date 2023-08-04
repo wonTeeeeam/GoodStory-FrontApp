@@ -1,28 +1,36 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {black, red} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import useHandleImage from 'hooks/useHandleImage';
-import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {gray} from 'styles';
 import useLikeAndView from 'hooks/useLikeAndView';
 import {
   AntDesign,
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
+import {ListData} from './PostList';
+import {RootState} from '../store/store';
+import {useAppSelector} from '../store/hooks';
 
-export default function Post({singleData}) {
+type Props = {
+  singleData: ListData;
+};
+
+const Post: React.FC<Props> = ({singleData}) => {
   const {deleteImageFlagsInContent} = useHandleImage();
-  const {userId, likeBoards, likeReReplies, likeReplies} = useSelector(
-    state => state.user,
-  );
-  const navigation = useNavigation();
+  const {likeBoards} = useAppSelector((state: RootState) => state.user);
 
   const {
     handlePressLike,
@@ -58,26 +66,28 @@ export default function Post({singleData}) {
 
   return (
     <View>
-      <Pressable style={styles.allContainer} onPress={() => handleNavigate()}>
+      <TouchableOpacity
+        style={styles.allContainer}
+        onPress={() => handleNavigate()}>
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
-            <Pressable>
+            <View>
               <Text style={styles.topicText}>{singleData.Category}</Text>
-            </Pressable>
+            </View>
             <Text style={styles.timeText}>
               {convertTimeToKorean(singleData.Created_date)}
             </Text>
           </View>
           <View style={styles.secondDetailContainer}>
-            <Pressable>
+            <View>
               <Text style={styles.companyNameText}>
                 {singleData.user.CompanyName}
               </Text>
-            </Pressable>
+            </View>
             {/* <EntypoIcon
               name="dot-single"
               size={ss(15)}
-=            /> */}
+            /> */}
             <Pressable>
               <Text style={styles.nickNameText}>
                 {singleData.user.Nickname}
@@ -116,11 +126,8 @@ export default function Post({singleData}) {
             flexDirection: 'row',
             marginTop: vs(30),
           }}>
-          <Pressable
-            style={({pressed}) => [
-              {...styles.bottomContainer, left: hs(20)},
-              {backgroundColor: pressed ? gray.lightGray : null},
-            ]}
+          <TouchableOpacity
+            style={{...styles.bottomContainer, left: hs(20)}}
             onPress={async () => await handlePressLike(singleData)}>
             <View style={styles.iconContainer}>
               {isLikePressed ? (
@@ -134,7 +141,7 @@ export default function Post({singleData}) {
             ) : (
               <Text style={styles.likeText}>{likeCnt}</Text>
             )}
-          </Pressable>
+          </TouchableOpacity>
           <Pressable style={{...styles.bottomContainer, left: hs(140)}}>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
@@ -155,10 +162,10 @@ export default function Post({singleData}) {
             </Text>
           </Pressable>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   allContainer: {
@@ -206,3 +213,5 @@ const styles = StyleSheet.create({
   replyText: {color: gray.dimGray},
   viewText: {color: gray.dimGray},
 });
+
+export default Post;

@@ -1,10 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
-import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
-import userReducer from 'slice/userSlice';
-import navigationReducer from 'slice/navigationSlice';
-import {setupStore} from 'store/store';
+import {setupStore} from '../store/store';
 
 // As a basic setup, import your same slice reducers
 

@@ -12,7 +12,7 @@ export type Props = {
   topic: string;
 };
 
-type ListData = {
+export type ListData = {
   BoardId: string;
   Category: string;
   Created_date: string;
@@ -67,7 +67,7 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
 
   return (
     <View style={{flex: 1}}>
-      {isListDataExist === true ? (
+      {isListDataExist === true && (
         <FlatList
           data={changeOrder(listData)}
           refreshControl={
@@ -86,14 +86,14 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
           onEndReachedThreshold={0.1}
           onEndReached={fetchNextData}
         />
-      ) : null}
+      )}
       {/* fetchNextData하고 난 뒤에 게시글 없을 때만 보여줘야함. undefined일 때는 보여주면 안됨.*/}
-      {isListDataExist === false ? (
+      {isListDataExist === false && (
         <NoPost
           onPress={() => navigation.navigate('Posting')}
           btnText={'게시글 등록'}
         />
-      ) : null}
+      )}
     </View>
   );
 };

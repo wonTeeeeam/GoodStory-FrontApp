@@ -40,7 +40,7 @@ export const userSlice = createSlice({
       state.likeReReplies = action.payload.likeReReplies;
       state.likeReplies = action.payload.likeReplies;
     },
-    initUserInfo: (state, action) => {
+    initUserInfo: () => {
       return initialState;
     },
   },
