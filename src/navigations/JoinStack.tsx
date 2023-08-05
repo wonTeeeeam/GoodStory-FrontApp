@@ -1,8 +1,7 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {black, white} from 'styles';
-import {TextColor} from 'styles';
 
 import {useNavigation} from '@react-navigation/native';
 import JoinEmail from 'screens/cert/JoinEmail';
@@ -12,8 +11,9 @@ import JoinCamera from 'screens/cert/JoinCamera';
 import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import {Ionicons} from 'utils/react-native-vector-helper';
+import {JoinStackParamList} from './types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<JoinStackParamList>();
 
 export default function JoinStack() {
   const navigation = useNavigation();

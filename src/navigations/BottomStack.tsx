@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
@@ -8,12 +7,14 @@ import Posting from 'screens/posting/PostingMain';
 import Topic from 'screens/topic/Topic';
 import BoardStack from './BoardStack';
 import MyPage from 'screens/myPage';
-import {useSelector} from 'react-redux';
 import BottomTabBar from 'components/BottomTabBar';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
+import {BottomStackParamList} from './types';
 
 function BottomStack() {
-  const Tab = createBottomTabNavigator();
-  const {userId} = useSelector(state => state.user);
+  const Tab = createBottomTabNavigator<BottomStackParamList>();
+  const {userId} = useAppSelector((state: RootState) => state.user);
 
   return (
     <Tab.Navigator
@@ -37,7 +38,7 @@ function BottomStack() {
       />
       <Tab.Screen
         name="Posting"
-        component={userId ? Posting : Posting}
+        component={userId ? Posting : Login}
         options={{
           headerShown: false,
           tabBarLabel: '글작성',

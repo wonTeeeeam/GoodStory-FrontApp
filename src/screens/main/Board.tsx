@@ -5,12 +5,9 @@ import FilterBar from 'components/FilterBar';
 import PostList from 'components/PostList';
 import {gray, white} from 'styles';
 import {showToast} from 'utils/toast';
+import {BoardStackProps} from 'navigations/types';
 
-export type Props = {
-  route: {key: string; name: string; params: {boardTopic: string}};
-};
-
-const Board: React.FC<Props> = ({route}) => {
+const Board: React.FC<BoardStackProps> = ({route}) => {
   const [filterValue, setFilterValue] = useState('최신순');
   const [backPressCount, setBackPressCount] = useState(0);
 

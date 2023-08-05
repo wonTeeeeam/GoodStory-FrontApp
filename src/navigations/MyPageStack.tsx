@@ -7,9 +7,10 @@ import ResetPassword from 'screens/myPage/ResetPassword';
 import Configuration from 'screens/myPage/Configuration';
 import Withdrawal from 'screens/myPage/Withdrawal';
 import AnnouncementDetail from 'screens/myPage/AnnouncementDetail';
+import {MyPageStackParamList} from './types';
 
 function MyPageStack() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<MyPageStackParamList>();
 
   return (
     <Stack.Navigator>

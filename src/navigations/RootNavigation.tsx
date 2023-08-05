@@ -1,23 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useEffect} from 'react';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 import MainStack from './MainStack';
 import JoinStack from './JoinStack';
-import {useColorScheme} from 'react-native';
-import * as Keychain from 'react-native-keychain';
 import useLogin from 'hooks/useLogin';
 import useAxiosInterceptor from 'hooks/useAxiosInterceptor';
 import {white} from 'styles';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
 
 export default function RootNavigation() {
   useAxiosInterceptor();
-  const isUserStartJoin = useSelector(
-    state => state.navigation.isUserStartJoin,
+  const isUserStartJoin = useAppSelector(
+    (state: RootState) => state.navigation.isUserStartJoin,
   );
   const {handleAutoLogin} = useLogin();
 
@@ -30,7 +25,11 @@ export default function RootNavigation() {
 
   return (
     // theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
-    <NavigationContainer theme={{colors: {background: white.snow}}}>
+    <NavigationContainer
+      theme={{
+        ...DefaultTheme,
+        colors: {...DefaultTheme.colors, background: white.snow},
+      }}>
       {isUserStartJoin ? <JoinStack /> : <MainStack />}
     </NavigationContainer>
   );

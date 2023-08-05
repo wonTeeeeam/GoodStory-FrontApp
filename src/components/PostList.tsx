@@ -12,6 +12,24 @@ export type Props = {
   topic: string;
 };
 
+export type User = {
+  UserId: string;
+  Nickname: string;
+  Role: string;
+  CompanyCode: string;
+  CompanyName: string;
+  Created_date: string;
+  Updated_date: string;
+  Deleted_date: null;
+  ProfilePhoto: string;
+};
+
+export type BoardPhoto = {
+  BoardPhotoID: string;
+  URL: string;
+  Created_date: string;
+};
+
 export type ListData = {
   BoardId: string;
   Category: string;
@@ -22,24 +40,8 @@ export type ListData = {
   Like: number;
   Views: number;
   ReplyCount: number;
-  user: {
-    UserId: string;
-    Nickname: string;
-    Role: string;
-    CompanyCode: string;
-    CompanyName: string;
-    Created_date: string;
-    Updated_date: string;
-    Deleted_date: null;
-    ProfilePhoto: string;
-  };
-  BoardPhotos: [
-    {
-      BoardPhotoID: string;
-      URL: string;
-      Created_date: string;
-    },
-  ];
+  user: User;
+  BoardPhotos: BoardPhoto[];
 };
 
 const PostList: React.FC<Props> = ({filterValue, topic}) => {

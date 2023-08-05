@@ -1,11 +1,12 @@
 import React from 'react';
 import {useMemo} from 'react';
-import {Modal, Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {hs, ss, vs} from 'utils/scailing';
 import {useState} from 'react';
 import ImageModal from 'components/modal/ImageModal';
 import {MaterialIcons} from 'utils/react-native-vector-helper';
+import {BoardPhoto} from 'components/PostList';
 
 function useHandleImage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,8 +28,8 @@ function useHandleImage() {
     [],
   );
 
-  const InsertImageInContent = (content, image) => {
-    let copyContent = content.slice();
+  const InsertImageInContent = (content: string, image: BoardPhoto[]) => {
+    let copyContent = content && content.slice();
 
     const Result = [];
     let keyIndex = 0;
@@ -36,7 +37,7 @@ function useHandleImage() {
       const matchInfo = imageFlags.exec(copyContent);
       if (!matchInfo) {
         Result.push(<Text key={keyIndex}>{copyContent}</Text>);
-        copyContent = null;
+        copyContent = '';
         break;
       }
       if (matchInfo.index !== 0) {
@@ -46,9 +47,7 @@ function useHandleImage() {
         keyIndex += 1;
       }
       if (image[parseInt(matchInfo[0][8], 10)]) {
-        const imgUrl =
-          image[parseInt(matchInfo[0][8], 10)].uri ||
-          image[parseInt(matchInfo[0][8], 10)].URL;
+        const imgUrl = image[parseInt(matchInfo[0][8], 10)].URL;
         Result.push(
           <View key={keyIndex}>
             <Pressable
@@ -95,7 +94,8 @@ function useHandleImage() {
     );
     return Result;
   };
-  const deleteImageFlagsInContent = content => {
+
+  const deleteImageFlagsInContent = (content: string) => {
     return content.replaceAll(imageRegex, '');
   };
 

@@ -2,9 +2,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import BottomStack from './BottomStack';
 import MyPageStack from './MyPageStack';
+import {MainStackParamList} from './types';
 
 function MainStack() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<MainStackParamList>();
 
   return (
     <Stack.Navigator initialRouteName="BottomStack">

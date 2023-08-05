@@ -5,10 +5,11 @@ import DetailPost from 'screens/main/DetailPost';
 import {black, white} from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {Ionicons} from 'utils/react-native-vector-helper';
+import {BoardStackParamList, BoardStackProps} from './types';
 
-function BoardStack({route}) {
-  const Stack = createNativeStackNavigator();
-  const navigation = useNavigation();
+const BoardStack: React.FC<BoardStackProps> = ({route}) => {
+  const Stack = createNativeStackNavigator<BoardStackParamList>();
+  const navigation = useNavigation<BoardStackProps['navigation']>();
 
   return (
     <Stack.Navigator
@@ -27,18 +28,6 @@ function BoardStack({route}) {
             />
           );
         },
-        // headerRight: () => {
-        //   return (
-        //     <Entypo
-        //       name="dots-three-vertical"
-        //       color={TextColor.black}
-        //       size={20}
-        //       onPress={() => {
-        //         handleSetIsModalVisible(true);
-        //       }}
-        //     />
-        //   );
-        // },
       }}>
       <Stack.Screen
         name="Board"
@@ -49,36 +38,15 @@ function BoardStack({route}) {
       <Stack.Screen
         name="DetailPost"
         component={DetailPost}
-        initialParams={
-          {
-            // isModalVisible: isModalVisible,
-          }
-        }
         options={{
           headerShown: true,
           headerTitle: route?.params?.boardTopic || 'Free',
           headerTitleStyle: {},
-          // animationTypeForReplace: 'push',
           animation: 'slide_from_right',
         }}
       />
-      {/* <Stack.Screen
-        name="Password"
-        component={Password}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
-        name="NickName"
-        component={NickName}
-        options={{headerShown: false}}
-      /> */}
-      {/* <Stack.Screen
-        name="BusinessCard"
-        component={BusinessCard}
-        options={{headerShown: false}}
-      /> */}
     </Stack.Navigator>
   );
-}
+};
 
 export default BoardStack;
