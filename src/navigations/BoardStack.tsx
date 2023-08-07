@@ -5,11 +5,15 @@ import DetailPost from 'screens/main/DetailPost';
 import {black, white} from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {Ionicons} from 'utils/react-native-vector-helper';
-import {BoardStackParamList, BoardStackProps} from './types';
+import {BoardStackParamList, BoardStackProps, BottomStackProps} from './types';
 
-const BoardStack: React.FC<BoardStackProps> = ({route}) => {
+// type Props = {
+//   route: BoardStackProps;
+// };
+
+const BoardStack = ({route}: BoardStackProps) => {
   const Stack = createNativeStackNavigator<BoardStackParamList>();
-  const navigation = useNavigation<BoardStackProps['navigation']>();
+  const navigation = useNavigation<BottomStackProps['navigation']>();
 
   return (
     <Stack.Navigator
@@ -23,7 +27,7 @@ const BoardStack: React.FC<BoardStackProps> = ({route}) => {
               color={black.origin}
               size={20}
               onPress={() => {
-                navigation.navigate('Board');
+                navigation.goBack();
               }}
             />
           );
@@ -33,14 +37,14 @@ const BoardStack: React.FC<BoardStackProps> = ({route}) => {
         name="Board"
         component={Board}
         options={{headerShown: false}}
-        initialParams={{boardTopic: route?.params?.boardTopic || 'Free'}}
+        initialParams={{boardTopic: route.params.boardTopic}}
       />
       <Stack.Screen
         name="DetailPost"
         component={DetailPost}
         options={{
           headerShown: true,
-          headerTitle: route?.params?.boardTopic || 'Free',
+          // headerTitle: route?.params?.boardTopic || 'Free',
           headerTitleStyle: {},
           animation: 'slide_from_right',
         }}

@@ -7,7 +7,7 @@ export type MainStackParamList = {
 };
 
 export type BottomStackParamList = {
-  BoardStack: NavigatorScreenParams<MyPageStackParamList>;
+  BoardStack: NavigatorScreenParams<BoardStackParamList>;
   Topic: undefined;
   Posting: undefined;
   MyPage: undefined;
@@ -19,7 +19,7 @@ export type BottomStackProps = NativeStackScreenProps<
 >;
 
 export type BoardStackParamList = {
-  Board: {boardTopic: string} | undefined;
+  Board: {boardTopic: string};
   DetailPost: undefined;
 };
 

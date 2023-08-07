@@ -30,10 +30,16 @@ function HandleTopicCard({color, text, children}) {
         borderRadius: ss(10),
       }}
       onPress={() => {
-        const boardTopic = makeTopicEnglish();
         navigation.reset({
-          routes: [{name: 'BoardStack', params: {boardTopic}}],
+          routes: [
+            {name: 'BoardStack', params: {boardTopic: makeTopicEnglish()}},
+          ],
         });
+        navigation.navigate(
+          'BoardStack',
+          {screen: 'Board'},
+          {boardTopic: makeTopicEnglish()},
+        );
       }}>
       {children}
       <View style={{marginTop: vs(20)}}>
