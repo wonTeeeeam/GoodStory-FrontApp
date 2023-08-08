@@ -5,13 +5,13 @@ import DetailPost from 'screens/main/DetailPost';
 import {black, white} from 'styles';
 import {useNavigation} from '@react-navigation/native';
 import {Ionicons} from 'utils/react-native-vector-helper';
-import {BoardStackParamList, BoardStackProps, BottomStackProps} from './types';
+import {BoardStackParamList, BottomStackProps} from './types';
 
 // type Props = {
 //   route: BoardStackProps;
 // };
 
-const BoardStack = ({route}: BoardStackProps) => {
+const BoardStack = ({route}: BottomStackProps) => {
   const Stack = createNativeStackNavigator<BoardStackParamList>();
   const navigation = useNavigation<BottomStackProps['navigation']>();
 
@@ -37,7 +37,9 @@ const BoardStack = ({route}: BoardStackProps) => {
         name="Board"
         component={Board}
         options={{headerShown: false}}
-        initialParams={{boardTopic: route.params.boardTopic}}
+        initialParams={{
+          boardTopic: (route.params && route.params.boardTopic) || 'Free',
+        }}
       />
       <Stack.Screen
         name="DetailPost"

@@ -27,7 +27,6 @@ function BottomStack() {
           headerShown: false,
           tabBarLabel: '홈',
         }}
-        initialParams={{boardTopic: 'Free'}}
       />
       <Tab.Screen
         name="Topic"
