@@ -1,8 +1,5 @@
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {
-  CompositeScreenProps,
-  NavigatorScreenParams,
-} from '@react-navigation/native';
+import {NavigatorScreenParams} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type MainStackParamList = {
@@ -17,10 +14,20 @@ export type BottomStackParamList = {
   MyPage: undefined;
 };
 
+export type BottomStackProps = BottomTabScreenProps<
+  BottomStackParamList,
+  'BoardStack'
+>;
+
 export type BoardStackParamList = {
-  Board: {boardTopic: string} | undefined;
+  Board: {boardTopic: string};
   DetailPost: undefined;
 };
+
+export type BoardStackProps = NativeStackScreenProps<
+  BoardStackParamList,
+  'Board'
+>;
 
 export type MyPageStackParamList = {
   ResetPassword: undefined;
@@ -29,29 +36,3 @@ export type MyPageStackParamList = {
   Configuration: undefined;
   Withdrawal: undefined;
 };
-
-export type BottomStackProps = BottomTabScreenProps<
-  BottomStackParamList,
-  'BoardStack'
->;
-
-// export type BottomStackProps = CompositeScreenProps<
-//   NativeStackScreenProps<BoardStackParamList, 'Board'>,
-//   BottomTabScreenProps<BottomStackParamList, 'BoardStack'>
-// >;
-
-// export type BoardStackProps = NativeStackScreenProps<
-//   BoardStackParamList,
-//   'Board'
-// >;
-
-// export type JoinStackParamList = {
-//   JoinEmail: undefined;
-//   JoinPassword: undefined;
-//   JoinName: undefined;
-//   JoinCamera: undefined;
-// };
-
-// export type JoinStackProps = NativeStackScreenProps<JoinStackParamList>;
-
-// export type MyPageStackProps = NativeStackScreenProps<MyPageStackParamList>;

@@ -1,9 +1,9 @@
-import React from 'react';
+import {ListData} from 'components/PostList';
 import usePlusView from './usePlusView';
 import usePressLike from './usePressLike';
 import {useNavigation} from '@react-navigation/native';
 
-function useLikeAndView() {
+const useLikeAndView = () => {
   const navigation = useNavigation();
   const {
     handlePressLike,
@@ -14,7 +14,7 @@ function useLikeAndView() {
   } = usePressLike();
   const {viewCnt, setViewCnt, handlePlusView} = usePlusView();
 
-  const navigateDetailPost = singleData => {
+  const navigateDetailPost = (singleData: ListData) => {
     navigation.navigate('DetailPost', {
       singleData,
       firstViewCnt: viewCnt + 1,
@@ -34,6 +34,6 @@ function useLikeAndView() {
     handlePlusView,
     navigateDetailPost,
   };
-}
+};
 
 export default useLikeAndView;

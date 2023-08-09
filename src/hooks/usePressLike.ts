@@ -1,44 +1,46 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import axios from 'axios';
 
-import {useSelector} from 'react-redux';
 import {showToast} from 'utils/toast';
 import useApi from './useApi';
+import {useAppSelector} from 'store/hooks';
+import {ListData} from 'components/PostList';
+import {RootState} from 'store/store';
 
-function usePressLike() {
+const usePressLike = () => {
   const [isLikePressed, setIsLikePressed] = useState(false);
   const [likeCnt, setLikeCnt] = useState(0);
-  const {userId} = useSelector(state => state.user);
-  const {handleAsyncMethod, isLoading, setIsLoading} = useApi();
+  const {userId} = useAppSelector((state: RootState) => state.user);
+  const {handleAsyncMethod} = useApi();
 
-  const handlePressLike = async singleData => {
+  const handlePressLike = async (singleData: ListData) => {
     if (!userId) {
       showToast('로그인이 필요한 서비스입니다.');
     }
     !isLikePressed ? await plusLike(singleData) : await minusLike(singleData);
   };
 
-  const onSuccessPlusLike = result => {
+  const onSuccessPlusLike = () => {
     setLikeCnt(likeCnt + 1);
     setIsLikePressed(true);
   };
 
-  const onErrorPlusLike = error => {
+  const onErrorPlusLike = (error: any) => {
     console.log(error.message);
     showToast('좋아요에 실패하였습니다. 잠시후에 다시 시도해주세요');
   };
 
-  const onSuccessMinusLike = result => {
+  const onSuccessMinusLike = () => {
     setLikeCnt(likeCnt - 1);
     setIsLikePressed(false);
   };
 
-  const onErrorMinusLike = error => {
+  const onErrorMinusLike = (error: any) => {
     console.log(error.message);
     showToast('좋아요 취소에 실패하였습니다. 잠시후에 다시 시도해주세요');
   };
 
-  const plusLike = async singleData => {
+  const plusLike = async (singleData: ListData) => {
     const plusLikeButton = async () => {
       return await axios.post('/likeboard/presslikeboard', {
         LikeBoardNumber: singleData.BoardId,
@@ -50,7 +52,7 @@ function usePressLike() {
     await handleAsyncMethod(plusLikeButton, onSuccessPlusLike, onErrorPlusLike);
   };
 
-  const minusLike = async singleData => {
+  const minusLike = async (singleData: ListData) => {
     const minusLikeButton = async () => {
       return await axios.delete('/likeboard/pressdislikeboard', {
         params: {
@@ -73,6 +75,6 @@ function usePressLike() {
     isLikePressed,
     setIsLikePressed,
   };
-}
+};
 
 export default usePressLike;

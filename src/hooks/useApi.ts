@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import {AxiosResponse} from 'axios';
+import {useState} from 'react';
 
-function useApi() {
+const useApi = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAsyncMethod = async (asyncMethod, onSuccess, onError) => {
+  const handleAsyncMethod = async (
+    asyncMethod: () => Promise<AxiosResponse<any, any>>,
+    onSuccess: (result?: any) => Promise<void> | void,
+    onError: (e?: any) => Promise<void> | void,
+  ) => {
     try {
       setIsLoading(true);
       const result = await asyncMethod();
       setIsLoading(false);
       return await onSuccess(result);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
       setIsLoading(false);
       return onError(e);
@@ -17,6 +22,6 @@ function useApi() {
   };
 
   return {handleAsyncMethod, isLoading, setIsLoading};
-}
+};
 
 export default useApi;

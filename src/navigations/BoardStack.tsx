@@ -7,11 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Ionicons} from 'utils/react-native-vector-helper';
 import {BoardStackParamList, BottomStackProps} from './types';
 
-// type Props = {
-//   route: BoardStackProps;
-// };
-
-const BoardStack = ({route}: BottomStackProps) => {
+const BoardStack: React.FC = () => {
   const Stack = createNativeStackNavigator<BoardStackParamList>();
   const navigation = useNavigation<BottomStackProps['navigation']>();
 
@@ -37,16 +33,12 @@ const BoardStack = ({route}: BottomStackProps) => {
         name="Board"
         component={Board}
         options={{headerShown: false}}
-        initialParams={{
-          boardTopic: (route.params && route.params.boardTopic) || 'Free',
-        }}
       />
       <Stack.Screen
         name="DetailPost"
         component={DetailPost}
         options={{
           headerShown: true,
-          // headerTitle: route?.params?.boardTopic || 'Free',
           headerTitleStyle: {},
           animation: 'slide_from_right',
         }}

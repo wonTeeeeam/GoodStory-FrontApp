@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 
-export type Props = {
+type Props = {
   isModalVisible: boolean;
   changeModalVisible: (newValue: boolean) => void;
   children: React.ReactNode;

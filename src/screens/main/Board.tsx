@@ -49,7 +49,10 @@ const Board: React.FC<BoardStackProps> = ({route}) => {
         />
       </View>
       <View style={styles.postListContainer}>
-        <PostList filterValue={filterValue} topic={route.params.boardTopic} />
+        <PostList
+          filterValue={filterValue}
+          topic={route.params?.boardTopic || 'Free'}
+        />
       </View>
     </View>
   );
