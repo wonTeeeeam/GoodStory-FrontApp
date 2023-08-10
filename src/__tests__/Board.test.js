@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import Board from 'screens/main/Board';
 import {fireEvent, waitFor, within} from '@testing-library/react-native';
@@ -143,7 +144,7 @@ const data = {
 };
 
 jest.mock('axios', () => ({
-  get: jest.fn(() => Promise.resolve(data)),
+  get: null,
   post: jest.fn(() => Promise.resolve(true)),
   delete: jest.fn(() => Promise.resolve(true)),
 }));
@@ -171,6 +172,9 @@ const route = {
 };
 
 describe('Board 테스트', () => {
+  beforeEach(() => {
+    axios.get = jest.fn(() => Promise.resolve(data));
+  });
   it('스냅샷 테스트', async () => {
     const tree = renderWithProviders(<Board route={route} />);
     await waitFor(() => expect(tree).toMatchSnapshot());
@@ -372,6 +376,35 @@ describe('Board 테스트', () => {
           ),
         ).toBeTruthy();
       });
+    });
+  });
+});
+
+describe('NoBoard 테스트', () => {
+  beforeEach(() => {
+    const data = {data: []};
+    axios.get = jest.fn(() => Promise.resolve(data));
+  });
+  it('NoPost 컴포넌트 정상 작동 테스트', async () => {
+    const {queryByText, debug} = renderWithProviders(<Board route={route} />, {
+      preloadedState: {
+        user: {
+          userId: 'asdasd',
+          account: '',
+          nickName: '',
+          profileImage: '',
+          createdDate: '',
+          companyCode: '',
+          companyName: '',
+          accessToken: '',
+          likeBoards: [],
+          likeReReplies: [],
+          likeReplies: [],
+        },
+      },
+    });
+    await waitFor(() => {
+      expect(queryByText('게시글이 존재하지 않습니다.')).toBeTruthy();
     });
   });
 });

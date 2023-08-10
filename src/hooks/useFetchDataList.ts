@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
 import {useEffect} from 'react';
 
 type Props = {
@@ -13,7 +13,7 @@ const useFetchDataList = ({url, topic}: Props) => {
   const [isListDataExist, setIsListDataExist] = useState<boolean>();
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchNextData = useCallback(async () => {
+  const fetchNextData = async () => {
     const top = 5;
 
     try {
@@ -35,14 +35,14 @@ const useFetchDataList = ({url, topic}: Props) => {
     } catch (e) {
       console.log(e);
     }
-  }, [url, skip, listData, topic]);
+  };
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     setSkip(0);
     await fetchNextData();
     setRefreshing(false);
-  }, [fetchNextData]);
+  };
 
   useEffect(() => {
     onRefresh();
