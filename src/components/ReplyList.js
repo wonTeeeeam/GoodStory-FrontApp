@@ -1,38 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {gray} from 'styles';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
-import {MaterialCommunityIcons} from 'utils/react-native-vector-helper';
 
 export default function ReplyList({replyData, replyCnt = 0}) {
   return (
     <View style={styles.replyBox}>
       <View style={{marginHorizontal: hs(5)}}>
-        <View style={styles.replyIconContainer}>
-          <MaterialCommunityIcons
-            name="message-reply-text-outline"
-            color={'#4682B4'}
-            size={20}
-          />
-          <Text style={styles.replyList}>댓글목록</Text>
-          <Text style={{color: '#4682B4'}}>
-            {replyCnt ? ` (${replyCnt})` : undefined}
-          </Text>
-        </View>
         {replyData.map((singleData, index) => {
           return (
             <View key={index} style={styles.flatList}>
-              <Reply singleData={singleData} />
-              {/* {index === replyData.length - 1 ? undefined : (
-                <View
-                  style={{
-                    // backgroundColor: '#C0C0C0',
-                    alignSelf: 'stretch',
-                    height: vs(1),
-                  }}
-                />
-              )} */}
+              <View style={{paddingHorizontal: hs(10)}}>
+                <Reply singleData={singleData} />
+              </View>
             </View>
           );
         })}
@@ -43,10 +24,8 @@ export default function ReplyList({replyData, replyCnt = 0}) {
 
 const styles = StyleSheet.create({
   replyBox: {
+    // backgroundColor: 'red',
     marginTop: vs(0),
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-    borderStyle: 'solid',
   },
   replyIconContainer: {
     flexDirection: 'row',
@@ -58,7 +37,7 @@ const styles = StyleSheet.create({
   },
   flatList: {
     borderTopColor: gray.lightGray,
-    borderTopWidth: ss(3),
+    borderTopWidth: ss(1),
     paddingVertical: vs(10),
   },
 });

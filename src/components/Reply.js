@@ -46,9 +46,9 @@ export default function Reply({singleData}) {
         )}
 
         <View style={{marginLeft: hs(10), flexDirection: 'row'}}>
+          <Text style={{color: 'red'}}>{singleData.user.CompanyName}</Text>
           <Text style={styles.user}>{singleData.user.Nickname}</Text>
           <View style={styles.replyDate}>
-            <Text style={{fontSize: ss(10), color: '#D3D3D3'}}>작성일</Text>
             <Text style={{fontSize: ss(10), color: '#D3D3D3'}}>
               {convertTimeToKorean(singleData.Created_date)}
             </Text>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  user: {color: 'black', fontSize: ss(15)},
+  user: {color: 'black', fontSize: ss(12)},
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,

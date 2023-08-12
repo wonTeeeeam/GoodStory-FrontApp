@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 
@@ -15,7 +16,10 @@ import ReplyInput from 'components/ReplyInput';
 import ReplyList from 'components/ReplyList';
 import {black, gray, red, white} from 'styles';
 import {ss, vs, hs} from 'utils/scailing';
-import {convertTimeToStandardFormat} from 'utils/timeConverter';
+import {
+  convertTimeToKorean,
+  convertTimeToStandardFormat,
+} from 'utils/timeConverter';
 
 import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
@@ -95,105 +99,117 @@ export default function DetailPost({route, navigation}) {
         style={styles.totalContainer}
         // keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
-        <View style={{marginVertical: vs(20)}}>
-          <View
-            style={{
-              borderWidth: ss(1),
-              paddingBottom: vs(30),
-              paddingHorizontal: hs(10),
-              borderColor: '#C0C0C0',
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View>
-                {singleData.user.ProfilePhoto ? (
-                  <FastImage
-                    style={{
-                      height: vs(30),
-                      width: hs(30),
-                      borderRadius: ss(30),
-                      borderColor: '#D3D3D3',
-                      borderWidth: ss(1),
-                    }}
-                    source={{uri: singleData.user.ProfilePhoto}}
-                    resizeMode="contain"
-                  />
-                ) : (
-                  <Ionicons
-                    name="person-outline"
-                    color={'white'}
-                    size={ss(30)}
-                    style={{
-                      backgroundColor: gray.lightGray,
-                      // width: '100%',
-                      alignItems: 'center',
-                      height: vs(30),
-                      width: hs(30),
-                      borderRadius: ss(100),
-                    }}
-                  />
-                )}
-              </View>
-              <View style={styles.userContainer}>
-                <Text style={styles.nickName}>{singleData.user.Nickname}</Text>
-              </View>
-            </View>
-            <View style={styles.timeContainer}>
-              <Text style={styles.date}>
-                {convertTimeToStandardFormat(singleData.user.Created_date)}
-              </Text>
-            </View>
-
-            <DetailPostMain singleData={singleData} />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                // margin: ss(10),
-                marginTop: vs(60),
-                paddingHorizontal: ss(10),
-                justifyContent: 'space-between',
-              }}>
-              <Pressable
-                style={({pressed}) => [
-                  {...styles.bottomContainer},
-                  {backgroundColor: pressed ? gray.lightGray : null},
-                ]}
-                onPress={() => handlePressLike(singleData)}>
-                <View style={styles.iconContainer}>
-                  {isLikePressed ? (
-                    <AntDesign name="heart" color={red.hotLips} />
+        <View>
+          <View style={{padding: ss(20)}}>
+            <View style={{}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View>
+                  {singleData.user.ProfilePhoto ? (
+                    <FastImage
+                      style={{
+                        height: vs(30),
+                        width: hs(30),
+                        borderRadius: ss(30),
+                        borderColor: '#D3D3D3',
+                        borderWidth: ss(1),
+                      }}
+                      source={{uri: singleData.user.ProfilePhoto}}
+                      resizeMode="contain"
+                    />
                   ) : (
-                    <AntDesign name="hearto" color={gray.dimGray} />
+                    <Ionicons
+                      name="person-outline"
+                      color={'white'}
+                      size={ss(30)}
+                      style={{
+                        backgroundColor: gray.lightGray,
+                        // width: '100%',
+                        alignItems: 'center',
+                        height: vs(30),
+                        width: hs(30),
+                        borderRadius: ss(100),
+                      }}
+                    />
                   )}
                 </View>
-                {likeCnt === 0 ? (
-                  <Text style={styles.likeText}>{'좋아요'}</Text>
-                ) : (
-                  <Text style={styles.likeText}>{likeCnt}</Text>
-                )}
-              </Pressable>
-              <Pressable style={{...styles.bottomContainer, left: hs(110)}}>
-                <View style={styles.iconContainer}>
-                  <MaterialCommunityIcons
-                    name="message-reply-outline"
-                    color={gray.dimGray}
-                  />
+                <View style={styles.userContainer}>
+                  <View style={styles.firstDetailContainer}>
+                    <View>
+                      <Text style={styles.topicText}>
+                        {singleData.Category}
+                      </Text>
+                    </View>
+                    <Text style={styles.timeText}>
+                      {convertTimeToKorean(singleData.Created_date)}
+                    </Text>
+                  </View>
+                  <View style={styles.secondDetailContainer}>
+                    <View>
+                      <Text style={styles.companyNameText}>
+                        {singleData.user.CompanyName}
+                      </Text>
+                    </View>
+                    {/* <EntypoIcon
+              name="dot-single"
+              size={ss(15)}
+            /> */}
+                    <Pressable>
+                      <Text style={styles.nickNameText}>
+                        {singleData.user.Nickname}
+                      </Text>
+                    </Pressable>
+                  </View>
                 </View>
-                <Text style={styles.replyText}>
-                  {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
-                </Text>
-              </Pressable>
-              <Pressable style={{...styles.bottomContainer, left: hs(210)}}>
-                <View style={styles.iconContainer}>
-                  <AntDesign name="eyeo" color={gray.dimGray} />
-                </View>
-                <Text style={styles.viewText}>
-                  {firstViewCnt > 0 ? firstViewCnt : '조회수'}
-                </Text>
-              </Pressable>
+              </View>
+              <View style={{marginTop: vs(30)}}>
+                <DetailPostMain singleData={singleData} />
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginTop: vs(60),
+                }}>
+                <TouchableOpacity
+                  style={styles.bottomContainer}
+                  onPress={() => handlePressLike(singleData)}>
+                  <View style={styles.iconContainer}>
+                    {isLikePressed ? (
+                      <AntDesign name="heart" color={red.hotLips} />
+                    ) : (
+                      <AntDesign name="hearto" color={gray.dimGray} />
+                    )}
+                  </View>
+                  {likeCnt === 0 ? (
+                    <Text style={styles.likeText}>{'좋아요'}</Text>
+                  ) : (
+                    <Text style={styles.likeText}>{likeCnt}</Text>
+                  )}
+                </TouchableOpacity>
+                <Pressable style={{...styles.bottomContainer, left: hs(120)}}>
+                  <View style={styles.iconContainer}>
+                    <MaterialCommunityIcons
+                      name="message-reply-outline"
+                      color={gray.dimGray}
+                    />
+                  </View>
+                  <Text style={styles.replyText}>
+                    {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+                  </Text>
+                </Pressable>
+                <Pressable style={{...styles.bottomContainer, left: hs(240)}}>
+                  <View style={styles.iconContainer}>
+                    <AntDesign name="eyeo" color={gray.dimGray} />
+                  </View>
+                  <Text style={styles.viewText}>
+                    {firstViewCnt > 0 ? firstViewCnt : '조회수'}
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
+
           <View style={{marginTop: vs(30)}}>
             {singleData.ReplyCount > 0 ? (
               <ReplyList
@@ -257,27 +273,44 @@ export default function DetailPost({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
-  totalContainer: {
-    padding: ss(20),
-    marginVertical: 0,
-  },
+  totalContainer: {},
   userContainer: {
     justifyContent: 'center',
     width: ss(200),
-    height: ss(60),
-    marginLeft: hs(20),
+    height: ss(40),
+    marginLeft: hs(10),
+    // backgroundColor: 'red',
   },
+  firstDetailContainer: {
+    flexDirection: 'row',
+    width: ss(70),
+    justifyContent: 'space-between',
+  },
+  secondDetailContainer: {
+    flexDirection: 'row',
+    marginTop: ss(0),
+    width: ss(70),
+    justifyContent: 'space-between',
+  },
+  topicText: {
+    color: black.origin,
+    fontWeight: 'bold',
+    fontSize: ss(10),
+  },
+  timeText: {color: gray.gainsboro, fontSize: ss(10)},
+  companyNameText: {color: gray.dimGray, fontSize: ss(10)},
+  nickNameText: {color: gray.dimGray, fontSize: ss(10)},
   nickName: {
-    fontWeight: '400',
-    fontSize: ss(15),
+    fontSize: ss(12),
     color: black.origin,
   },
   userLike: {
     color: gray.dimGray,
   },
-  timeContainer: {marginVertical: ss(30)},
+  timeContainer: {marginVertical: ss(10)},
   date: {
     color: gray.dimGray,
+    fontSize: ss(10),
   },
   likeContainer: {
     marginTop: vs(20),
