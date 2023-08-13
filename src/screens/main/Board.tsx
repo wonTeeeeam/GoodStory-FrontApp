@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, BackHandler} from 'react-native';
 
-import FilterBar from 'components/FilterBar';
+import FilterBar from 'components/bar/FilterBar';
 import PostList from 'components/PostList';
 import {gray, white} from 'styles';
 import {showToast} from 'utils/toast';

@@ -3,28 +3,33 @@ import {View, StyleSheet} from 'react-native';
 import {gray} from 'styles';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
+import {ReplyDatum} from 'screens/main/DetailPost';
 
-export default function ReplyList({replyData, replyCnt = 0}) {
+type Props = {
+  replyData: ReplyDatum[];
+};
+
+const ReplyList: React.FC<Props> = ({replyData}) => {
   return (
     <View style={styles.replyBox}>
       <View style={{marginHorizontal: hs(5)}}>
         {replyData.map((singleData, index) => {
           return (
-            <View key={index} style={styles.flatList}>
+            <View key={index} style={styles.Replycontainer}>
               <View style={{paddingHorizontal: hs(10)}}>
                 <Reply singleData={singleData} />
               </View>
             </View>
           );
         })}
+        <View style={{borderTopColor: gray.lightGray, borderTopWidth: ss(1)}} />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   replyBox: {
-    // backgroundColor: 'red',
     marginTop: vs(0),
   },
   replyIconContainer: {
@@ -35,9 +40,12 @@ const styles = StyleSheet.create({
     marginLeft: hs(5),
     color: '#4682B4',
   },
-  flatList: {
+  Replycontainer: {
     borderTopColor: gray.lightGray,
     borderTopWidth: ss(1),
-    paddingVertical: vs(10),
+    paddingTop: vs(5),
+    paddingBottom: vs(8),
   },
 });
+
+export default ReplyList;

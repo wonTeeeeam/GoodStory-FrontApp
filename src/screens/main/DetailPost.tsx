@@ -1,30 +1,23 @@
 import axios from 'axios';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   Pressable,
-  Image,
   TouchableOpacity,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
 
 import DetailPostMain from 'components/DetailPostMain';
-import ReplyInput from 'components/ReplyInput';
 import ReplyList from 'components/ReplyList';
 import {black, gray, red, white} from 'styles';
 import {ss, vs, hs} from 'utils/scailing';
-import {
-  convertTimeToKorean,
-  convertTimeToStandardFormat,
-} from 'utils/timeConverter';
+import {convertTimeToKorean} from 'utils/timeConverter';
 
 import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import FastImage from 'react-native-fast-image';
-import {showToast} from 'utils/toast';
 import usePressLike from 'hooks/usePressLike';
 import {
   AntDesign,
@@ -32,13 +25,33 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
+import {DetailBoardStackProps} from 'navigations/types';
+import useBottomModal from 'hooks/useBottomModal';
+import CommentBar from 'components/bar/CommentBar';
 
-export default function DetailPost({route, navigation}) {
+export type ReplyDatum = {
+  ReplyId: string;
+  Content: string;
+  ReplyLike: number;
+  Created_date: string;
+  user: {
+    UserId: string;
+    Nickname: string;
+    Role: string;
+    Updated_date: string;
+    Deleted_date: string;
+    ProfilePhoto: string;
+  };
+  rereplies: [];
+};
+
+const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
   const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
     route.params;
-  const [replyData, setReplyData] = useState([]);
-  const [img, setImage] = useState({});
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [replyData, setReplyData] = useState<ReplyDatum[]>();
+  const scrollViewRef = useRef<ScrollView | null>(null);
+
+  const {isModalVisible, changeModalVisible} = useBottomModal();
 
   const {
     handlePressLike,
@@ -48,10 +61,6 @@ export default function DetailPost({route, navigation}) {
     isLikePressed,
   } = usePressLike();
 
-  const handleSetIsModalVisible = useCallback(() => {
-    setIsModalVisible(!isModalVisible);
-  }, [isModalVisible]);
-
   useEffect(() => {
     setLikeCnt(firstLikeCnt);
     setIsLikePressed(firstIsLikePressed);
@@ -59,43 +68,35 @@ export default function DetailPost({route, navigation}) {
 
   useEffect(() => {
     fetchDetailData();
-  }, [fetchDetailData]);
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
+      headerTitle: singleData.Category,
       headerRight: () => (
         <Entypo
           name="dots-three-vertical"
           color={black.origin}
           size={20}
-          onPress={handleSetIsModalVisible}
+          onPress={() => {
+            changeModalVisible(!isModalVisible);
+          }}
         />
       ),
     });
-  }, [navigation, handleSetIsModalVisible]);
+  }, []);
 
-  const fetchDetailData = useCallback(async () => {
+  const fetchDetailData = async () => {
     try {
       const result = await axios.get(`/board/getOne/${singleData.BoardId}`);
       setReplyData(result.data.replys);
     } catch (e) {}
-  }, [singleData.BoardId]);
-
-  const handleChoosePhoto = async () => {
-    if (img.uri) {
-      showToast('이미지는 최대 1개만 가능합니다');
-      return;
-    }
-    const result = await launchImageLibrary();
-    if (result.didCancel) {
-      return;
-    }
-    setImage(result.assets[0]);
   };
 
   return (
     <View style={{backgroundColor: white.snow, flex: 1}}>
       <ScrollView
+        ref={scrollViewRef}
         style={styles.totalContainer}
         // keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
@@ -123,7 +124,6 @@ export default function DetailPost({route, navigation}) {
                       size={ss(30)}
                       style={{
                         backgroundColor: gray.lightGray,
-                        // width: '100%',
                         alignItems: 'center',
                         height: vs(30),
                         width: hs(30),
@@ -211,14 +211,9 @@ export default function DetailPost({route, navigation}) {
           </View>
 
           <View style={{marginTop: vs(30)}}>
-            {singleData.ReplyCount > 0 ? (
-              <ReplyList
-                replyData={replyData}
-                replyCnt={singleData.ReplyCount}
-              />
-            ) : undefined}
+            {replyData ? <ReplyList replyData={replyData} /> : undefined}
 
-            <View
+            {/* <View
               style={{
                 ...styles.grayBox,
                 ...styles.pictureBox,
@@ -226,15 +221,15 @@ export default function DetailPost({route, navigation}) {
               <Pressable onPress={handleChoosePhoto}>
                 <AntDesign name="picture" color={'#4682B4'} size={ss(20)} />
               </Pressable>
-            </View>
+            </View> */}
           </View>
 
-          <ReplyInput
+          {/* <ReplyInput
             imgURL={singleData.user.ProfilePhoto}
             inputImage={img}
             singleData={singleData}
-          />
-          {img.uri ? (
+          /> */}
+          {/* {img.uri ? (
             <View
               style={{
                 ...styles.grayBox,
@@ -257,20 +252,21 @@ export default function DetailPost({route, navigation}) {
                 />
               </View>
             </View>
-          ) : undefined}
+          ) : undefined} */}
         </View>
       </ScrollView>
+      <CommentBar scrollViewRef={scrollViewRef} />
       <BottomModal
         isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}>
+        changeModalVisible={changeModalVisible}>
         <BottomModalElement
-          onPress={() => setIsModalVisible(false)}
+          onPress={() => changeModalVisible(false)}
           text={'신고하기'}
         />
       </BottomModal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   totalContainer: {},
@@ -359,3 +355,5 @@ const styles = StyleSheet.create({
   replyText: {color: gray.dimGray},
   viewText: {color: gray.dimGray},
 });
+
+export default DetailPost;

@@ -84,10 +84,6 @@ const Post: React.FC<Props> = ({singleData}) => {
                 {singleData.user.CompanyName}
               </Text>
             </View>
-            {/* <EntypoIcon
-              name="dot-single"
-              size={ss(15)}
-            /> */}
             <Pressable>
               <Text style={styles.nickNameText}>
                 {singleData.user.Nickname}

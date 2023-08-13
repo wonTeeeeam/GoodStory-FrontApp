@@ -3,9 +3,10 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {gray, black} from 'styles';
 import {ss} from 'utils/scailing';
-import BottomModal from './modal/BottomModal';
-import BottomModalElement from './BottomModalElement';
+import BottomModal from '../modal/BottomModal';
+import BottomModalElement from '../BottomModalElement';
 import {AntDesign} from 'utils/react-native-vector-helper';
+import useBottomModal from 'hooks/useBottomModal';
 
 export type Props = {
   filterValue: string;
@@ -13,11 +14,7 @@ export type Props = {
 };
 
 const FilterBar: React.FC<Props> = ({filterValue, changeFilterValue}) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const changeModalVisible = (newValue: boolean) => {
-    setIsModalVisible(newValue);
-  };
+  const {isModalVisible, changeModalVisible} = useBottomModal();
 
   const handleFilterValueChange = (newValue: string) => {
     changeFilterValue(newValue);
