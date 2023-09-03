@@ -1,29 +1,22 @@
 import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {gray} from 'styles';
 import {AntDesign} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
-import {showToast} from 'utils/toast';
+import {ListData} from 'components/PostList';
+
+import CommentModal from '../modal/CommentModal';
 
 type Props = {
   scrollViewRef: React.RefObject<ScrollView | null>;
+  singleData: ListData;
 };
 
-const CommentBar: React.FC<Props> = ({scrollViewRef}) => {
-  const [img, setImage] = useState<Asset>();
+const CommentBar: React.FC<Props> = ({scrollViewRef, singleData}) => {
+  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
 
-  const handleChoosePhoto = async () => {
-    if (img && img.uri) {
-      showToast('이미지는 최대 1개만 가능합니다');
-      return;
-    }
-    const result = await launchImageLibrary({mediaType: 'photo'});
-    if (result.didCancel) {
-      return;
-    } else if (result.assets && result.assets[0]) {
-      setImage(result.assets[0]);
-    }
+  const handleSetIsCommentModalVisible = (newValue: boolean) => {
+    setIsCommentModalVisible(newValue);
   };
 
   return (
@@ -33,7 +26,8 @@ const CommentBar: React.FC<Props> = ({scrollViewRef}) => {
         flexDirection: 'row',
         alignItems: 'center',
       }}>
-      <View
+      <Pressable
+        onPress={() => setIsCommentModalVisible(true)}
         style={{
           marginLeft: hs(5),
           flexDirection: 'row',
@@ -52,10 +46,7 @@ const CommentBar: React.FC<Props> = ({scrollViewRef}) => {
           }}>
           댓글 작성
         </Text>
-        <Pressable onPress={handleChoosePhoto} style={{marginRight: hs(10)}}>
-          <AntDesign name="picture" color={'#4682B4'} size={ss(20)} />
-        </Pressable>
-      </View>
+      </Pressable>
       <View
         style={{
           backgroundColor: gray.lightGray,
@@ -75,6 +66,11 @@ const CommentBar: React.FC<Props> = ({scrollViewRef}) => {
           }}
         />
       </View>
+      <CommentModal
+        isCommentModalVisible={isCommentModalVisible}
+        handleSetIsCommentModalVisible={handleSetIsCommentModalVisible}
+        singleData={singleData}
+      />
     </View>
   );
 };

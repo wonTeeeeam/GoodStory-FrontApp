@@ -18,3 +18,7 @@ export const black = {
 export const red = {
   hotLips: '#D22B2B',
 };
+
+export const blue = {
+  steelBlue: '#4682B4',
+};

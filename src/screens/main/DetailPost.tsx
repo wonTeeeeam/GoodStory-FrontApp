@@ -98,7 +98,6 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
       <ScrollView
         ref={scrollViewRef}
         style={styles.totalContainer}
-        // keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
         <View>
           <View style={{padding: ss(20)}}>
@@ -149,10 +148,6 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                         {singleData.user.CompanyName}
                       </Text>
                     </View>
-                    {/* <EntypoIcon
-              name="dot-single"
-              size={ss(15)}
-            /> */}
                     <Pressable>
                       <Text style={styles.nickNameText}>
                         {singleData.user.Nickname}
@@ -212,50 +207,10 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
 
           <View style={{marginTop: vs(30)}}>
             {replyData ? <ReplyList replyData={replyData} /> : undefined}
-
-            {/* <View
-              style={{
-                ...styles.grayBox,
-                ...styles.pictureBox,
-              }}>
-              <Pressable onPress={handleChoosePhoto}>
-                <AntDesign name="picture" color={'#4682B4'} size={ss(20)} />
-              </Pressable>
-            </View> */}
           </View>
-
-          {/* <ReplyInput
-            imgURL={singleData.user.ProfilePhoto}
-            inputImage={img}
-            singleData={singleData}
-          /> */}
-          {/* {img.uri ? (
-            <View
-              style={{
-                ...styles.grayBox,
-                marginTop: vs(20),
-                height: vs(55),
-                alignItems: 'flex-start',
-                paddingLeft: hs(10),
-                paddingVertical: vs(5),
-                flexDirection: 'row',
-              }}>
-              <Image source={{uri: img.uri}} style={{width: 50, height: 50}} />
-              <View style={{marginLeft: hs(52), position: 'absolute'}}>
-                <AntDesign
-                  name="closecircle"
-                  color={'#4682B4'}
-                  size={15}
-                  onPress={() => {
-                    setImage({});
-                  }}
-                />
-              </View>
-            </View>
-          ) : undefined} */}
         </View>
       </ScrollView>
-      <CommentBar scrollViewRef={scrollViewRef} />
+      <CommentBar scrollViewRef={scrollViewRef} singleData={singleData} />
       <BottomModal
         isModalVisible={isModalVisible}
         changeModalVisible={changeModalVisible}>
