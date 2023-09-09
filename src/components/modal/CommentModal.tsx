@@ -80,6 +80,10 @@ const CommentModal: React.FC<Props> = ({
           'Content-topic': 'multipart/form-data',
         },
       });
+      if (result.data) {
+        showToast('댓글 작성 완료!');
+        handleSetIsCommentModalVisible(false);
+      }
       console.log(result);
     } catch (e) {
       console.log(e);
@@ -144,6 +148,7 @@ const CommentModal: React.FC<Props> = ({
           </Pressable>
           <ScrollView>
             <TextInput
+              autoFocus={true}
               style={{marginTop: vs(20), color: black.origin}}
               placeholder={`내 댓글`}
               placeholderTextColor={gray.gainsboro}

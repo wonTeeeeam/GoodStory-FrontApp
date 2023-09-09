@@ -4,7 +4,7 @@ import Post from './Post';
 import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 import NoPost from './NoPost';
-import useFetchDataList from 'hooks/useFetchDataList';
+import useFetchPostList, {PostListElement} from 'hooks/useFetchPostList';
 import {useNavigation} from '@react-navigation/native';
 
 export type Props = {
@@ -12,45 +12,15 @@ export type Props = {
   topic: string;
 };
 
-export type User = {
-  UserId: string;
-  Nickname: string;
-  Role: string;
-  CompanyCode: string;
-  CompanyName: string;
-  Created_date: string;
-  Updated_date: string;
-  Deleted_date: null;
-  ProfilePhoto: string;
-};
-
-export type BoardPhoto = {
-  BoardPhotoID: string;
-  URL: string;
-  Created_date: string;
-};
-
-export type ListData = {
-  BoardId: string;
-  Category: string;
-  Created_date: string;
-  Updated_date: string;
-  Title: string;
-  Content: string;
-  Like: number;
-  Views: number;
-  ReplyCount: number;
-  user: User;
-  BoardPhotos: BoardPhoto[];
-};
-
 const PostList: React.FC<Props> = ({filterValue, topic}) => {
-  const {onRefresh, fetchNextData, listData, isListDataExist, refreshing} =
-    useFetchDataList({url: '/board/getAll', topic: topic});
+  const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
+    useFetchPostList({url: '/board/getAll', topic: topic});
+
+  const nextPostListLength = 10;
 
   const navigation = useNavigation();
 
-  const changeOrder = (currentListData: ListData[]) => {
+  const changeOrder = (currentListData: PostListElement[]) => {
     if (filterValue === '최신순') {
       currentListData.sort((firstValue, secondValue) => {
         //내림차순
@@ -69,9 +39,9 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
 
   return (
     <View style={{flex: 1}}>
-      {isListDataExist === true && (
+      {isPostListExist === true && (
         <FlatList
-          data={changeOrder(listData)}
+          data={changeOrder(postList)}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -86,11 +56,11 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
             );
           }}
           onEndReachedThreshold={0.1}
-          onEndReached={fetchNextData}
+          onEndReached={() => fetchNextPostList(nextPostListLength)}
         />
       )}
       {/* fetchNextData하고 난 뒤에 게시글 없을 때만 보여줘야함. undefined일 때는 보여주면 안됨.*/}
-      {isListDataExist === false && (
+      {isPostListExist === false && (
         <NoPost
           onPress={() => navigation.navigate('Posting')}
           btnText={'게시글 등록'}

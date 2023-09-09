@@ -1,13 +1,9 @@
 import NoPost from 'components/NoPost';
 import AnnouncementItem from 'components/myPage/AnnouncementItem';
-import useFetchDataList from 'hooks/useFetchDataList';
 import React, {useState} from 'react';
 import {FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
 
 function Announcement() {
-  // const {onRefresh, fetchNextData, listData, isListDataExist, refreshing} =
-  //   useFetchDataList({url: '/board/getAll'});
-
   const listData = [
     {
       title: '문의 연락처입니다.',

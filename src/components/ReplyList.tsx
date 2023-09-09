@@ -4,12 +4,14 @@ import {gray} from 'styles';
 import {ss, hs, vs} from 'utils/scailing';
 import Reply from './Reply';
 import {ReplyDatum} from 'screens/main/DetailPost';
+import {sortByCreatedDate} from 'utils/sort';
 
 type Props = {
   replyData: ReplyDatum[];
 };
 
 const ReplyList: React.FC<Props> = ({replyData}) => {
+  sortByCreatedDate(replyData);
   return (
     <View style={styles.replyBox}>
       <View style={{marginHorizontal: hs(5)}}>

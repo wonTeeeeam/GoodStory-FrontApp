@@ -20,12 +20,12 @@ import {
   AntDesign,
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
-import {ListData} from './PostList';
 import {RootState} from '../store/store';
 import {useAppSelector} from '../store/hooks';
+import {PostListElement} from 'hooks/useFetchPostList';
 
 type Props = {
-  singleData: ListData;
+  singleData: PostListElement;
 };
 
 const Post: React.FC<Props> = ({singleData}) => {
