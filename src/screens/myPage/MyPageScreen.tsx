@@ -25,7 +25,7 @@ import {
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
 
-function MyPage() {
+function MyPageScreen() {
   const [userData, setUserData] = useState({});
   const version = DeviceInfo.getVersion();
   const dispatch = useDispatch();
@@ -287,4 +287,4 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default MyPageScreen;

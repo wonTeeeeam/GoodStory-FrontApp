@@ -6,17 +6,35 @@ import {hs, ss, vs} from 'utils/scailing';
 import {ListData} from 'components/PostList';
 
 import CommentModal from '../modal/CommentModal';
+import {ReplyDatum} from 'screens/main/DetailPost';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
+import {showToast} from 'utils/toast';
 
 type Props = {
   scrollViewRef: React.RefObject<ScrollView | null>;
   singleData: ListData;
+  handleSetReplyDatum: (newReplyData: ReplyDatum) => void;
 };
 
-const CommentBar: React.FC<Props> = ({scrollViewRef, singleData}) => {
+const CommentBar: React.FC<Props> = ({
+  scrollViewRef,
+  singleData,
+  handleSetReplyDatum,
+}) => {
+  const {userId} = useAppSelector((state: RootState) => state.user);
+
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
 
   const handleSetIsCommentModalVisible = (newValue: boolean) => {
     setIsCommentModalVisible(newValue);
+  };
+
+  const handleOnPressCommentBar = () => {
+    if (!userId) {
+      return showToast('로그인이 필요한 서비스입니다.');
+    }
+    setIsCommentModalVisible(true);
   };
 
   return (
@@ -27,7 +45,7 @@ const CommentBar: React.FC<Props> = ({scrollViewRef, singleData}) => {
         alignItems: 'center',
       }}>
       <Pressable
-        onPress={() => setIsCommentModalVisible(true)}
+        onPress={handleOnPressCommentBar}
         style={{
           marginLeft: hs(5),
           flexDirection: 'row',
@@ -70,6 +88,7 @@ const CommentBar: React.FC<Props> = ({scrollViewRef, singleData}) => {
         isCommentModalVisible={isCommentModalVisible}
         handleSetIsCommentModalVisible={handleSetIsCommentModalVisible}
         singleData={singleData}
+        handleSetReplyDatum={handleSetReplyDatum}
       />
     </View>
   );

@@ -48,7 +48,10 @@ export type ReplyDatum = {
 const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
   const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
     route.params;
-  const [replyData, setReplyData] = useState<ReplyDatum[]>();
+  const [replyData, setReplyData] = useState<ReplyDatum[]>([]);
+  const handleSetReplyDatum = (newReplyData: ReplyDatum) => {
+    setReplyData([...replyData, newReplyData]);
+  };
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const {isModalVisible, changeModalVisible} = useBottomModal();
@@ -190,7 +193,7 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                     />
                   </View>
                   <Text style={styles.replyText}>
-                    {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+                    {replyData.length > 0 ? replyData.length : '댓글'}
                   </Text>
                 </Pressable>
                 <Pressable style={{...styles.bottomContainer, left: hs(240)}}>
@@ -210,7 +213,11 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
           </View>
         </View>
       </ScrollView>
-      <CommentBar scrollViewRef={scrollViewRef} singleData={singleData} />
+      <CommentBar
+        scrollViewRef={scrollViewRef}
+        singleData={singleData}
+        handleSetReplyDatum={handleSetReplyDatum}
+      />
       <BottomModal
         isModalVisible={isModalVisible}
         changeModalVisible={changeModalVisible}>

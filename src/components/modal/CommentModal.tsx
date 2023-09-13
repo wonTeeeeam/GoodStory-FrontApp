@@ -22,17 +22,20 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {showToast} from 'utils/toast';
 import axios from 'axios';
 import {useAppSelector} from 'store/hooks';
+import {ReplyDatum} from 'screens/main/DetailPost';
 
 type Props = {
   isCommentModalVisible: boolean;
   handleSetIsCommentModalVisible: (newValue: boolean) => void;
   singleData: ListData;
+  handleSetReplyDatum: (newReply: ReplyDatum) => void;
 };
 
 const CommentModal: React.FC<Props> = ({
   isCommentModalVisible,
   handleSetIsCommentModalVisible,
   singleData,
+  handleSetReplyDatum,
 }) => {
   const {isModalVisible, changeModalVisible} = useBottomModal();
   const [img, setImage] = useState<Asset>();
@@ -71,7 +74,10 @@ const CommentModal: React.FC<Props> = ({
 
   const registerReply = async () => {
     if (input.length === 0) {
-      showToast(`댓글을 작성해주세요!!`);
+      return showToast(`댓글을 작성해주세요!!`);
+    }
+    if (!userId) {
+      showToast('로그인이 필요한 서비스입니다!');
     }
     const formData = makeFormData();
     try {
@@ -83,6 +89,7 @@ const CommentModal: React.FC<Props> = ({
       if (result.data) {
         showToast('댓글 작성 완료!');
         handleSetIsCommentModalVisible(false);
+        handleSetReplyDatum(result.data);
       }
       console.log(result);
     } catch (e) {

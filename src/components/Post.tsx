@@ -23,6 +23,7 @@ import {
 import {RootState} from '../store/store';
 import {useAppSelector} from '../store/hooks';
 import {PostListElement} from 'hooks/useFetchPostList';
+import useReply from 'hooks/useReply';
 
 type Props = {
   singleData: PostListElement;
@@ -44,10 +45,16 @@ const Post: React.FC<Props> = ({singleData}) => {
     navigateDetailPost,
   } = useLikeAndView();
 
+  const {replyCnt, handleSetReplyCnt} = useReply();
+
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(element => element === singleData.BoardId);
     isLiked ? setIsLikePressed(true) : setIsLikePressed(false);
   }, [likeBoards, singleData, setIsLikePressed]);
+
+  useEffect(() => {
+    handleSetReplyCnt(singleData.ReplyCount);
+  }, [singleData.ReplyCount]);
 
   useEffect(() => {
     checkIsLiked();
@@ -146,7 +153,8 @@ const Post: React.FC<Props> = ({singleData}) => {
               />
             </View>
             <Text style={styles.replyText}>
-              {singleData.ReplyCount > 0 ? singleData.ReplyCount : '댓글'}
+              {/* 댓글 개수 state로 관리해야한다 ㅡㅡ */}
+              {replyCnt > 0 ? replyCnt : '댓글'}
             </Text>
           </Pressable>
           <Pressable style={{...styles.bottomContainer, left: hs(250)}}>

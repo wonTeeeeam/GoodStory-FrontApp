@@ -5,7 +5,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Login from 'screens/cert/Login';
 import Posting from 'screens/posting/PostingMain';
 import Topic from 'screens/topic/Topic';
-import MyPage from 'screens/myPage';
 import {
   Feather,
   MaterialCommunityIcons,
@@ -17,6 +16,7 @@ import {BottomStackParamList} from './types';
 import {ss} from 'utils/scailing';
 import {black, gray} from 'styles';
 import Board from 'screens/main/Board';
+import {MyPage} from 'screens/myPage';
 
 function BottomStack() {
   const Tab = createBottomTabNavigator<BottomStackParamList>();
