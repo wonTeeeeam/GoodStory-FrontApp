@@ -6,6 +6,7 @@ import useApi from './useApi';
 import {useAppSelector} from 'store/hooks';
 import {ListData} from 'components/PostList';
 import {RootState} from 'store/store';
+import {requestPlusLike} from 'api/viewLikeReplyCnt';
 
 const usePressLike = () => {
   const [isLikePressed, setIsLikePressed] = useState(false);
@@ -20,14 +21,10 @@ const usePressLike = () => {
     !isLikePressed ? await plusLike(singleData) : await minusLike(singleData);
   };
 
-  const onSuccessPlusLike = () => {
-    setLikeCnt(likeCnt + 1);
-    setIsLikePressed(true);
-  };
+  const onSuccessPlusLike = () => {};
 
   const onErrorPlusLike = (error: any) => {
     console.log(error.message);
-    showToast('좋아요에 실패하였습니다. 잠시후에 다시 시도해주세요');
   };
 
   const onSuccessMinusLike = () => {
@@ -41,15 +38,12 @@ const usePressLike = () => {
   };
 
   const plusLike = async (singleData: ListData) => {
-    const plusLikeButton = async () => {
-      return await axios.post('/likeboard/presslikeboard', {
-        LikeBoardNumber: singleData.BoardId,
-        user: {
-          UserId: userId,
-        },
-      });
-    };
-    await handleAsyncMethod(plusLikeButton, onSuccessPlusLike, onErrorPlusLike);
+    const plusLikeResult = await requestPlusLike(singleData.BoardId, userId);
+    if (!plusLikeResult) {
+      return showToast('좋아요에 실패하였습니다. 잠시후에 다시 시도해주세요');
+    }
+    setLikeCnt(likeCnt + 1);
+    setIsLikePressed(true);
   };
 
   const minusLike = async (singleData: ListData) => {

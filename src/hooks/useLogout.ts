@@ -24,7 +24,7 @@ const useLogout = () => {
     alert({title: '로그아웃 성공', body: '로그아웃 되었습니다!'});
   };
 
-  return {handleLogout, logOut};
+  return {handleLogout};
 };
 
 export default useLogout;

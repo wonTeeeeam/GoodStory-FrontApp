@@ -17,7 +17,7 @@ import {AntDesign} from 'utils/react-native-vector-helper';
 import {ListData} from 'components/PostList';
 import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
-import useBottomModal from 'hooks/useBottomModal';
+import useBottomModal from 'hooks/useModal';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {showToast} from 'utils/toast';
 import axios from 'axios';

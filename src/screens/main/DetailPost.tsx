@@ -26,7 +26,7 @@ import {
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
 import {DetailBoardStackProps} from 'navigations/types';
-import useBottomModal from 'hooks/useBottomModal';
+import useBottomModal from 'hooks/useModal';
 import CommentBar from 'components/bar/CommentBar';
 
 export type ReplyDatum = {

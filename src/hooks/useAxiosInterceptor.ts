@@ -3,13 +3,14 @@ import {useEffect} from 'react';
 
 import {alert} from 'utils/alert';
 import * as Keychain from 'react-native-keychain';
-import {useSelector} from 'react-redux';
 import useLogout from './useLogout';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
 
 const useAxiosInterceptor = () => {
   const {handleLogout} = useLogout();
 
-  const {userId} = useSelector(state => state.user);
+  const {userId} = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
     axios.interceptors.response.use(

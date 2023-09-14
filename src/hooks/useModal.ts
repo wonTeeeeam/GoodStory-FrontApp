@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-const useBottomModal = () => {
+const useModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const changeModalVisible = (newValue: boolean) => {
@@ -10,4 +10,4 @@ const useBottomModal = () => {
   return {isModalVisible, changeModalVisible};
 };
 
-export default useBottomModal;
+export default useModal;

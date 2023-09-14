@@ -6,7 +6,7 @@ import {ss} from 'utils/scailing';
 import BottomModal from '../modal/BottomModal';
 import BottomModalElement from '../BottomModalElement';
 import {AntDesign} from 'utils/react-native-vector-helper';
-import useBottomModal from 'hooks/useBottomModal';
+import useBottomModal from 'hooks/useModal';
 
 export type Props = {
   filterValue: string;
