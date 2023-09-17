@@ -6,6 +6,7 @@ import {ss} from 'utils/scailing';
 import NoPost from './NoPost';
 import useFetchPostList, {PostListElement} from 'hooks/useFetchPostList';
 import {useNavigation} from '@react-navigation/native';
+import {BottomStackProps} from 'navigations/types';
 
 export type Props = {
   filterValue: string;
@@ -18,7 +19,7 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
 
   const nextPostListLength = 10;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<BottomStackProps['navigation']>();
 
   const changeOrder = (currentListData: PostListElement[]) => {
     if (filterValue === '최신순') {

@@ -1,9 +1,16 @@
-import {requestUserInfo} from 'api/login';
+import {LoginUserInfo, requestUserInfo} from 'api/login';
 import {useState} from 'react';
 import * as Keychain from 'react-native-keychain';
 import {useDispatch} from 'react-redux';
 import {handleUserInfo} from 'slice/userSlice';
 import {alert} from 'utils/alert';
+
+type keyChainValueObject = {
+  storage: string;
+  password: string;
+  username: string;
+  service: string;
+};
 
 const useLogin = () => {
   const [ID, setID] = useState('');
@@ -11,11 +18,11 @@ const useLogin = () => {
   const [isAutoLogin, setIsAutoLogin] = useState(true);
   const dispatch = useDispatch();
 
-  const onChangeUserId = value => {
+  const onChangeUserId = (value: string) => {
     setID(value);
   };
 
-  const onChangeUserPassword = value => {
+  const onChangeUserPassword = (value: string) => {
     setPassword(value);
   };
 
@@ -23,32 +30,39 @@ const useLogin = () => {
     setIsAutoLogin(!isAutoLogin);
   };
 
-  const handleSetUserInfo = async result => {
+  const handleSetUserInfo = async (loginUserInfo: LoginUserInfo) => {
     await Keychain.setInternetCredentials(
       'refreshToken',
       'refreshToken',
-      result.data.refresh_token,
+      loginUserInfo.refresh_token,
     );
-    dispatch(handleUserInfo(result.data));
+    dispatch(handleUserInfo(loginUserInfo));
   };
 
   const handleAutoLogin = async () => {
-    const IDCredentials = await Keychain.getInternetCredentials('ID');
-    const passwordCredentials = await Keychain.getInternetCredentials(
-      'password',
-    );
-    if (IDCredentials.password && passwordCredentials.password) {
+    let autoLoginResult = false;
+    const IDCredentials: keyChainValueObject | false =
+      await Keychain.getInternetCredentials('ID');
+    const passwordCredentials: keyChainValueObject | false =
+      await Keychain.getInternetCredentials('password');
+
+    if (
+      IDCredentials &&
+      IDCredentials?.password &&
+      passwordCredentials &&
+      passwordCredentials.password
+    ) {
       const loginUserInfo = await requestUserInfo(
         IDCredentials.password,
         passwordCredentials.password,
       );
-      if (!loginUserInfo) {
-        return alert({
-          title: '자동 로그인 실패',
-          body: '자동 로그인에 실패했습니다.',
-        });
+      if (loginUserInfo) {
+        handleSetUserInfo(loginUserInfo);
+        autoLoginResult = true;
       }
-      handleSetUserInfo(loginUserInfo);
+    }
+    if (!autoLoginResult) {
+      alert({title: '자동로그인 실패', body: '자동 로그인 실패하였습니다.'});
     }
   };
 
@@ -74,7 +88,6 @@ const useLogin = () => {
     ID,
     password,
     isAutoLogin,
-    isLoading,
     onChangeUserId,
     onChangeUserPassword,
     onChangeIsAutoLogin,

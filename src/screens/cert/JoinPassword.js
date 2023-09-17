@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import PasswordRePassword from 'components/PasswordRePassword';
+import PasswordRePassword from 'components/PasswordAndRePassword';
 
 function JoinPassword({route, navigation}) {
   const {Email} = route.params;

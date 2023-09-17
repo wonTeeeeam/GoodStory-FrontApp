@@ -1,4 +1,4 @@
-import {ListData} from 'components/PostList';
+import {PostListElement} from './useFetchPostList';
 import usePlusView from './usePlusView';
 import usePressLike from './usePressLike';
 import {useNavigation} from '@react-navigation/native';
@@ -15,7 +15,7 @@ const useLikeAndView = () => {
   } = usePressLike();
   const {viewCnt, setViewCnt, handlePlusView} = usePlusView();
 
-  const navigateDetailPost = (singleData: ListData) => {
+  const navigateDetailPost = (singleData: PostListElement) => {
     navigation.navigate('DetailBoardStack', {
       screen: 'DetailPost',
       params: {

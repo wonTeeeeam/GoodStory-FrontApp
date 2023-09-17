@@ -1,7 +1,7 @@
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ListData} from 'components/PostList';
+import {PostListElement} from 'hooks/useFetchPostList';
 
 export type MainStackParamList = {
   BottomStack: NavigatorScreenParams<BottomStackParamList>;
@@ -28,7 +28,7 @@ export type BottomStackProps = BottomTabScreenProps<
 
 export type DetailBoardStackParamList = {
   DetailPost: {
-    singleData: ListData;
+    singleData: PostListElement;
     firstViewCnt: number;
     firstLikeCnt: number;
     firstIsLikePressed: boolean;
@@ -41,9 +41,14 @@ export type DetailBoardStackProps = NativeStackScreenProps<
 >;
 
 export type MyPageStackParamList = {
-  ResetPassword: undefined;
+  ResetPassword: {account: string};
   Announcement: undefined;
   AnnouncementDetail: undefined;
   Configuration: undefined;
   Withdrawal: undefined;
 };
+
+export type MyPageStackProps = NativeStackScreenProps<
+  MyPageStackParamList,
+  'ResetPassword'
+>;

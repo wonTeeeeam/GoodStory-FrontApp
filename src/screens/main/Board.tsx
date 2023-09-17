@@ -5,9 +5,9 @@ import FilterBar from 'components/bar/FilterBar';
 import PostList from 'components/PostList';
 import {gray, white} from 'styles';
 import {showToast} from 'utils/toast';
-import {BoardStackProps} from 'navigations/types';
+import {BottomStackProps} from 'navigations/types';
 
-const Board: React.FC<BoardStackProps> = ({route}) => {
+const Board: React.FC<BottomStackProps> = ({route}) => {
   const [filterValue, setFilterValue] = useState('최신순');
   const [backPressCount, setBackPressCount] = useState(0);
 

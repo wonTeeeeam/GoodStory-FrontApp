@@ -6,22 +6,31 @@ import JoinButton from './button/JoinButton';
 import {hs, ss} from 'utils/scailing';
 import {AntDesign} from 'utils/react-native-vector-helper';
 
-function PasswordRePassword({
+type Props = {
+  password: string;
+  handleSetPassword: (newValue: string) => void;
+  rePassword: string;
+  handleSetRePassword: (newValue: string) => void;
+  btnText: string;
+  handleOnPressBtn: () => Promise<void>;
+};
+
+const PasswordAndRePassword: React.FC<Props> = ({
   password,
-  setPassword,
+  handleSetPassword,
   rePassword,
-  setRePassword,
+  handleSetRePassword,
   btnText,
-  onPress,
-}) {
+  handleOnPressBtn,
+}) => {
   const alertMSGForPWD = [
-    `올바른 형식의 비밀번호를 입력해주세요.(최소 영문자 1글자, 특수문자 또는 숫자 1글자. 공백 불가)`,
+    '올바른 형식의 비밀번호를 입력해주세요.(최소 영문자 1글자, 특수문자 또는 숫자 1글자. 공백 불가)',
     '8자 이상 입력해주세요.',
   ];
   const [alertMsgPWDIndex, setAlertMsgPWDIndex] = useState(0);
   const [needAlertPWD, setNeedAlertPWD] = useState(false);
 
-  const alertMSGForRePWD = [`비밀번호가 일치하지 않습니다`];
+  const alertMSGForRePWD = ['비밀번호가 일치하지 않습니다'];
   const [alertMsgRePWDIndex, setAlertMsgRePWDIndex] = useState(0);
   const [needAlertRePWD, setNeedAlertRePWD] = useState(false);
 
@@ -45,7 +54,7 @@ function PasswordRePassword({
     if (validatePWD(password)) {
       setIsAbled(true);
       setNeedAlertPWD(false);
-      return setAlertMsgPWDIndex(null);
+      return setAlertMsgPWDIndex(0);
     }
     setIsAbled(false);
     setNeedAlertPWD(true);
@@ -74,7 +83,7 @@ function PasswordRePassword({
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호'}
           value={password}
-          setValue={setPassword}
+          setValue={handleSetPassword}
           maxLength={30}
           setNeedAlert={setNeedAlertPWD}
           isPassword={true}
@@ -90,7 +99,7 @@ function PasswordRePassword({
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호 재입력'}
           value={rePassword}
-          setValue={setRePassword}
+          setValue={handleSetRePassword}
           maxLength={30}
           setNeedAlert={setNeedAlertRePWD}
           isPassword={true}
@@ -101,10 +110,14 @@ function PasswordRePassword({
             {alertMSGForRePWD[alertMsgRePWDIndex]}
           </Text>
         ) : null}
-        <JoinButton isAbled={isAbled} onPress={onPress} text={btnText} />
+        <JoinButton
+          isAbled={isAbled}
+          handleOnPressBtn={handleOnPressBtn}
+          text={btnText}
+        />
       </ScrollView>
     </Pressable>
   );
-}
+};
 
-export default PasswordRePassword;
+export default PasswordAndRePassword;

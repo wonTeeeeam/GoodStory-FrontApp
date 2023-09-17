@@ -1,21 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
 
 import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
-import axios from 'axios';
 import {alert} from 'utils/alert';
 import LoadingModal from 'components/modal/LoadingModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
-import useApi from 'hooks/useApi';
 import {
   AntDesign,
   Entypo,
@@ -24,70 +21,52 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
+import {useAppSelector} from 'store/hooks';
+import {
+  requestMyPageUserData,
+  requestMyPageWithDrawal,
+  requestPostUserProfile,
+} from 'api/myPage';
+import {MyPageStackProps} from 'navigations/types';
 
-function MyPageScreen() {
+const MyPageScreen = () => {
   const [userData, setUserData] = useState({});
-  const version = DeviceInfo.getVersion();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // const version = DeviceInfo.getVersion();
   const dispatch = useDispatch();
-  const {handleAsyncMethod, isLoading} = useApi();
 
-  const navigation = useNavigation();
-  const {nickName, profileImage, userId} = useSelector(state => state.user);
-  const {handleLogout, logOut} = useLogout();
-
-  const fetchUserData = async () => {
-    return await axios.get('/user/myPage', {
-      params: {
-        UserId: userId,
-      },
-    });
-  };
-
-  const onSuccessFetchUserData = result => {
-    setUserData(result.data);
-  };
-
-  const onErrorFetchUserData = error => {
-    showToast('회원정보를 불러오는데 실패했습니다..');
-  };
+  const navigation = useNavigation<MyPageStackProps['navigation']>();
+  const {nickName, profileImage, userId} = useAppSelector(state => state.user);
+  const {handleLogout} = useLogout();
 
   useEffect(() => {
-    async function fetchMypageData() {
-      await handleAsyncMethod(
-        fetchUserData,
-        onSuccessFetchUserData,
-        onErrorFetchUserData,
-      );
-    }
+    const fetchMypageData = async () => {
+      setIsLoading(true);
+      const myPageUserResult = await requestMyPageUserData(userId);
+      setIsLoading(false);
+      if (myPageUserResult) {
+        setUserData(myPageUserResult);
+      }
+    };
     fetchMypageData();
   }, []);
 
-  const withDrawal = async () => {
-    const result = await axios.delete('/user/delete', {id: userId});
-    return result;
-  };
-
-  const onSuccessWithDrawal = async result => {
-    await logOut();
-    alert({title: '회원탈퇴 성공', body: '회원 탈퇴되었습니다!'});
-  };
-
-  const onErrorWithDrawal = error => {
-    alert({title: '회원탈퇴 실패', body: error});
-  };
-
   const handleWithdrawal = async () => {
-    const result = await alert({
+    const keepGoing = await alert({
       title: '회원탈퇴',
       body: '회원탈퇴하시겠습니까?',
       isConfirm: true,
     });
-    if (result) {
-      await handleAsyncMethod(
-        withDrawal,
-        onSuccessWithDrawal,
-        onErrorWithDrawal,
-      );
+    if (!keepGoing) {
+      return;
+    }
+    const withDrawalResult = await requestMyPageWithDrawal(userId);
+    if (withDrawalResult) {
+      setIsLoading(true);
+      await handleLogout();
+      setIsLoading(false);
+      alert({title: '회원탈퇴 성공', body: '회원 탈퇴되었습니다!'});
     }
   };
 
@@ -97,7 +76,9 @@ function MyPageScreen() {
       body: '로그아웃하시겠습니까?',
       isConfirm: true,
     });
+    setIsLoading(true);
     result && (await handleLogout());
+    setIsLoading(false);
   };
 
   const selectProfileImage = async () => {
@@ -120,31 +101,19 @@ function MyPageScreen() {
     return formData;
   };
 
-  const onSuccessChangeImage = result => {
-    dispatch(changeProfile(result.data));
+  const changeProfileImage = async () => {
+    const formData = await selectProfileImage();
+    setIsLoading(true);
+    const profileResult = await requestPostUserProfile(formData);
+    setIsLoading(false);
+    if (!profileResult) return;
+    dispatch(changeProfile(profileResult.data));
     showToast('프로필이 변경되었습니다');
   };
 
-  const onErrorChangeImage = error => {
-    showToast('프로필 변경에 실패했습니다. 잠시후에 시도해주세요');
-  };
-
-  const changeProfileImage = async () => {
-    const formData = await selectProfileImage();
-    const postUserProfile = async () => {
-      const result = await axios.post('/user/updateProfilePhoto', formData, {
-        headers: {
-          'Content-topic': 'multipart/form-data',
-        },
-      });
-      return result;
-    };
-    handleAsyncMethod(
-      postUserProfile,
-      onSuccessChangeImage,
-      onErrorChangeImage,
-    );
-  };
+  if (isLoading) {
+    return <LoadingModal isVisible={isLoading} />;
+  }
 
   return (
     <View style={{marginHorizontal: hs(20)}}>
@@ -240,29 +209,22 @@ function MyPageScreen() {
         <View style={{marginTop: vs(50)}}>
           <AccountSettingItem
             text={'비밀번호 변경'}
-            onPress={() =>
-              navigation.navigate('MyPageStack', {
-                screen: 'ResetPassword',
-                params: {account: userData.Account},
-              })
-            }>
+            onPress={() => {
+              navigation.navigate('ResetPassword', {account: userData.Account});
+            }}>
             <Entypo name="lock" color={'black'} size={ss(20)} />
           </AccountSettingItem>
           <View style={{marginTop: vs(30)}}>
             <AccountSettingItem
               text={'공지사항'}
-              onPress={() =>
-                navigation.navigate('MyPageStack', {screen: 'Announcement'})
-              }>
+              onPress={() => navigation.navigate('Announcement')}>
               <Entypo name="help" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
             <AccountSettingItem
               text={'환경설정'}
-              onPress={() =>
-                navigation.navigate('MyPageStack', {screen: 'Configuration'})
-              }>
+              onPress={() => navigation.navigate('Configuration')}>
               <AntDesign name="setting" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
@@ -282,9 +244,8 @@ function MyPageScreen() {
           </View>
         </View>
       </ScrollView>
-      <LoadingModal isVisible={isLoading} />
     </View>
   );
-}
+};
 
 export default MyPageScreen;

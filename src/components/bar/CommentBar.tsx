@@ -3,17 +3,17 @@ import {Pressable, ScrollView, Text, View} from 'react-native';
 import {gray} from 'styles';
 import {AntDesign} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
-import {ListData} from 'components/PostList';
 
 import CommentModal from '../modal/CommentModal';
 import {ReplyDatum} from 'screens/main/DetailPost';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
 import {showToast} from 'utils/toast';
+import {PostListElement} from 'hooks/useFetchPostList';
 
 type Props = {
   scrollViewRef: React.RefObject<ScrollView | null>;
-  singleData: ListData;
+  singleData: PostListElement;
   handleSetReplyDatum: (newReplyData: ReplyDatum) => void;
 };
 

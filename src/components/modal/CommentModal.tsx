@@ -14,7 +14,6 @@ import Modal from 'react-native-modal';
 import {black, blue, gray, white} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import {AntDesign} from 'utils/react-native-vector-helper';
-import {ListData} from 'components/PostList';
 import BottomModal from 'components/modal/BottomModal';
 import BottomModalElement from 'components/BottomModalElement';
 import useBottomModal from 'hooks/useModal';
@@ -23,11 +22,12 @@ import {showToast} from 'utils/toast';
 import axios from 'axios';
 import {useAppSelector} from 'store/hooks';
 import {ReplyDatum} from 'screens/main/DetailPost';
+import {PostListElement} from 'hooks/useFetchPostList';
 
 type Props = {
   isCommentModalVisible: boolean;
   handleSetIsCommentModalVisible: (newValue: boolean) => void;
-  singleData: ListData;
+  singleData: PostListElement;
   handleSetReplyDatum: (newReply: ReplyDatum) => void;
 };
 

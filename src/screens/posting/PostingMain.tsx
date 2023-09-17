@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Platform,
   Pressable,
@@ -15,11 +14,10 @@ import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
-import {useSelector} from 'react-redux';
 import useHandleImage from 'hooks/useHandleImage';
-import useApi from 'hooks/useApi';
-import {alert} from 'utils/alert';
 import {black, gray} from 'styles';
+import {useAppSelector} from 'store/hooks';
+import {requestNewPosting} from 'api/board';
 
 function PostingMain() {
   const navigation = useNavigation();
@@ -29,9 +27,9 @@ function PostingMain() {
   const [image, setImage] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
-  const {nickName, account, userId} = useSelector(state => state.user);
+  const {nickName, account, userId} = useAppSelector(state => state.user);
+  const [isLoading, setIsLoading] = useState(false);
   const {InsertImageInContent} = useHandleImage();
-  const {handleAsyncMethod, isLoading} = useApi();
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -83,29 +81,20 @@ function PostingMain() {
     return formData;
   };
 
-  const onSuccessPosting = result => {
+  const postBoard = async () => {
+    const formData = makeFormData();
+
+    const newPostingResult = await requestNewPosting(formData);
+    if (!newPostingResult) {
+      return;
+    }
     showToast('게시글 등록에 성공하였습니다.');
     navigation.navigate('BoardStack', {boardTopic: category});
   };
 
-  const onErrorPosting = error => {
-    alert({
-      title: '게시글 등록 실패',
-      body: '게시글 등록에 실패했습니다.\n잠시후에 시도해주세요.',
-    });
-  };
-
-  const postBoard = async () => {
-    const formData = makeFormData();
-    const postFormData = async () => {
-      return await axios.post('/board/create', formData, {
-        headers: {
-          'Content-topic': 'multipart/form-data',
-        },
-      });
-    };
-    await handleAsyncMethod(postFormData, onSuccessPosting, onErrorPosting);
-  };
+  if (isLoading) {
+    return <LoadingModal isVisible={isLoading} />;
+  }
 
   return (
     <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(20)}}>
@@ -230,7 +219,6 @@ function PostingMain() {
           />
         </View>
       </ScrollView>
-      <LoadingModal isVisible={isLoading} />
     </View>
   );
 }
