@@ -15,7 +15,7 @@ export type Props = {
 
 const PostList: React.FC<Props> = ({filterValue, topic}) => {
   const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
-    useFetchPostList({url: '/board/getAll', topic: topic});
+    useFetchPostList({topic: topic});
 
   const nextPostListLength = 10;
 

@@ -36,11 +36,10 @@ export type PostPhoto = {
 };
 
 type Props = {
-  url: string;
   topic: string;
 };
 
-const useFetchPostList = ({url, topic}: Props) => {
+const useFetchPostList = ({topic}: Props) => {
   const [skip, setSkip] = useState(0);
   const [postList, setPostList] = useState<any[]>([]);
   const [isPostListExist, setIsPostListExist] = useState<boolean>();
@@ -75,7 +74,7 @@ const useFetchPostList = ({url, topic}: Props) => {
     isRefreshing?: boolean,
   ) => {
     try {
-      const nextPostList = await axios.get(url, {
+      const nextPostList = await axios.get('/board/getAll', {
         params: {
           top: numberOfNextPostList,
           skip: isRefreshing ? 0 : skip,
@@ -92,7 +91,7 @@ const useFetchPostList = ({url, topic}: Props) => {
         : setIsPostListExist(true);
     } catch (e) {
       alert({
-        title: `게시글 불러오기 실패`,
+        title: '게시글 불러오기 실패',
         body: `게시글을 불러오는 데 실패하였습니다.\n${e}`,
       });
     }

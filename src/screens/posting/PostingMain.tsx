@@ -8,7 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {AntDesign} from 'utils/react-native-vector-helper';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
@@ -18,13 +18,15 @@ import useHandleImage from 'hooks/useHandleImage';
 import {black, gray} from 'styles';
 import {useAppSelector} from 'store/hooks';
 import {requestNewPosting} from 'api/board';
+import {BottomStackProps} from 'navigations/types';
+import {alert} from 'utils/alert';
 
-function PostingMain() {
-  const navigation = useNavigation();
+const PostingMain = () => {
+  const navigation = useNavigation<BottomStackProps['navigation']>();
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState([]);
+  const [imageList, setImageList] = useState<Asset[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const [imagePlace, setImagePlace] = useState(0);
   const {nickName, account, userId} = useAppSelector(state => state.user);
@@ -39,24 +41,26 @@ function PostingMain() {
   }, [title, content, category]);
 
   const handleChoosePhoto = async () => {
-    if (image.length >= 5) {
+    if (imageList.length >= 5) {
       showToast('이미지는 5개 이상 업로드할 수 없습니다');
       return;
     }
-    // 차후에 이미지 한번에 여러개 업로드 하는 방법 찾아보기.
-    const result = await launchImageLibrary({includeBase64: true});
-    if (result.didCancel) {
+    const result = await launchImageLibrary({
+      includeBase64: true,
+      mediaType: 'photo',
+    });
+    if (result.didCancel || !result.assets) {
       return;
     }
-    setImage([...image, result.assets[0]]);
+    setImageList([...imageList, result.assets[0]]);
     setContent(content + `image://${imagePlace}/`);
     setImagePlace(imagePlace + 1);
   };
 
-  const removeImageFromContent = index => {
-    const newImages = [...image];
+  const removeImageFromContent = (index: number) => {
+    const newImages = [...imageList];
     newImages.splice(index, 1);
-    setImage([...newImages]);
+    setImageList([...newImages]);
     setImagePlace(imagePlace - 1);
   };
 
@@ -70,12 +74,21 @@ function PostingMain() {
     formData.append('user[Account]', account);
     formData.append('user[Nickname]', nickName);
 
-    image.forEach((photo, index) => {
+    imageList.forEach((image, index) => {
+      if (!image.uri) {
+        alert({
+          title: '사진 업로드 실패',
+          body: `${
+            index + 1
+          }번째 사진에 문제가 생겼습니다. 사진을 다시 입력해주세요.`,
+        });
+        return null;
+      }
       formData.append('files', {
-        name: photo.fileName,
-        type: photo.type,
+        name: image.fileName,
+        type: image.type,
         uri:
-          Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+          Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
       });
     });
     return formData;
@@ -83,13 +96,16 @@ function PostingMain() {
 
   const postBoard = async () => {
     const formData = makeFormData();
+    if (!formData) {
+      return;
+    }
 
     const newPostingResult = await requestNewPosting(formData);
     if (!newPostingResult) {
       return;
     }
     showToast('게시글 등록에 성공하였습니다.');
-    navigation.navigate('BoardStack', {boardTopic: category});
+    navigation.navigate('Board', {boardTopic: category});
   };
 
   if (isLoading) {
@@ -213,14 +229,14 @@ function PostingMain() {
         </View>
         <View style={{flexDirection: 'row'}}>
           <SelectedImage
-            images={image}
-            setImage={setImage}
+            images={imageList}
+            setImage={setImageList}
             removeImageFromContent={removeImageFromContent}
           />
         </View>
       </ScrollView>
     </View>
   );
-}
+};
 
 export default PostingMain;
