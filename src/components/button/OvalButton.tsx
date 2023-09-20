@@ -2,12 +2,19 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {ss} from 'utils/scailing';
 
-export default function OvalButton({
+type Props = {
+  buttonColor: string;
+  textColor: string;
+  onPressFunction: () => void;
+  text: string;
+};
+
+const OvalButton: React.FC<Props> = ({
   buttonColor,
   textColor,
   onPressFunction,
   text,
-}) {
+}) => {
   return (
     <View style={styles(buttonColor).buttonContainer}>
       <Pressable onPress={onPressFunction}>
@@ -15,9 +22,9 @@ export default function OvalButton({
       </Pressable>
     </View>
   );
-}
+};
 
-const styles = buttonColor =>
+const styles = (buttonColor: string) =>
   StyleSheet.create({
     buttonContainer: {
       backgroundColor: buttonColor,
@@ -28,3 +35,5 @@ const styles = buttonColor =>
       alignItems: 'center',
     },
   });
+
+export default OvalButton;

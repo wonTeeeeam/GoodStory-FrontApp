@@ -1,20 +1,24 @@
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {MaterialIcons} from 'utils/react-native-vector-helper';
 import {hs, ss} from 'utils/scailing';
 
-function AccountSettingItem({children, text, onPress}) {
+type Props = {
+  children: React.ReactNode;
+  text: string;
+  handleOnPressBtn: () => void;
+};
+
+const AccountSettingItem: React.FC<Props> = ({
+  children,
+  text,
+  handleOnPressBtn,
+}) => {
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={handleOnPressBtn}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View>{children}</View>
-        <View
-          style={{
-            marginLeft: hs(10),
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '100%',
-          }}>
+        <View style={styles.textContainer}>
           <Text style={{color: 'black', flex: 0.9, fontSize: ss(15)}}>
             {text}
           </Text>
@@ -29,6 +33,15 @@ function AccountSettingItem({children, text, onPress}) {
       </View>
     </Pressable>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  textContainer: {
+    marginLeft: hs(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+});
 
 export default AccountSettingItem;

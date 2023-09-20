@@ -3,7 +3,9 @@ import {View} from 'react-native';
 import {ss, vs} from 'utils/scailing';
 import ActivityFeedItem from './ActivityFeedItem';
 
-function ActivityFeed({like, post, reply}) {
+type Props = {like: string; post: string; reply: string};
+
+const ActivityFeed: React.FC<Props> = ({like, post, reply}) => {
   return (
     <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
       <ActivityFeedItem title={'좋아요'} value={like} />
@@ -13,6 +15,6 @@ function ActivityFeed({like, post, reply}) {
       <ActivityFeedItem title={'댓글'} value={reply} />
     </View>
   );
-}
+};
 
 export default ActivityFeed;

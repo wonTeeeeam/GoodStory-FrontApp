@@ -1,10 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {black, gray} from 'styles';
 import {ss, vs} from 'utils/scailing';
 import useHandleImage from 'hooks/useHandleImage';
+import {PostListElement} from 'hooks/useFetchPostList';
 
-export default function DetailPostMain({singleData}) {
+const DetailPostMain = ({singleData}: {singleData: PostListElement}) => {
   const {InsertImageInContent} = useHandleImage();
   return (
     <View style={styles.container}>
@@ -18,7 +19,7 @@ export default function DetailPostMain({singleData}) {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {},
@@ -34,3 +35,5 @@ const styles = StyleSheet.create({
     marginTop: vs(40),
   },
 });
+
+export default DetailPostMain;

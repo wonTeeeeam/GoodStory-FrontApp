@@ -4,6 +4,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -19,10 +20,10 @@ import BottomModalElement from 'components/BottomModalElement';
 import useBottomModal from 'hooks/useModal';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {showToast} from 'utils/toast';
-import axios from 'axios';
 import {useAppSelector} from 'store/hooks';
 import {ReplyDatum} from 'screens/main/DetailPost';
 import {PostListElement} from 'hooks/useFetchPostList';
+import {requestRegisterReply} from 'api/reply';
 
 type Props = {
   isCommentModalVisible: boolean;
@@ -80,37 +81,22 @@ const CommentModal: React.FC<Props> = ({
       showToast('로그인이 필요한 서비스입니다!');
     }
     const formData = makeFormData();
-    try {
-      const result = await axios.post('/reply/create', formData, {
-        headers: {
-          'Content-topic': 'multipart/form-data',
-        },
-      });
-      if (result.data) {
-        showToast('댓글 작성 완료!');
-        handleSetIsCommentModalVisible(false);
-        handleSetReplyDatum(result.data);
-      }
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
+    const registerResult = await requestRegisterReply(formData);
+    if (!registerResult) return;
+
+    showToast('댓글 작성 완료!');
+    handleSetIsCommentModalVisible(false);
+    handleSetReplyDatum(registerResult);
   };
 
   return (
     <View>
       <Modal
         isVisible={isCommentModalVisible}
-        style={{}}
         backdropOpacity={1}
         backdropColor={white.snow}>
         <View style={{flex: 1}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.commentBarContainer}>
             <AntDesign
               name="close"
               color={black.origin}
@@ -129,13 +115,7 @@ const CommentModal: React.FC<Props> = ({
               </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              marginTop: vs(30),
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.mainText}>
             <Text style={{color: black.Onyx, fontSize: ss(15)}}>
               {singleData.Title}
             </Text>
@@ -165,12 +145,7 @@ const CommentModal: React.FC<Props> = ({
               onChangeText={setInput}
             />
             {img?.uri ? (
-              <View
-                style={{
-                  marginTop: vs(20),
-                  paddingVertical: vs(5),
-                  flexDirection: 'row',
-                }}>
+              <View style={styles.imageContainer}>
                 <Image
                   source={{uri: img.uri}}
                   style={{width: hs(300), height: vs(300)}}
@@ -199,5 +174,24 @@ const CommentModal: React.FC<Props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  commentBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  mainText: {
+    marginTop: vs(30),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  imageContainer: {
+    marginTop: vs(20),
+    paddingVertical: vs(5),
+    flexDirection: 'row',
+  },
+});
 
 export default CommentModal;

@@ -43,12 +43,17 @@ export type DetailBoardStackProps = NativeStackScreenProps<
 export type MyPageStackParamList = {
   ResetPassword: {account: string};
   Announcement: undefined;
-  AnnouncementDetail: undefined;
+  AnnouncementDetail: {postListElement: PostListElement};
   Configuration: undefined;
   Withdrawal: undefined;
 };
 
-export type MyPageStackProps = NativeStackScreenProps<
+export type MyPageStackPropsForReset = NativeStackScreenProps<
   MyPageStackParamList,
   'ResetPassword'
+>;
+
+export type MyPageStackPropsForDetail = NativeStackScreenProps<
+  MyPageStackParamList,
+  'AnnouncementDetail'
 >;

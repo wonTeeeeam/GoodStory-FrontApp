@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {ss, vs} from 'utils/scailing';
 import OvalButton from './button/OvalButton';
 import {white} from 'styles';
@@ -9,12 +9,7 @@ type Props = {onPress: () => void; btnText: string};
 
 const NoPost: React.FC<Props> = ({onPress = null, btnText = null}) => {
   return (
-    <View
-      style={{
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center',
-      }}>
+    <View style={styles.totalContainer}>
       <Entypo name={'emoji-sad'} size={ss(50)} color={'#B2B0B0'} style={{}} />
       <Text style={{color: '#B2B0B0', marginTop: vs(10)}}>
         게시글이 존재하지 않습니다.
@@ -35,5 +30,13 @@ const NoPost: React.FC<Props> = ({onPress = null, btnText = null}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  totalContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
 
 export default NoPost;

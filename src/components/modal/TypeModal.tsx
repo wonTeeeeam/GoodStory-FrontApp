@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AntDesign} from 'utils/react-native-vector-helper';
 
 import {hs, ss, vs} from 'utils/scailing';
 import {changeTopicToKorean} from 'utils/translation';
 
-function TypeModal({category, handleSetCategory}) {
+const TypeModal = ({
+  category,
+  handleSetCategory,
+}: {
+  category: string;
+  handleSetCategory: (newValue: string) => void;
+}) => {
   const [isDropDown, setIsDropDown] = useState(false);
 
-  const Item = (english, korean) => {
+  const Item = (english: string, korean: string) => {
     return (
       <Pressable
         onPress={() => {
@@ -20,21 +26,12 @@ function TypeModal({category, handleSetCategory}) {
     );
   };
   return (
-    <View style={{}}>
+    <View>
       <Pressable
-        style={{}}
         onPress={() => {
           setIsDropDown(!isDropDown);
         }}>
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: ss(1),
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: vs(15),
-          }}>
+        <View style={styles.categoryContainer}>
           <Text style={{color: 'black'}}>
             {category ? changeTopicToKorean(category) : '카테고리 선택'}
           </Text>
@@ -43,14 +40,11 @@ function TypeModal({category, handleSetCategory}) {
       </Pressable>
       {isDropDown ? (
         <Pressable
-          style={{}}
           onPress={() => {
             setIsDropDown(false);
           }}>
           <View
             style={{
-              // marginTop: vs(130),
-              // marginHorizontal: hs(20),
               backgroundColor: 'white',
             }}>
             <ScrollView
@@ -68,6 +62,17 @@ function TypeModal({category, handleSetCategory}) {
       ) : null}
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  categoryContainer: {
+    borderBottomColor: 'black',
+    borderBottomWidth: ss(1),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: vs(15),
+  },
+});
 
 export default TypeModal;
