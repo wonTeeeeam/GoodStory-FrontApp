@@ -24,8 +24,8 @@ const useAxiosInterceptor = () => {
       },
       async err => {
         if (err.response?.status === 401 && err.response?.error === 'access') {
-          const refresh_token = await Keychain.getInternetCredentials('ID')
-            .password;
+          const refresh_token: Keychain.SharedWebCredentials =
+            await Keychain.getInternetCredentials('ID').password;
           return await axios.patch('/user/updateToken', {
             UserId: userId,
             refresh_token,

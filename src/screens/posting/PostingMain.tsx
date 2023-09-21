@@ -230,7 +230,6 @@ const PostingMain = () => {
         <View style={{flexDirection: 'row'}}>
           <SelectedImage
             images={imageList}
-            setImage={setImageList}
             removeImageFromContent={removeImageFromContent}
           />
         </View>

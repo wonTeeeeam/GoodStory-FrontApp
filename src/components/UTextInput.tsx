@@ -5,21 +5,34 @@ import {AntDesign, Entypo} from 'utils/react-native-vector-helper';
 
 import {hs, ss, vs} from 'utils/scailing';
 
-function UTextInput({
+type Props = {
+  text: string;
+  Icon: any;
+  placeholder: string;
+  value: string;
+  handleSetValue: (newValue: string) => void;
+  maxLength: number;
+  handleSetNeedAlert: (newValue: boolean) => void;
+  isPassword: boolean;
+  validateValue: (value: any) => boolean;
+  isNumeric: boolean;
+};
+
+const UTextInput: React.FC<Props> = ({
   text,
   Icon,
   placeholder,
   value,
-  setValue,
+  handleSetValue,
   maxLength,
-  setNeedAlert,
+  handleSetNeedAlert,
   isPassword = false,
   validateValue,
   isNumeric = false,
-}) {
+}) => {
   const [isIconVisible, setIsIconVisible] = useState(false);
   const [needSecure, setNeedSecure] = useState(isPassword ? true : false);
-  const textInputRef = useRef();
+  const textInputRef = useRef(null);
   useEffect(() => {
     if (value.length > 0) {
       setIsIconVisible(true);
@@ -58,18 +71,18 @@ function UTextInput({
           autoCapitalize={'none'}
           placeholderTextColor={'#B2B0B0'}
           value={value}
-          onChangeText={setValue}
+          onChangeText={handleSetValue}
           secureTextEntry={needSecure ? true : false}
           maxLength={maxLength}
           onFocus={() => {
             value.length > 0 && setIsIconVisible(true);
             if (value.length > 0 && !validateValue(value)) {
-              setNeedAlert(true);
+              handleSetNeedAlert(true);
             }
           }}
           onBlur={() => {
             setIsIconVisible(false);
-            setNeedAlert(false);
+            handleSetNeedAlert(false);
           }}
         />
         {isIconVisible ? (
@@ -84,7 +97,7 @@ function UTextInput({
                 />
               </Pressable>
             ) : null}
-            <Pressable onPress={() => setValue('')}>
+            <Pressable onPress={() => handleSetValue('')}>
               <AntDesign
                 name="closecircle"
                 size={ss(20)}
@@ -97,6 +110,6 @@ function UTextInput({
       </View>
     </View>
   );
-}
+};
 
 export default UTextInput;

@@ -1,5 +1,5 @@
 import React from 'react';
 
-function TopicCard() {}
+const TopicCard = () => {};
 
 export default TopicCard;

@@ -4,15 +4,21 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {Text, View} from 'react-native';
 
-function Timer({startSeconds, endFunction}) {
-  const timerRef = useRef(null);
+type Props = {startSeconds: number};
+
+const Timer: React.FC<Props> = ({startSeconds}) => {
+  const timerRef = useRef<NodeJS.Timer | null>(null);
   const [time, setTime] = useState(startSeconds * 1000);
   const startTimer = () => {
     const finishTime = new Date().getTime() + startSeconds * 1000;
     timerRef.current = setInterval(() => {
       setTime(finishTime - new Date().getTime());
     }, 1000);
-    return () => clearInterval(timerRef.current);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   };
 
   useEffect(() => {
@@ -22,13 +28,14 @@ function Timer({startSeconds, endFunction}) {
   useEffect(() => {
     if (
       Math.floor(time / 1000 / 60) === 0 &&
-      Math.floor((time / 1000) % 60) === 0
+      Math.floor((time / 1000) % 60) === 0 &&
+      timerRef.current
     ) {
       clearInterval(timerRef.current);
     }
   }, [time]);
 
-  const changeTimeToString = numberTime => {
+  const changeTimeToString = (numberTime: number) => {
     if (numberTime < 10) {
       return `0${numberTime}`;
     }
@@ -43,6 +50,6 @@ function Timer({startSeconds, endFunction}) {
       </Text>
     </View>
   );
-}
+};
 
 export default Timer;

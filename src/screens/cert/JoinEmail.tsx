@@ -11,7 +11,7 @@ import Timer from 'components/Timer';
 import {alert} from 'utils/alert';
 import {AntDesign, Fontisto} from 'utils/react-native-vector-helper';
 
-function JoinEmail() {
+const JoinEmail = () => {
   const [email, setEmail] = useState('');
   const alertMSGForEmail = [
     `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
@@ -52,11 +52,11 @@ function JoinEmail() {
 
   // 인증번호 버튼 활성화
   useEffect(() => {
-    if (emailCert.length === 6 && validateEmail(email) && isEmailSended) {
+    if (email.length === 6 && validateEmail(email) && isEmailSended) {
       return setIsCertAbled(true);
     }
     return setIsCertAbled(false);
-  }, [emailCert, email, isEmailSended]);
+  }, [email, isEmailSended]);
 
   const checkEmailExist = async () => {
     try {
@@ -102,8 +102,8 @@ function JoinEmail() {
     } catch (e) {}
   };
 
-  const validateCert = value => {
-    if (value.lenth === 6) {
+  const validateCert = (value: string) => {
+    if (value.length === 6) {
       return true;
     }
     return false;
@@ -192,6 +192,6 @@ function JoinEmail() {
       </ScrollView>
     </View>
   );
-}
+};
 
 export default JoinEmail;

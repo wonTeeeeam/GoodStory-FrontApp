@@ -30,9 +30,18 @@ const PasswordAndRePassword: React.FC<Props> = ({
   const [alertMsgPWDIndex, setAlertMsgPWDIndex] = useState(0);
   const [needAlertPWD, setNeedAlertPWD] = useState(false);
 
+  const handleSetNeedAlertPWD = (newValue: boolean) => {
+    setNeedAlertPWD(newValue);
+  };
+
   const alertMSGForRePWD = ['비밀번호가 일치하지 않습니다'];
   const [alertMsgRePWDIndex, setAlertMsgRePWDIndex] = useState(0);
+
   const [needAlertRePWD, setNeedAlertRePWD] = useState(false);
+
+  const handleSetNeedAlertRePWD = (newValue: boolean) => {
+    setNeedAlertRePWD(newValue);
+  };
 
   const [isAbled, setIsAbled] = useState(false);
 
@@ -83,11 +92,12 @@ const PasswordAndRePassword: React.FC<Props> = ({
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호'}
           value={password}
-          setValue={handleSetPassword}
+          handleSetValue={handleSetPassword}
           maxLength={30}
-          setNeedAlert={setNeedAlertPWD}
+          handleSetNeedAlert={handleSetNeedAlertPWD}
           isPassword={true}
           validateValue={validatePWD}
+          isNumeric={false}
         />
         {needAlertPWD ? (
           <Text style={{color: 'red', marginHorizontal: hs(20)}}>
@@ -99,11 +109,12 @@ const PasswordAndRePassword: React.FC<Props> = ({
           Icon={<AntDesign name="lock" size={ss(20)} color={'#B2B0B0'} />}
           placeholder={'비밀번호 재입력'}
           value={rePassword}
-          setValue={handleSetRePassword}
+          handleSetValue={handleSetRePassword}
           maxLength={30}
-          setNeedAlert={setNeedAlertRePWD}
+          handleSetNeedAlert={handleSetNeedAlertRePWD}
           isPassword={true}
           validateValue={validateRePWD}
+          isNumeric={false}
         />
         {needAlertRePWD ? (
           <Text style={{color: 'red', marginHorizontal: hs(20)}}>

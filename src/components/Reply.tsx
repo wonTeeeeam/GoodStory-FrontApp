@@ -27,13 +27,7 @@ const Reply: React.FC<Props> = ({singleData}) => {
       <View style={styles.replyNickName}>
         {singleData.user.Nickname ? (
           <FastImage
-            style={{
-              height: vs(15),
-              width: hs(15),
-              borderRadius: ss(10),
-              borderColor: '#D3D3D3',
-              borderWidth: ss(1),
-            }}
+            style={styles.profileImage}
             source={{uri: singleData.user.ProfilePhoto}}
             resizeMode="center"
           />
@@ -42,14 +36,7 @@ const Reply: React.FC<Props> = ({singleData}) => {
             name="person-outline"
             color={'white'}
             size={ss(20)}
-            style={{
-              backgroundColor: gray.lightGray,
-              // width: '100%',
-              alignItems: 'center',
-              height: vs(20),
-              width: hs(20),
-              borderRadius: ss(100),
-            }}
+            style={styles.defaultProfileImage}
           />
         )}
 
@@ -62,12 +49,7 @@ const Reply: React.FC<Props> = ({singleData}) => {
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            width: '35%',
-          }}>
+        <View style={styles.threeDotView}>
           <Entypo
             name="dots-three-vertical"
             color={'black'}
@@ -114,6 +96,26 @@ const styles = StyleSheet.create({
   modalText: {
     color: black.origin,
     margin: ss(10),
+  },
+  profileImage: {
+    height: vs(15),
+    width: hs(15),
+    borderRadius: ss(10),
+    borderColor: '#D3D3D3',
+    borderWidth: ss(1),
+  },
+  defaultProfileImage: {
+    backgroundColor: gray.lightGray,
+    // width: '100%',
+    alignItems: 'center',
+    height: vs(20),
+    width: hs(20),
+    borderRadius: ss(100),
+  },
+  threeDotView: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '35%',
   },
 });
 
