@@ -8,8 +8,8 @@ import RootNavigation from './navigations/RootNavigation';
 import {Provider} from 'react-redux';
 import {store} from 'store/store';
 
-let App = () => {
-  if (Platform.Version < MIN_ANDROID_VERSION) {
+const App = () => {
+  if ((Platform.Version as number) < MIN_ANDROID_VERSION) {
     return (
       <View>
         <Text>스마트폰 업데이트 후 사용해주세요.</Text>

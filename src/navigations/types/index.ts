@@ -2,6 +2,7 @@ import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PostListElement} from 'hooks/useFetchPostList';
+import {Announcement} from 'screens/myPage/Announcement';
 
 export type MainStackParamList = {
   BottomStack: NavigatorScreenParams<BottomStackParamList>;
@@ -43,17 +44,28 @@ export type DetailBoardStackProps = NativeStackScreenProps<
 export type MyPageStackParamList = {
   ResetPassword: {account: string};
   Announcement: undefined;
-  AnnouncementDetail: {postListElement: PostListElement};
+  AnnouncementDetail: {announcement: Announcement};
   Configuration: undefined;
   Withdrawal: undefined;
 };
 
-export type MyPageStackPropsForReset = NativeStackScreenProps<
+export type MyPageStackProps = NativeStackScreenProps<
   MyPageStackParamList,
-  'ResetPassword'
+  'ResetPassword' | 'AnnouncementDetail'
 >;
 
-export type MyPageStackPropsForDetail = NativeStackScreenProps<
-  MyPageStackParamList,
-  'AnnouncementDetail'
+export type JoinStackParamList = {
+  JoinEmail: undefined;
+  JoinPassword: {Email: string};
+  JoinName: {Email: string; Password: string};
+  JoinCamera: {
+    Email: string;
+    Password: string;
+    Name: string;
+  };
+};
+
+export type JoinStackProps = NativeStackScreenProps<
+  JoinStackParamList,
+  'JoinEmail' | 'JoinPassword' | 'JoinName' | 'JoinCamera'
 >;

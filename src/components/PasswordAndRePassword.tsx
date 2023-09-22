@@ -12,7 +12,7 @@ type Props = {
   rePassword: string;
   handleSetRePassword: (newValue: string) => void;
   btnText: string;
-  handleOnPressBtn: () => Promise<void>;
+  handleOnPressBtn: () => Promise<void> | void;
 };
 
 const PasswordAndRePassword: React.FC<Props> = ({

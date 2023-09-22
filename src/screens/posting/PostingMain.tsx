@@ -4,6 +4,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   View,
@@ -113,18 +114,12 @@ const PostingMain = () => {
   }
 
   return (
-    <View style={{flex: 1, marginHorizontal: hs(20), marginTop: vs(20)}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{}}>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: ss(15),
-            }}>{`작성자: ${nickName || undefined}`}</Text>
+    <View style={styles.totalContainer}>
+      <View style={styles.headerContainer}>
+        <View>
+          <Text style={styles.nickName}>{`작성자: ${
+            nickName || undefined
+          }`}</Text>
         </View>
         <Pressable
           onPress={() => {
@@ -193,11 +188,7 @@ const PostingMain = () => {
         </ScrollView> */}
         <View>
           <TextInput
-            style={{
-              color: black.origin,
-              marginTop: vs(20),
-              fontSize: ss(15),
-            }}
+            style={styles.titleInput}
             placeholder="제목을 입력해주세요(최대 50자)."
             placeholderTextColor={gray.gainsboro}
             maxLength={50}
@@ -215,10 +206,7 @@ const PostingMain = () => {
         </Pressable>
         <View>
           <TextInput
-            style={{
-              color: 'black',
-              marginTop: vs(10),
-            }}
+            style={styles.bodyInput}
             placeholder="내용을 입력해주세요(최대 500자)."
             placeholderTextColor={gray.gainsboro}
             maxLength={500}
@@ -237,5 +225,26 @@ const PostingMain = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  totalContainer: {flex: 1, marginHorizontal: hs(20), marginTop: vs(20)},
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  nickName: {
+    color: 'black',
+    fontSize: ss(15),
+  },
+  titleInput: {
+    color: black.origin,
+    marginTop: vs(20),
+    fontSize: ss(15),
+  },
+  bodyInput: {
+    color: 'black',
+    marginTop: vs(10),
+  },
+});
 
 export default PostingMain;

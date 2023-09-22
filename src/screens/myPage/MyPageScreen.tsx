@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Platform, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import {hs, ss, vs} from 'utils/scailing';
 import ActivityFeed from 'components/myPage/ActivityFeed';
@@ -117,54 +124,22 @@ const MyPageScreen = () => {
 
   return (
     <View style={{marginHorizontal: hs(20)}}>
-      <View
-        style={{
-          marginTop: vs(20),
-          flexDirection: 'row',
-          borderBottomWidth: ss(1),
-          borderBottomColor: '#D8D8D8',
-          paddingBottom: vs(10),
-        }}>
-        <Text
-          style={{
-            flex: 1,
-            color: 'black',
-            fontWeight: 'bold',
-            fontSize: ss(20),
-          }}>
-          마이페이지
-        </Text>
-        <View style={{}}>
+      <View style={styles.mypageTextContainer}>
+        <Text style={styles.mypageText}>마이페이지</Text>
+        <View>
           <Feather name="bell" color={'#696969'} size={ss(25)} />
         </View>
       </View>
       <ScrollView contentContainerStyle={{}}>
-        <View
-          style={{
-            marginTop: vs(20),
-            flexDirection: 'row',
-          }}>
+        <View style={styles.profileImageContainer}>
           <Pressable
-            style={{
-              backgroundColor: '#D3D3D3',
-              width: '20%',
-              alignItems: 'center',
-              height: vs(60),
-              borderRadius: ss(100),
-            }}
+            style={styles.profileImagePressable}
             onPress={changeProfileImage}>
             <AntDesign
               name="setting"
               color={'#DCDCDC'}
               size={ss(20)}
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                backgroundColor: 'white',
-                borderRadius: ss(10),
-                zIndex: 1,
-              }}
+              style={styles.settingIcon}
             />
             {profileImage ? (
               <FastImage
@@ -178,13 +153,7 @@ const MyPageScreen = () => {
               <Ionicons name="person-outline" color={'white'} size={ss(55)} />
             )}
           </Pressable>
-          <Pressable
-            style={{
-              alignSelf: 'flex-end',
-              marginLeft: hs(10),
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
+          <Pressable style={styles.gogoIcon}>
             <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
             <MaterialIcons
               name="arrow-forward-ios"
@@ -194,12 +163,7 @@ const MyPageScreen = () => {
             />
           </Pressable>
         </View>
-        <View
-          style={{
-            marginTop: vs(20),
-            borderWidth: ss(1),
-            borderRadius: ss(10),
-          }}>
+        <View style={styles.ActivityFeedContainer}>
           <ActivityFeed
             like={userData.likeBoards}
             post={userData.boards}
@@ -209,7 +173,7 @@ const MyPageScreen = () => {
         <View style={{marginTop: vs(50)}}>
           <AccountSettingItem
             text={'비밀번호 변경'}
-            onPress={() => {
+            handleOnPressBtn={() => {
               navigation.navigate('ResetPassword', {account: userData.Account});
             }}>
             <Entypo name="lock" color={'black'} size={ss(20)} />
@@ -217,24 +181,28 @@ const MyPageScreen = () => {
           <View style={{marginTop: vs(30)}}>
             <AccountSettingItem
               text={'공지사항'}
-              onPress={() => navigation.navigate('Announcement')}>
+              handleOnPressBtn={() => navigation.navigate('Announcement')}>
               <Entypo name="help" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
             <AccountSettingItem
               text={'환경설정'}
-              onPress={() => navigation.navigate('Configuration')}>
+              handleOnPressBtn={() => navigation.navigate('Configuration')}>
               <AntDesign name="setting" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'로그아웃'} onPress={handlePressLogout}>
+            <AccountSettingItem
+              text={'로그아웃'}
+              handleOnPressBtn={handlePressLogout}>
               <Ionicons name="exit" color={'black'} size={ss(20)} />
             </AccountSettingItem>
           </View>
           <View style={{marginTop: vs(30)}}>
-            <AccountSettingItem text={'회원탈퇴'} onPress={handleWithdrawal}>
+            <AccountSettingItem
+              text={'회원탈퇴'}
+              handleOnPressBtn={handleWithdrawal}>
               <MaterialCommunityIcons
                 name="exit-run"
                 color={'black'}
@@ -247,5 +215,51 @@ const MyPageScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mypageTextContainer: {
+    marginTop: vs(20),
+    flexDirection: 'row',
+    borderBottomWidth: ss(1),
+    borderBottomColor: '#D8D8D8',
+    paddingBottom: vs(10),
+  },
+  mypageText: {
+    flex: 1,
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: ss(20),
+  },
+  profileImageContainer: {
+    marginTop: vs(20),
+    flexDirection: 'row',
+  },
+  profileImagePressable: {
+    backgroundColor: '#D3D3D3',
+    width: '20%',
+    alignItems: 'center',
+    height: vs(60),
+    borderRadius: ss(100),
+  },
+  settingIcon: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'white',
+    borderRadius: ss(10),
+    zIndex: 1,
+  },
+  gogoIcon: {
+    alignSelf: 'flex-end',
+    marginLeft: hs(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ActivityFeedContainer: {
+    marginTop: vs(20),
+    borderWidth: ss(1),
+    borderRadius: ss(10),
+  },
+});
 
 export default MyPageScreen;

@@ -13,9 +13,9 @@ type Props = {
   handleSetValue: (newValue: string) => void;
   maxLength: number;
   handleSetNeedAlert: (newValue: boolean) => void;
-  isPassword: boolean;
+  isPassword?: boolean;
   validateValue: (value: any) => boolean;
-  isNumeric: boolean;
+  isNumeric?: boolean;
 };
 
 const UTextInput: React.FC<Props> = ({

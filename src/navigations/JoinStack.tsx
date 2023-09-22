@@ -15,7 +15,7 @@ import {JoinStackParamList} from './types';
 
 const Stack = createNativeStackNavigator<JoinStackParamList>();
 
-export default function JoinStack() {
+const JoinStack = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -71,4 +71,6 @@ export default function JoinStack() {
       /> */}
     </Stack.Navigator>
   );
-}
+};
+
+export default JoinStack;

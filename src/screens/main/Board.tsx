@@ -8,6 +8,7 @@ import {showToast} from 'utils/toast';
 import {BottomStackProps} from 'navigations/types';
 
 const Board: React.FC<BottomStackProps> = ({route}) => {
+  const {boardTopic} = route.params;
   const [filterValue, setFilterValue] = useState('최신순');
   const [backPressCount, setBackPressCount] = useState(0);
 
@@ -49,10 +50,7 @@ const Board: React.FC<BottomStackProps> = ({route}) => {
         />
       </View>
       <View style={styles.postListContainer}>
-        <PostList
-          filterValue={filterValue}
-          topic={route.params?.boardTopic || 'Free'}
-        />
+        <PostList filterValue={filterValue} topic={boardTopic || 'Free'} />
       </View>
     </View>
   );

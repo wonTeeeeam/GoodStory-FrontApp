@@ -6,8 +6,8 @@ const {width, height} = Dimensions.get('window');
 const guidelineBaseWidth = 350;
 const guidelineBaseHeight = 680;
 
-const hs = size => (width / guidelineBaseWidth) * size;
-const vs = size => (height / guidelineBaseHeight) * size;
-const ss = (size, factor = 0.5) => size + (hs(size) - size) * factor;
+const hs = (size: number) => (width / guidelineBaseWidth) * size;
+const vs = (size: number) => (height / guidelineBaseHeight) * size;
+const ss = (size: number, factor = 0.5) => size + (hs(size) - size) * factor;
 
 export {hs, vs, ss};

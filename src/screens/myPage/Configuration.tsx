@@ -1,8 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 
-function Configuration() {
+const Configuration = () => {
   return <View></View>;
-}
+};
 
 export default Configuration;

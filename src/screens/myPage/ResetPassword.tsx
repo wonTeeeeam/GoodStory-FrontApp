@@ -19,7 +19,7 @@ const ResetPassword: React.FC<MyPageStackProps> = ({route}) => {
   };
   const [isLoading, setIsLoading] = useState(false);
 
-  const {account} = route.params;
+  const {account} = route.params as {account: string};
 
   const handleOnPressBtn = async () => {
     setIsLoading(true);

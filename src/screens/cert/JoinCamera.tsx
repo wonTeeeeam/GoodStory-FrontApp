@@ -3,7 +3,7 @@ import {Pressable, Text, View} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 // import TesseractOcr, {LANG_ENGLISH} from 'react-native-tesseract-ocr';
 
-const JoinCamera = ({route, navigation}) => {
+const JoinCamera = ({route}) => {
   // 카메라에서 이미지 캡처 후 Tesseract.js로 OCR 수행
   const captureImageAndRecognizeText = async () => {
     try {

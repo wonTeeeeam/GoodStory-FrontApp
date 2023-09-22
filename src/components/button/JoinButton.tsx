@@ -4,7 +4,7 @@ import {hs, ss, vs} from 'utils/scailing';
 
 type Props = {
   isAbled: boolean;
-  handleOnPressBtn: () => Promise<void>;
+  handleOnPressBtn: () => Promise<void> | void;
   text?: string;
 };
 

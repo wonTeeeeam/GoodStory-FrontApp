@@ -1,4 +1,4 @@
-export const changeTopicToKorean = topic => {
+export const changeTopicToKorean = (topic: string) => {
   switch (topic) {
     case 'Tip':
       return '꿀팁';

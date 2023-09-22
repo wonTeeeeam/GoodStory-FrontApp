@@ -1,24 +1,24 @@
-export function convertTimeToKorean(rawTime) {
+export const convertTimeToKorean = (rawTime: Date) => {
   const inputTime = new Date(rawTime);
   const presentTime = Date.now();
 
-  const gap = presentTime - inputTime;
+  const gap = presentTime - inputTime.getTime();
 
   //   1분 미만
   if (gap <= 59000) {
     return '방금';
     // 60분 미만
   } else if (gap < 3600000) {
-    return `${parseInt(gap / 60000, 10)}분`;
+    return `${parseInt(`${gap / 60000}`, 10)}분`;
     // 24시간 미만
   } else if (gap < 86400000) {
-    return `${parseInt(gap / 3600000, 10)}시간`;
+    return `${parseInt(`${gap / 3600000}`, 10)}시간`;
   } else {
     return '1일 이상';
   }
-}
+};
 
-export function convertTimeToStandardFormat(createdDate) {
+export const convertTimeToStandardFormat = (createdDate: Date) => {
   const inputDate = new Date(createdDate);
   const month = [
     'January',
@@ -46,4 +46,4 @@ export function convertTimeToStandardFormat(createdDate) {
     ':' +
     inputDate.getMinutes()
   );
-}
+};

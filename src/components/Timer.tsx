@@ -4,9 +4,9 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {Text, View} from 'react-native';
 
-type Props = {startSeconds: number};
+type Props = {startSeconds: number; endFunction?: any};
 
-const Timer: React.FC<Props> = ({startSeconds}) => {
+const Timer: React.FC<Props> = ({startSeconds, endFunction}) => {
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const [time, setTime] = useState(startSeconds * 1000);
   const startTimer = () => {
@@ -17,6 +17,7 @@ const Timer: React.FC<Props> = ({startSeconds}) => {
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
+        endFunction();
       }
     };
   };
@@ -32,6 +33,7 @@ const Timer: React.FC<Props> = ({startSeconds}) => {
       timerRef.current
     ) {
       clearInterval(timerRef.current);
+      endFunction();
     }
   }, [time]);
 

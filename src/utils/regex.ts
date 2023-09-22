@@ -1,4 +1,4 @@
-const validateEmail = value => {
+const validateEmail = (value: string) => {
   const re =
     // (특수 기호들 제외 문자 + .다음에 특수기호 제외 문자) or 따옴표 안에 문자들 @ ip주소(123.123.123.123) or 영문자, 하이픈, 숫자 . 영문자 2개 이상
     // /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -7,7 +7,7 @@ const validateEmail = value => {
   return re.test(String(value).toLowerCase());
 };
 
-const validateUserName = input => {
+const validateUserName = (input: string) => {
   try {
     const re = /^[가-힣|a-z|A-Z]{2,}$/;
     if (!re.test(input)) {
@@ -20,7 +20,7 @@ const validateUserName = input => {
   }
 };
 
-const validatePWD = password => {
+const validatePWD = (password: string) => {
   // Minimum eight characters, at least one letter and one number:
   // const re = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 

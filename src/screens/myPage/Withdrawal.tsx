@@ -1,8 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 
-function Withdrawal() {
+const Withdrawal = () => {
   return <View></View>;
-}
+};
 
 export default Withdrawal;

@@ -1,23 +1,25 @@
 import {useNavigation} from '@react-navigation/native';
-import {PostListElement} from 'hooks/useFetchPostList';
-import {MyPageStackPropsForDetail} from 'navigations/types';
+import {MyPageStackProps} from 'navigations/types';
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Announcement} from 'screens/myPage/Announcement';
 import {gray, white} from 'styles';
 import {Foundation} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 
-const AnnouncementItem = ({singleData}: {singleData: PostListElement}) => {
-  const navigation = useNavigation<MyPageStackPropsForDetail['navigation']>();
+const AnnouncementItem = ({announcement}: {announcement: Announcement}) => {
+  const navigation = useNavigation<MyPageStackProps['navigation']>();
   return (
     <Pressable
       style={styles.totalContainer}
       onPress={() =>
-        navigation.navigate('AnnouncementDetail', {postListElement: singleData})
+        navigation.navigate('AnnouncementDetail', {
+          announcement,
+        })
       }>
       <View style={{flexDirection: 'row', paddingTop: vs(5)}}>
         <Text style={{fontWeight: 'bold', color: 'black'}}>
-          {singleData.Title}
+          {announcement.title}
         </Text>
         <Foundation
           name="burst-new"
@@ -27,7 +29,7 @@ const AnnouncementItem = ({singleData}: {singleData: PostListElement}) => {
         />
       </View>
       <Text style={{color: '#DCDCDC', marginBottom: vs(5)}}>
-        {singleData.Created_date}
+        {announcement.createdDate}
       </Text>
     </Pressable>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 
 import HandleTopicCard from 'components/HandleTopicCard';
@@ -11,7 +11,7 @@ import {
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
 
-function Topic() {
+const Topic = () => {
   return (
     <View style={{marginHorizontal: hs(20), flex: 1}}>
       <View style={{alignItems: 'center', marginTop: vs(20)}}>
@@ -22,17 +22,8 @@ function Topic() {
           이 회사가 좋소라고 생각한 가장 큰 이유
         </Text>
       </View>
-      <View
-        style={{
-          justifyContent: 'space-evenly',
-          flex: 0.8,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flex: 0.3,
-          }}>
+      <View style={styles.allCardContainer}>
+        <View style={styles.cardRowContainer}>
           <HandleTopicCard color={'#d070fb'} text={'꿀팁'}>
             <Ionicons name="bulb" color={'white'} size={ss(30)} />
           </HandleTopicCard>
@@ -40,12 +31,7 @@ function Topic() {
             <FontAwesome name="wechat" color={'white'} size={ss(30)} />
           </HandleTopicCard>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flex: 0.3,
-          }}>
+        <View style={styles.cardRowContainer}>
           <HandleTopicCard color={'#F0E68C'} text={'연봉'}>
             <FontAwesome name="money" color={'white'} size={ss(30)} />
           </HandleTopicCard>
@@ -57,12 +43,7 @@ function Topic() {
             />
           </HandleTopicCard>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flex: 0.3,
-          }}>
+        <View style={styles.cardRowContainer}>
           <HandleTopicCard color={'#ADFF2F'} text={'자유'}>
             <MaterialIcons name="flight" color={'white'} size={ss(30)} />
           </HandleTopicCard>
@@ -73,6 +54,18 @@ function Topic() {
       </View>
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  allCardContainer: {
+    justifyContent: 'space-evenly',
+    flex: 0.8,
+  },
+  cardRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 0.3,
+  },
+});
 
 export default Topic;

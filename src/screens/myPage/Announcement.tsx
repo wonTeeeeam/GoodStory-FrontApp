@@ -1,10 +1,15 @@
-import NoPost from 'components/NoPost';
 import AnnouncementItem from 'components/myPage/AnnouncementItem';
-import React, {useState} from 'react';
-import {FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
+import React from 'react';
+import {FlatList, View} from 'react-native';
 
-function Announcement() {
-  const listData = [
+export type Announcement = {
+  title: string;
+  body: string;
+  createdDate: string;
+};
+
+const Announcement = () => {
+  const announcementList: Announcement[] = [
     {
       title: '문의 연락처입니다.',
       body: '여기로 연락 부탁드립니다.\ngoodStoryCert@gmail.com',
@@ -16,11 +21,11 @@ function Announcement() {
       {/* 2차 개발 */}
       {/* <NoPost /> */}
       <FlatList
-        data={listData}
+        data={announcementList}
         renderItem={({item, index}) => {
           return (
             <View key={index} style={{}}>
-              <AnnouncementItem singleData={item} />
+              <AnnouncementItem announcement={item} />
             </View>
           );
         }}
@@ -47,6 +52,6 @@ function Announcement() {
       {/* {isListDataExist === false ? <NoPost /> : null} */}
     </View>
   );
-}
+};
 
 export default Announcement;

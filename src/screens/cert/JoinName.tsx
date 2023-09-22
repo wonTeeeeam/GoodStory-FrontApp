@@ -1,18 +1,27 @@
-import React, {useState} from 'react';
-import {Keyboard, Pressable, Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Keyboard, Pressable, Text} from 'react-native';
 import UTextInput from 'components/UTextInput';
 import {hs, ss} from 'utils/scailing';
 import JoinButton from 'components/button/JoinButton';
 import {validateUserName} from 'utils/regex';
-import {useEffect} from 'react';
-import axios from 'axios';
 import {Ionicons} from 'utils/react-native-vector-helper';
+import {JoinStackProps} from 'navigations/types';
+import {checkNickname, registerUserInfo} from 'api/join';
 
-function JoinName({route, navigation}) {
-  const {Email, Password} = route.params;
+const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
+  const {Email, Password} = route.params as {
+    Email: string;
+    Password: string;
+  };
   const [name, setName] = useState('');
+  const handleSetName = (newValue: string) => {
+    setName(newValue);
+  };
   const [isAbled, setIsAbled] = useState(false);
   const [needAlert, setNeedAlert] = useState(false);
+  const handleSetNeedAlert = (newValue: boolean) => {
+    setNeedAlert(newValue);
+  };
   const alertMSG = [
     `올바른 형식의 닉네임을 입력해주세요(최소 2글자 이상의 한글, 영문자)`,
     `이미 존재하는 이메일입니다.`,
@@ -42,42 +51,15 @@ function JoinName({route, navigation}) {
     });
   };
 
-  const checkNickname = async () => {
-    try {
-      const result = await axios.post('/user/validateNickname', {
-        Nickname: name,
-      });
-      if (result.data) {
-        return true;
-      }
-      console.log(result.data);
+  const handlePressButton = async () => {
+    if (await checkNickname(name)) {
       setNeedAlert(true);
       setAlertIndex(1);
-      return false;
-    } catch (e) {
-      console.log(e);
+      return;
     }
-  };
 
-  const registerUserInfo = async () => {
-    try {
-      const result = await axios.post('/user/create', {
-        Account: Email,
-        Password: Password,
-        Nickname: name,
-        CompanyCode: '123123',
-        CompanyName: '좋좋소',
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handlePressButton = async () => {
-    if (!(await checkNickname())) {
-      // goNextJoinNavigation();
-      await registerUserInfo();
-    }
+    // goNextJoinNavigation();
+    await registerUserInfo({Email, Password, name});
   };
 
   return (
@@ -87,9 +69,9 @@ function JoinName({route, navigation}) {
         Icon={<Ionicons name="person" size={ss(20)} color={'#B2B0B0'} />}
         placeholder={'닉네임'}
         value={name}
-        setValue={setName}
+        handleSetValue={handleSetName}
         maxLength={20}
-        setNeedAlert={setNeedAlert}
+        handleSetNeedAlert={handleSetNeedAlert}
         validateValue={validateUserName}
       />
       {needAlert ? (
@@ -97,9 +79,9 @@ function JoinName({route, navigation}) {
           {alertMSG[alertMsgIndex]}
         </Text>
       ) : null}
-      <JoinButton isAbled={isAbled} onPress={handlePressButton} />
+      <JoinButton isAbled={isAbled} handleOnPressBtn={handlePressButton} />
     </Pressable>
   );
-}
+};
 
 export default JoinName;

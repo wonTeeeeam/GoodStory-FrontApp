@@ -1,18 +1,25 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import PasswordRePassword from 'components/PasswordAndRePassword';
+import {JoinStackProps} from 'navigations/types';
 
-function JoinPassword({route, navigation}) {
-  const {Email} = route.params;
+const JoinPassword: React.FC<JoinStackProps> = ({route, navigation}) => {
+  const {Email} = route.params as {Email: string};
 
   const [password, setPassword] = useState('');
+  const handleSetPassword = (newValue: string) => {
+    setPassword(newValue);
+  };
   const [rePassword, setRePassword] = useState('');
+  const handleSetRePassword = (newValue: string) => {
+    setRePassword(newValue);
+  };
 
   const goNextJoinNavigation = () => {
     navigation.navigate('JoinName', {Email: Email, Password: password});
   };
 
-  const onPress = () => {
+  const handleOnPressBtn = () => {
     goNextJoinNavigation();
   };
 
@@ -20,14 +27,14 @@ function JoinPassword({route, navigation}) {
     <View>
       <PasswordRePassword
         password={password}
-        setPassword={setPassword}
+        handleSetPassword={handleSetPassword}
         rePassword={rePassword}
-        setRePassword={setRePassword}
-        onPress={onPress}
+        handleSetRePassword={handleSetRePassword}
+        handleOnPressBtn={handleOnPressBtn}
         btnText={'다음'}
       />
     </View>
   );
-}
+};
 
 export default JoinPassword;

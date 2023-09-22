@@ -6,13 +6,16 @@ import UTextInput from 'components/UTextInput';
 import JoinButton from 'components/button/JoinButton';
 import {validateEmail} from 'utils/regex';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import Timer from 'components/Timer';
-import {alert} from 'utils/alert';
 import {AntDesign, Fontisto} from 'utils/react-native-vector-helper';
+import {requestEmailExist} from 'api/join';
+import {JoinStackProps} from 'navigations/types';
 
 const JoinEmail = () => {
   const [email, setEmail] = useState('');
+  const handleSetEmail = (newValue: string) => {
+    setEmail(newValue);
+  };
   const alertMSGForEmail = [
     `올바른 형식의 이메일을 입력해주세요(영문자, 숫자, -, _만 가능)`,
   ];
@@ -20,18 +23,27 @@ const JoinEmail = () => {
   const [isEmailSended, setIsEmailSended] = useState(false);
   const [alertMSGIndexForEmail, setAlertMsgIndexForEmail] = useState(0);
   const [needAlertForEmail, setNeedAlertForEmail] = useState(false);
+  const handleSetNeedAlertForEmail = (newValue: boolean) => {
+    setNeedAlertForEmail(newValue);
+  };
 
-  const [emailCert, setEmailCert] = useState(false);
+  const [emailCert, setEmailCert] = useState('');
+  const handleSetEmailCert = (newEmail: string) => {
+    setEmailCert(newEmail);
+  };
   const alertMSGForCert = [
     '잘못된 인증번호입니다.',
     '인증번호가 만료되었습니다.',
   ];
   const [alertMSGIndexForCert, setAlertMSGIndexForCert] = useState(0);
   const [needAlertForCert, setNeedAlertForCert] = useState(false);
+  const handleSetNeedAlertForCert = (newValue: boolean) => {
+    setNeedAlertForCert(newValue);
+  };
 
   const [isEmailAbled, setIsEmailAbled] = useState(false);
   const [isCertAbled, setIsCertAbled] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<JoinStackProps['navigation']>();
 
   // 이메일 변경 관련 로직
   useEffect(() => {
@@ -58,40 +70,9 @@ const JoinEmail = () => {
     return setIsCertAbled(false);
   }, [email, isEmailSended]);
 
-  const checkEmailExist = async () => {
-    try {
-      const result = await axios.post('/user/validateEmail', {
-        Account: email,
-      });
-      if (!result.data) {
-        return true;
-      } else {
-        alert({title: '이메일 중복', body: '이미 존재하는 이메일입니다.'});
-        return false;
-      }
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-  };
-
-  const sendEmail = async () => {
-    try {
-      const result = await axios.post('/mail/authEmail', {});
-      if (!result.data) {
-        alert({title: '이메일 전송 실패', body: '이메일 전송에 실패했습니다.'});
-        return false;
-      } else {
-        return true;
-      }
-    } catch (e) {
-      return false;
-    }
-  };
-
   const handlePressSendButton = async () => {
     try {
-      if (await checkEmailExist()) {
+      if (await requestEmailExist(email)) {
         // if (await sendEmail()) {
         setIsEmailAbled(false);
         setIsTimerVisible(true);
@@ -103,10 +84,7 @@ const JoinEmail = () => {
   };
 
   const validateCert = (value: string) => {
-    if (value.length === 6) {
-      return true;
-    }
-    return false;
+    return value.length === 6 ? true : false;
   };
 
   const endFunction = () => {
@@ -133,9 +111,9 @@ const JoinEmail = () => {
             Icon={<Fontisto name="email" size={ss(20)} color={'#B2B0B0'} />}
             placeholder={'이메일'}
             value={email}
-            setValue={setEmail}
+            handleSetValue={handleSetEmail}
             maxLength={65}
-            setNeedAlert={setNeedAlertForEmail}
+            handleSetNeedAlert={handleSetNeedAlertForEmail}
             validateValue={validateEmail}
           />
           {needAlertForEmail ? (
@@ -151,16 +129,16 @@ const JoinEmail = () => {
           <JoinButton
             text={'인증번호 전송'}
             isAbled={isEmailAbled}
-            onPress={handlePressSendButton}
+            handleOnPressBtn={handlePressSendButton}
           />
           <UTextInput
             text={'인증번호를 입력해주세요.'}
             Icon={<AntDesign name="check" size={ss(20)} color={'#B2B0B0'} />}
             placeholder={'인증번호'}
             value={emailCert}
-            setValue={setEmailCert}
+            handleSetValue={handleSetEmailCert}
             maxLength={6}
-            setNeedAlert={setNeedAlertForCert}
+            handleSetNeedAlert={handleSetNeedAlertForCert}
             validateValue={validateCert}
             isNumeric={true}
           />
@@ -187,7 +165,10 @@ const JoinEmail = () => {
               </View>
             ) : null}
           </View>
-          <JoinButton isAbled={isCertAbled} onPress={handlePressNextButton} />
+          <JoinButton
+            isAbled={isCertAbled}
+            handleOnPressBtn={handlePressNextButton}
+          />
         </Pressable>
       </ScrollView>
     </View>
