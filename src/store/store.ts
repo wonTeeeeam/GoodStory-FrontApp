@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from 'slice/userSlice';
 import navigationReducer from 'slice/navigationSlice';
+import boardCountDetailReducer from 'slice/boardCountDetailSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     navigation: navigationReducer,
+    boardCountDetail: boardCountDetailReducer,
   },
 });
 
@@ -14,6 +16,7 @@ export function setupStore(preloadedState: {}) {
     reducer: {
       user: userReducer,
       navigation: navigationReducer,
+      boardCountDetail: boardCountDetailReducer,
     },
     preloadedState,
   });

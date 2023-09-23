@@ -1,5 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+// type loginUserInfo = {
+//   userId: string;
+//   companyName: string;
+//   nickname: string;
+//   profilePhoto: string;
+//   refresh_token: string;
+//   likeBoards: string[];
+//   likeReplies: string[];
+//   likeReReplies: string[];
+// };
+
 const initialState = {
   userId: '',
   account: '',
@@ -43,10 +54,26 @@ export const userSlice = createSlice({
     initUserInfo: () => {
       return initialState;
     },
+    handleLikeBoards: (state, action) => {
+      state.likeBoards = action.payload;
+    },
+    handleLikeReply: (state, action) => {
+      state.likeReplies = action.payload;
+    },
+    handleLikeReReplies: (state, action) => {
+      state.likeReReplies = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {handleUserInfo, initUserInfo, changeProfile} = userSlice.actions;
+export const {
+  handleUserInfo,
+  initUserInfo,
+  changeProfile,
+  handleLikeBoards,
+  handleLikeReply,
+  handleLikeReReplies,
+} = userSlice.actions;
 
 export default userSlice.reducer;

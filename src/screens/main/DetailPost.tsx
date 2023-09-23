@@ -28,6 +28,8 @@ import {
 import {DetailBoardStackProps} from 'navigations/types';
 import useBottomModal from 'hooks/useModal';
 import CommentBar from 'components/bar/CommentBar';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
 
 export type ReplyDatum = {
   ReplyId: string;
@@ -46,31 +48,24 @@ export type ReplyDatum = {
 };
 
 const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
-  const {singleData, firstViewCnt, firstLikeCnt, firstIsLikePressed} =
-    route.params;
+  const {singleData, firstIsLikePressed} = route.params;
   const [replyData, setReplyData] = useState<ReplyDatum[]>([]);
   const handleSetReplyDatum = (newReplyData: ReplyDatum) => {
     setReplyData([...replyData, newReplyData]);
   };
+  const boardCountDetail = useAppSelector(
+    (state: RootState) => state.boardCountDetail,
+  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const {isModalVisible, changeModalVisible} = useBottomModal();
 
-  const {
-    handlePressLike,
-    likeCnt,
-    setLikeCnt,
-    setIsLikePressed,
-    isLikePressed,
-  } = usePressLike();
-
-  useEffect(() => {
-    setLikeCnt(firstLikeCnt);
-    setIsLikePressed(firstIsLikePressed);
-  }, []);
+  const {handlePressLike, setIsLikePressed, isLikePressed} = usePressLike();
 
   useEffect(() => {
     fetchDetailData();
+    setIsLikePressed(firstIsLikePressed);
   }, []);
 
   useEffect(() => {
@@ -104,7 +99,7 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
         showsVerticalScrollIndicator={false}>
         <View>
           <View style={{padding: ss(20)}}>
-            <View style={{}}>
+            <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View>
                   {singleData.user.ProfilePhoto ? (
@@ -179,10 +174,12 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                       <AntDesign name="hearto" color={gray.dimGray} />
                     )}
                   </View>
-                  {likeCnt === 0 ? (
+                  {boardCountDetail?.likeCnt === 0 ? (
                     <Text style={styles.likeText}>{'좋아요'}</Text>
                   ) : (
-                    <Text style={styles.likeText}>{likeCnt}</Text>
+                    <Text style={styles.likeText}>
+                      {boardCountDetail?.likeCnt}
+                    </Text>
                   )}
                 </TouchableOpacity>
                 <Pressable style={{...styles.bottomContainer, left: hs(120)}}>
@@ -193,7 +190,9 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                     />
                   </View>
                   <Text style={styles.replyText}>
-                    {replyData.length > 0 ? replyData.length : '댓글'}
+                    {boardCountDetail?.replyCnt === 0
+                      ? '댓글'
+                      : boardCountDetail?.replyCnt}
                   </Text>
                 </Pressable>
                 <Pressable style={{...styles.bottomContainer, left: hs(240)}}>
@@ -201,7 +200,9 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                     <AntDesign name="eyeo" color={gray.dimGray} />
                   </View>
                   <Text style={styles.viewText}>
-                    {firstViewCnt > 0 ? firstViewCnt : '조회수'}
+                    {boardCountDetail?.viewCnt === 0
+                      ? '조회수'
+                      : boardCountDetail?.viewCnt}
                   </Text>
                 </Pressable>
               </View>

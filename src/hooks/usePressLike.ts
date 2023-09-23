@@ -5,11 +5,17 @@ import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
 import {requestMinusLike, requestPlusLike} from 'api/likeCnt';
 import {PostListElement} from './useFetchPostList';
+import {handleLikeBoards} from 'slice/userSlice';
+import {useDispatch} from 'react-redux';
+import {changeBoardCountExisted} from 'slice/boardCountDetailSlice';
 
 const usePressLike = () => {
   const [isLikePressed, setIsLikePressed] = useState(false);
-  const [likeCnt, setLikeCnt] = useState(0);
-  const {userId} = useAppSelector((state: RootState) => state.user);
+  const {userId, likeBoards} = useAppSelector((state: RootState) => state.user);
+  const boardCountDetail = useAppSelector(
+    (state: RootState) => state.boardCountDetail,
+  );
+  const dispatch = useDispatch();
 
   const handlePressLike = async (singleData: PostListElement) => {
     if (!userId) {
@@ -23,7 +29,22 @@ const usePressLike = () => {
     if (!plusLikeResult) {
       return;
     }
-    setLikeCnt(likeCnt + 1);
+    const targetBoardCount = boardCountDetail.find(
+      boardCount => boardCount.BoardId === singleData.BoardId,
+    );
+    if (!targetBoardCount) {
+      return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
+    }
+    dispatch(handleLikeBoards([...likeBoards, `${singleData.BoardId}`]));
+    dispatch(
+      changeBoardCountExisted({
+        BoardId: targetBoardCount.BoardId,
+        likeCnt: targetBoardCount.likeCnt + 1,
+        replyCnt: targetBoardCount.replyCnt,
+        viewCnt: targetBoardCount.viewCnt,
+      }),
+    );
+    // setLikeCnt(likeCnt + 1);
     setIsLikePressed(true);
   };
 
@@ -32,14 +53,31 @@ const usePressLike = () => {
     if (!minusLikeResult) {
       return;
     }
-    setLikeCnt(likeCnt - 1);
+    const newLikeBoardList = likeBoards.filter(
+      likeBoard => likeBoard !== singleData.BoardId,
+    );
+    const targetBoardCount = boardCountDetail.find(
+      boardCount => boardCount.BoardId === singleData.BoardId,
+    );
+    if (!targetBoardCount) {
+      return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
+    }
+    dispatch(handleLikeBoards([...newLikeBoardList]));
+    dispatch(
+      changeBoardCountExisted({
+        BoardId: targetBoardCount.BoardId,
+        likeCnt: targetBoardCount.likeCnt - 1,
+        replyCnt: targetBoardCount.replyCnt,
+        viewCnt: targetBoardCount.viewCnt,
+      }),
+    );
+
+    // setLikeCnt(likeCnt - 1);
     setIsLikePressed(false);
   };
 
   return {
     handlePressLike,
-    likeCnt,
-    setLikeCnt,
     isLikePressed,
     setIsLikePressed,
   };

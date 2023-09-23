@@ -6,35 +6,24 @@ import {MainStackProps} from 'navigations/types';
 
 const useLikeAndView = () => {
   const navigation = useNavigation<MainStackProps['navigation']>();
-  const {
-    handlePressLike,
-    likeCnt,
-    setLikeCnt,
-    isLikePressed,
-    setIsLikePressed,
-  } = usePressLike();
-  const {viewCnt, setViewCnt, handlePlusView} = usePlusView();
+  const {handlePressLike, isLikePressed, setIsLikePressed} = usePressLike();
+  const {handlePlusView} = usePlusView();
 
-  const navigateDetailPost = (singleData: PostListElement) => {
+  const navigateDetailPost = async (singleData: PostListElement) => {
     navigation.navigate('DetailBoardStack', {
       screen: 'DetailPost',
       params: {
         singleData: singleData,
-        firstViewCnt: viewCnt + 1,
-        firstLikeCnt: likeCnt,
         firstIsLikePressed: isLikePressed,
       },
     });
+    await handlePlusView(singleData);
   };
 
   return {
     handlePressLike,
-    likeCnt,
-    setLikeCnt,
     isLikePressed,
     setIsLikePressed,
-    viewCnt,
-    setViewCnt,
     handlePlusView,
     navigateDetailPost,
   };

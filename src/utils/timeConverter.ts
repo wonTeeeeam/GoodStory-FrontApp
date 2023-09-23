@@ -1,4 +1,4 @@
-export const convertTimeToKorean = (rawTime: Date) => {
+export const convertTimeToKorean = (rawTime: string) => {
   const inputTime = new Date(rawTime);
   const presentTime = Date.now();
 

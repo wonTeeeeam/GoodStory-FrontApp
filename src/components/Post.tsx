@@ -33,19 +33,19 @@ const Post: React.FC<Props> = ({singleData}) => {
   const {deleteImageFlagsInContent} = useHandleImage();
   const {likeBoards} = useAppSelector((state: RootState) => state.user);
 
+  const boardCountDetail = useAppSelector(
+    (state: RootState) => state.boardCountDetail,
+  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+
   const {
     handlePressLike,
-    likeCnt,
-    setLikeCnt,
     isLikePressed,
     setIsLikePressed,
-    viewCnt,
-    setViewCnt,
     handlePlusView,
     navigateDetailPost,
   } = useLikeAndView();
 
-  const {replyCnt, handleSetReplyCnt} = useReply();
+  const {handleSetReplyCnt} = useReply();
 
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(element => element === singleData.BoardId);
@@ -53,17 +53,8 @@ const Post: React.FC<Props> = ({singleData}) => {
   }, [likeBoards, singleData, setIsLikePressed]);
 
   useEffect(() => {
-    handleSetReplyCnt(singleData.ReplyCount);
-  }, [singleData.ReplyCount]);
-
-  useEffect(() => {
     checkIsLiked();
   }, [checkIsLiked]);
-
-  useEffect(() => {
-    setLikeCnt(singleData.Like);
-    setViewCnt(singleData.Views);
-  }, [singleData.Like, singleData.Views, setLikeCnt, setViewCnt]);
 
   const handleNavigate = async () => {
     // 조회수 올리는데 실패해도 그냥 넘어갑시다.
@@ -139,10 +130,10 @@ const Post: React.FC<Props> = ({singleData}) => {
                 <AntDesign name="hearto" color={gray.dimGray} />
               )}
             </View>
-            {likeCnt === 0 ? (
+            {boardCountDetail?.likeCnt === 0 ? (
               <Text style={styles.likeText}>{'좋아요'}</Text>
             ) : (
-              <Text style={styles.likeText}>{likeCnt}</Text>
+              <Text style={styles.likeText}>{boardCountDetail?.likeCnt}</Text>
             )}
           </TouchableOpacity>
           <Pressable style={{...styles.bottomContainer, left: hs(140)}}>
@@ -153,8 +144,9 @@ const Post: React.FC<Props> = ({singleData}) => {
               />
             </View>
             <Text style={styles.replyText}>
-              {/* 댓글 개수 state로 관리해야한다 ㅡㅡ */}
-              {replyCnt > 0 ? replyCnt : '댓글'}
+              {boardCountDetail?.replyCnt === 0
+                ? '댓글'
+                : boardCountDetail?.replyCnt}
             </Text>
           </Pressable>
           <Pressable style={{...styles.bottomContainer, left: hs(250)}}>
@@ -162,7 +154,9 @@ const Post: React.FC<Props> = ({singleData}) => {
               <AntDesign name="eyeo" color={gray.dimGray} />
             </View>
             <Text style={styles.viewText}>
-              {singleData.Views > 0 ? viewCnt : '조회수'}
+              {boardCountDetail?.viewCnt === 0
+                ? '조회수'
+                : boardCountDetail?.viewCnt}
             </Text>
           </Pressable>
         </View>

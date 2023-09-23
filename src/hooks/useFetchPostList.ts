@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {useState} from 'react';
 import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {addBoardCount} from 'slice/boardCountDetailSlice';
 import {alert} from 'utils/alert';
 
 export type PostListElement = {
@@ -44,6 +46,7 @@ const useFetchPostList = ({topic}: Props) => {
   const [postList, setPostList] = useState<any[]>([]);
   const [isPostListExist, setIsPostListExist] = useState<boolean>();
   const [refreshing, setRefreshing] = useState(false);
+  const dispatch = useDispatch();
 
   const updatePostList = (nextPostList: PostListElement[]) => {
     const postListUpdated: PostListElement[] = [];
@@ -83,6 +86,7 @@ const useFetchPostList = ({topic}: Props) => {
       });
       const newUpdatePostList = updatePostList(nextPostList.data);
       setPostList(newUpdatePostList);
+      dispatch(addBoardCount(newUpdatePostList));
       // 지금 가지고 있는 게시글 이후부터 가져오기 위한 skip
       setSkip(newUpdatePostList.length);
 

@@ -30,8 +30,6 @@ export type BottomStackProps = BottomTabScreenProps<
 export type DetailBoardStackParamList = {
   DetailPost: {
     singleData: PostListElement;
-    firstViewCnt: number;
-    firstLikeCnt: number;
     firstIsLikePressed: boolean;
   };
 };
