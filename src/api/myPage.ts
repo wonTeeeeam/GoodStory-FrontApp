@@ -3,11 +3,12 @@ import {alert} from 'utils/alert';
 
 export const requestMyPageUserData = async (userId: string) => {
   try {
-    await axios.get('/user/myPage', {
+    const userData = await axios.get('/user/myPage', {
       params: {
         UserId: userId,
       },
     });
+    return userData.data;
   } catch (e: any) {
     alert({title: '마이페이지 정보 조회 실패', body: e.message});
     return null;

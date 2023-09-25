@@ -10,6 +10,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
+import {black, gray, white} from 'styles';
 
 const Topic = () => {
   return (
@@ -17,38 +18,34 @@ const Topic = () => {
       <View style={{alignItems: 'center', marginTop: vs(20)}}>
         <Text style={{color: 'black', fontSize: ss(20)}}>주제별 게시판</Text>
       </View>
-      <View style={{alignItems: 'center', marginTop: vs(20)}}>
-        <Text style={{color: 'black', fontSize: ss(15)}}>
-          이 회사가 좋소라고 생각한 가장 큰 이유
-        </Text>
-      </View>
+
       <View style={styles.allCardContainer}>
         <View style={styles.cardRowContainer}>
-          <HandleTopicCard color={'#d070fb'} text={'꿀팁'}>
-            <Ionicons name="bulb" color={'white'} size={ss(30)} />
+          <HandleTopicCard text={'꿀팁'}>
+            <Ionicons name="bulb" color={white.snow} size={ss(30)} />
           </HandleTopicCard>
-          <HandleTopicCard color={'#FFC0CB'} text={'뒷담'}>
-            <FontAwesome name="wechat" color={'white'} size={ss(30)} />
+          <HandleTopicCard text={'뒷담'}>
+            <FontAwesome name="wechat" color={white.snow} size={ss(30)} />
           </HandleTopicCard>
         </View>
         <View style={styles.cardRowContainer}>
-          <HandleTopicCard color={'#F0E68C'} text={'연봉'}>
-            <FontAwesome name="money" color={'white'} size={ss(30)} />
+          <HandleTopicCard text={'연봉'}>
+            <FontAwesome name="money" color={white.snow} size={ss(30)} />
           </HandleTopicCard>
-          <HandleTopicCard color={'#00BFFF'} text={'이직'}>
+          <HandleTopicCard text={'이직'}>
             <MaterialCommunityIcons
               name="bag-suitcase"
-              color={'white'}
+              color={white.snow}
               size={ss(30)}
             />
           </HandleTopicCard>
         </View>
         <View style={styles.cardRowContainer}>
-          <HandleTopicCard color={'#ADFF2F'} text={'자유'}>
-            <MaterialIcons name="flight" color={'white'} size={ss(30)} />
+          <HandleTopicCard text={'자유'}>
+            <MaterialIcons name="flight" color={white.snow} size={ss(30)} />
           </HandleTopicCard>
-          <HandleTopicCard color={'#808000'} text={'유머'}>
-            <Fontisto name="smiley" color={'white'} size={ss(30)} />
+          <HandleTopicCard text={'유머'}>
+            <Fontisto name="smiley" color={white.snow} size={ss(30)} />
           </HandleTopicCard>
         </View>
       </View>
@@ -59,7 +56,8 @@ const Topic = () => {
 const styles = StyleSheet.create({
   allCardContainer: {
     justifyContent: 'space-evenly',
-    flex: 0.8,
+    flex: 0.95,
+    marginTop: vs(20),
   },
   cardRowContainer: {
     flexDirection: 'row',

@@ -2,7 +2,13 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {ss, vs} from 'utils/scailing';
 
-const ActivityFeedItem = ({title, value}: {title: string; value: string}) => {
+const ActivityFeedItem = ({
+  title,
+  value,
+}: {
+  title: string;
+  value: number | undefined;
+}) => {
   return (
     <View>
       <Pressable style={{alignItems: 'center'}}>

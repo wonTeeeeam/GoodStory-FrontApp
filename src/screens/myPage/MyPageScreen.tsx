@@ -36,8 +36,21 @@ import {
 } from 'api/myPage';
 import {MyPageStackProps} from 'navigations/types';
 
+type UserData = {
+  UserId: string;
+  Account: string;
+  Role: string;
+  CompanyCode: string;
+  Created_date: string;
+  Updated_date: string;
+  Deleted_date: string;
+  likeBoards: number;
+  boards: number;
+  replies: number;
+};
+
 const MyPageScreen = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<UserData>();
   const [isLoading, setIsLoading] = useState(false);
 
   // const version = DeviceInfo.getVersion();
@@ -50,10 +63,10 @@ const MyPageScreen = () => {
   useEffect(() => {
     const fetchMypageData = async () => {
       setIsLoading(true);
-      const myPageUserResult = await requestMyPageUserData(userId);
+      const myPageUserData = await requestMyPageUserData(userId);
       setIsLoading(false);
-      if (myPageUserResult) {
-        setUserData(myPageUserResult);
+      if (myPageUserData) {
+        setUserData(myPageUserData);
       }
     };
     fetchMypageData();
@@ -89,6 +102,13 @@ const MyPageScreen = () => {
   };
 
   const selectProfileImage = async () => {
+    if (!userData) {
+      alert({
+        title: '유저 정보 조회 실패',
+        body: '유저정보를 조회하는 데 실패하였습니다!',
+      });
+      return null;
+    }
     const image = await ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -110,6 +130,9 @@ const MyPageScreen = () => {
 
   const changeProfileImage = async () => {
     const formData = await selectProfileImage();
+    if (!formData) {
+      return;
+    }
     setIsLoading(true);
     const profileResult = await requestPostUserProfile(formData);
     setIsLoading(false);
@@ -165,16 +188,21 @@ const MyPageScreen = () => {
         </View>
         <View style={styles.ActivityFeedContainer}>
           <ActivityFeed
-            like={userData.likeBoards}
-            post={userData.boards}
-            reply={userData.replies}
+            like={userData?.likeBoards}
+            post={userData?.boards}
+            reply={userData?.replies}
           />
         </View>
         <View style={{marginTop: vs(50)}}>
           <AccountSettingItem
             text={'비밀번호 변경'}
             handleOnPressBtn={() => {
-              navigation.navigate('ResetPassword', {account: userData.Account});
+              if (!userData) {
+                return showToast('유저정보를 조회하는 데 실패하였습니다!');
+              }
+              navigation.navigate('ResetPassword', {
+                account: userData.Account,
+              });
             }}>
             <Entypo name="lock" color={'black'} size={ss(20)} />
           </AccountSettingItem>

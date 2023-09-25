@@ -3,7 +3,11 @@ import {View} from 'react-native';
 import {ss, vs} from 'utils/scailing';
 import ActivityFeedItem from './ActivityFeedItem';
 
-type Props = {like: string; post: string; reply: string};
+type Props = {
+  like: number | undefined;
+  post: number | undefined;
+  reply: number | undefined;
+};
 
 const ActivityFeed: React.FC<Props> = ({like, post, reply}) => {
   return (
