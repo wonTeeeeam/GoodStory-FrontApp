@@ -193,7 +193,10 @@ const MyPageScreen = () => {
             reply={userData?.replies}
           />
         </View>
-        <View style={{marginTop: vs(50)}}>
+        <View
+          style={{
+            marginTop: vs(50),
+          }}>
           <AccountSettingItem
             text={'비밀번호 변경'}
             handleOnPressBtn={() => {
@@ -203,40 +206,31 @@ const MyPageScreen = () => {
               navigation.navigate('ResetPassword', {
                 account: userData.Account,
               });
-            }}>
-            <Entypo name="lock" color={'black'} size={ss(20)} />
-          </AccountSettingItem>
-          <View style={{marginTop: vs(30)}}>
+            }}
+          />
+          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
             <AccountSettingItem
               text={'공지사항'}
-              handleOnPressBtn={() => navigation.navigate('Announcement')}>
-              <Entypo name="help" color={'black'} size={ss(20)} />
-            </AccountSettingItem>
+              handleOnPressBtn={() => navigation.navigate('Announcement')}
+            />
           </View>
-          <View style={{marginTop: vs(30)}}>
+          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
             <AccountSettingItem
               text={'환경설정'}
-              handleOnPressBtn={() => navigation.navigate('Configuration')}>
-              <AntDesign name="setting" color={'black'} size={ss(20)} />
-            </AccountSettingItem>
+              handleOnPressBtn={() => navigation.navigate('Configuration')}
+            />
           </View>
-          <View style={{marginTop: vs(30)}}>
+          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
             <AccountSettingItem
               text={'로그아웃'}
-              handleOnPressBtn={handlePressLogout}>
-              <Ionicons name="exit" color={'black'} size={ss(20)} />
-            </AccountSettingItem>
+              handleOnPressBtn={handlePressLogout}
+            />
           </View>
-          <View style={{marginTop: vs(30)}}>
+          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
             <AccountSettingItem
               text={'회원탈퇴'}
-              handleOnPressBtn={handleWithdrawal}>
-              <MaterialCommunityIcons
-                name="exit-run"
-                color={'black'}
-                size={ss(20)}
-              />
-            </AccountSettingItem>
+              handleOnPressBtn={handleWithdrawal}
+            />
           </View>
         </View>
       </ScrollView>

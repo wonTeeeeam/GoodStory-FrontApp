@@ -24,6 +24,9 @@ import {useAppSelector} from 'store/hooks';
 import {ReplyDatum} from 'screens/main/DetailPost';
 import {PostListElement} from 'hooks/useFetchPostList';
 import {requestRegisterReply} from 'api/reply';
+import {useDispatch} from 'react-redux';
+import {changeBoardCountExisted} from 'slice/boardCountDetailSlice';
+import {RootState} from 'store/store';
 
 type Props = {
   isCommentModalVisible: boolean;
@@ -42,6 +45,10 @@ const CommentModal: React.FC<Props> = ({
   const [img, setImage] = useState<Asset>();
   const [input, setInput] = useState('');
   const {userId} = useAppSelector(state => state.user);
+  const boardCountDetail = useAppSelector(
+    (state: RootState) => state.boardCountDetail,
+  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+  const dispatch = useDispatch();
 
   const handleChoosePhoto = async () => {
     if (img && img.uri) {
@@ -87,6 +94,19 @@ const CommentModal: React.FC<Props> = ({
     showToast('댓글 작성 완료!');
     handleSetIsCommentModalVisible(false);
     handleSetReplyDatum(registerResult);
+    if (!boardCountDetail) {
+      return showToast(
+        '댓글 개수 업데이트에 실패하였습니다!\n재접속 시 정상작동합니다.',
+      );
+    }
+    dispatch(
+      changeBoardCountExisted({
+        BoardId: singleData.BoardId,
+        likeCnt: boardCountDetail.likeCnt,
+        replyCnt: boardCountDetail.replyCnt + 1,
+        viewCnt: boardCountDetail.viewCnt,
+      }),
+    );
   };
 
   return (

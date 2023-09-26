@@ -62,6 +62,13 @@ const Reply: React.FC<Props> = ({singleData}) => {
       </View>
       <View style={{marginTop: vs(10), marginLeft: hs(25)}}>
         <Text style={{color: 'black'}}>{singleData.Content}</Text>
+        {singleData.ReplyPhoto && (
+          <FastImage
+            style={styles.replyPhoto}
+            source={{uri: singleData.ReplyPhoto}}
+            resizeMode="stretch"
+          />
+        )}
       </View>
       <BottomModal
         isModalVisible={isModalVisible}
@@ -116,6 +123,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     width: '35%',
+  },
+  replyPhoto: {
+    height: vs(150),
+    width: hs(150),
+    backgroundColor: 'red',
+    marginTop: vs(10),
+    borderRadius: ss(10),
   },
 });
 

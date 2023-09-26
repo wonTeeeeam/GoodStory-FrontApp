@@ -30,12 +30,14 @@ import useBottomModal from 'hooks/useModal';
 import CommentBar from 'components/bar/CommentBar';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
+import {fetchDetailData} from 'api/reply';
 
 export type ReplyDatum = {
   ReplyId: string;
   Content: string;
   ReplyLike: number;
   Created_date: string;
+  ReplyPhoto: string | null;
   user: {
     UserId: string;
     Nickname: string;
@@ -64,8 +66,14 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
   const {handlePressLike, setIsLikePressed, isLikePressed} = usePressLike();
 
   useEffect(() => {
-    fetchDetailData();
-    setIsLikePressed(firstIsLikePressed);
+    async function handleFetchDetailData() {
+      const replies = await fetchDetailData(singleData.BoardId);
+      if (replies) {
+        setReplyData(replies);
+      }
+      setIsLikePressed(firstIsLikePressed);
+    }
+    handleFetchDetailData();
   }, []);
 
   useEffect(() => {
@@ -83,13 +91,6 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
       ),
     });
   }, []);
-
-  const fetchDetailData = async () => {
-    try {
-      const result = await axios.get(`/board/getOne/${singleData.BoardId}`);
-      setReplyData(result.data.replys);
-    } catch (e) {}
-  };
 
   return (
     <View style={{backgroundColor: white.snow, flex: 1}}>
