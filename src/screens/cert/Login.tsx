@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Image,
   Keyboard,
   Pressable,
   ScrollView,
@@ -49,9 +50,13 @@ const Login = () => {
       style={{flex: 1, paddingHorizontal: hs(20)}}
       contentContainerStyle={{flex: 1}}>
       <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+        <Image
+          source={{uri: '../../../src/assets/images/logo.png'}}
+          style={{backgroundColor: 'red', width: 100, height: 100}}
+        />
         <View style={{marginTop: vs(200), alignSelf: 'center'}}>
           <Text style={{color: 'black', fontWeight: 'bold'}}>
-            당신의 좋같은 회사 경험담
+            당신의 좋은 회사 경험담
           </Text>
         </View>
         <View style={styles.IdContainerView}>

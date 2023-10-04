@@ -8,7 +8,7 @@ import {validateEmail} from 'utils/regex';
 import {useNavigation} from '@react-navigation/native';
 import Timer from 'components/Timer';
 import {AntDesign, Fontisto} from 'utils/react-native-vector-helper';
-import {requestEmailExist} from 'api/join';
+import {requestEmailExist, requestSendEmail} from 'api/join';
 import {JoinStackProps} from 'navigations/types';
 
 const JoinEmail = () => {
@@ -73,12 +73,12 @@ const JoinEmail = () => {
   const handlePressSendButton = async () => {
     try {
       if (await requestEmailExist(email)) {
-        // if (await sendEmail()) {
-        setIsEmailAbled(false);
-        setIsTimerVisible(true);
-        setIsEmailSended(true);
-        setNeedAlertForCert(false);
-        // }
+        if (await requestSendEmail()) {
+          setIsEmailAbled(false);
+          setIsTimerVisible(true);
+          setIsEmailSended(true);
+          setNeedAlertForCert(false);
+        }
       }
     } catch (e) {}
   };

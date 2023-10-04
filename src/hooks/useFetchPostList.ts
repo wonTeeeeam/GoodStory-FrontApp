@@ -94,6 +94,7 @@ const useFetchPostList = ({topic}: Props) => {
         ? setIsPostListExist(false)
         : setIsPostListExist(true);
     } catch (e) {
+      setIsPostListExist(false);
       alert({
         title: '게시글 불러오기 실패',
         body: `게시글을 불러오는 데 실패하였습니다.\n${e}`,

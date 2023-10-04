@@ -22,10 +22,8 @@ import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
 import {
   AntDesign,
-  Entypo,
   Feather,
   Ionicons,
-  MaterialCommunityIcons,
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
 import {useAppSelector} from 'store/hooks';
