@@ -17,6 +17,7 @@ import {useEffect} from 'react';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
 import {AntDesign} from 'utils/react-native-vector-helper';
+import logo from 'assets/images/logo.png';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,11 +51,10 @@ const Login = () => {
       style={{flex: 1, paddingHorizontal: hs(20)}}
       contentContainerStyle={{flex: 1}}>
       <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
-        <Image
-          source={{uri: '../../../src/assets/images/logo.png'}}
-          style={{backgroundColor: 'red', width: 100, height: 100}}
-        />
-        <View style={{marginTop: vs(200), alignSelf: 'center'}}>
+        <View style={{marginTop: vs(60), alignItems: 'center'}}>
+          <Image source={logo} style={{width: hs(100), height: vs(100)}} />
+        </View>
+        <View style={{marginTop: vs(60), alignSelf: 'center'}}>
           <Text style={{color: 'black', fontWeight: 'bold'}}>
             당신의 좋은 회사 경험담
           </Text>

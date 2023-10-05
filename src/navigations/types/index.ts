@@ -56,14 +56,14 @@ export type JoinStackParamList = {
   JoinEmail: undefined;
   JoinPassword: {Email: string};
   JoinName: {Email: string; Password: string};
-  JoinCamera: {
-    Email: string;
-    Password: string;
-    Name: string;
-  };
+  // JoinCamera: {
+  //   Email: string;
+  //   Password: string;
+  //   Name: string;
+  // };
 };
 
 export type JoinStackProps = NativeStackScreenProps<
   JoinStackParamList,
-  'JoinEmail' | 'JoinPassword' | 'JoinName' | 'JoinCamera'
+  'JoinEmail' | 'JoinPassword' | 'JoinName'
 >;
