@@ -43,13 +43,13 @@ const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
   }, [name]);
 
   // 2차개발.
-  const goNextJoinNavigation = () => {
-    navigation.navigate('JoinCamera', {
-      Email: Email,
-      Password: Password,
-      Name: name,
-    });
-  };
+  // const goNextJoinNavigation = () => {
+  //   navigation.navigate('JoinCamera', {
+  //     Email: Email,
+  //     Password: Password,
+  //     Name: name,
+  //   });
+  // };
 
   const handlePressButton = async () => {
     if (await checkNickname(name)) {
