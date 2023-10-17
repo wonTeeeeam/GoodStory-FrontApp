@@ -6,7 +6,7 @@ import JoinButton from 'components/button/JoinButton';
 import {validateUserName} from 'utils/regex';
 import {Ionicons} from 'utils/react-native-vector-helper';
 import {JoinStackProps} from 'navigations/types';
-import {checkNickname, registerUserInfo} from 'api/join';
+import {checkNickname} from 'api/join';
 
 const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
   const {Email, Password} = route.params as {
@@ -58,8 +58,12 @@ const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
       return;
     }
 
-    // goNextJoinNavigation();
-    await registerUserInfo({Email, Password, name});
+    navigation.navigate('JoinProfile', {
+      Email: Email,
+      Password: Password,
+      Nickname: name,
+    });
+    // await registerUserInfo({Email, Password, name});
   };
 
   return (

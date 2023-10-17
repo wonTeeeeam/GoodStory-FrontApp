@@ -43,6 +43,7 @@ const JoinEmail = () => {
 
   const [isEmailAbled, setIsEmailAbled] = useState(false);
   const [isCertAbled, setIsCertAbled] = useState(false);
+  const [certAnswer, setCertAnswer] = useState('');
   const navigation = useNavigation<JoinStackProps['navigation']>();
 
   // 이메일 변경 관련 로직
@@ -64,27 +65,26 @@ const JoinEmail = () => {
 
   // 인증번호 버튼 활성화
   useEffect(() => {
-    if (email.length === 6 && validateEmail(email) && isEmailSended) {
+    if (emailCert?.length === 6 && validateEmail(email) && isEmailSended) {
       return setIsCertAbled(true);
     }
     return setIsCertAbled(false);
-  }, [email, isEmailSended]);
+  }, [email, isEmailSended, emailCert]);
 
   const handlePressSendButton = async () => {
-    try {
-      if (await requestEmailExist(email)) {
-        if (await requestSendEmail()) {
-          setIsEmailAbled(false);
-          setIsTimerVisible(true);
-          setIsEmailSended(true);
-          setNeedAlertForCert(false);
-        }
-      }
-    } catch (e) {}
+    if (await requestEmailExist(email)) {
+      const sendEmailResult = await requestSendEmail(email);
+      if (!sendEmailResult) return;
+      setCertAnswer(sendEmailResult);
+      setIsEmailAbled(false);
+      setIsTimerVisible(true);
+      setIsEmailSended(true);
+      setNeedAlertForCert(false);
+    }
   };
 
   const validateCert = (value: string) => {
-    return value.length === 6 ? true : false;
+    return value.length === 6;
   };
 
   const endFunction = () => {
@@ -98,6 +98,13 @@ const JoinEmail = () => {
   };
 
   const handlePressNextButton = () => {
+    console.log(certAnswer);
+    console.log(emailCert);
+    if (certAnswer !== emailCert) {
+      setAlertMSGIndexForCert(0);
+      setNeedAlertForCert(true);
+      return;
+    }
     setIsTimerVisible(false);
     navigation.navigate('JoinPassword', {Email: email});
   };
@@ -161,7 +168,7 @@ const JoinEmail = () => {
                   marginRight: hs(22),
                   marginTop: vs(10),
                 }}>
-                <Timer startSeconds={20} endFunction={endFunction} />
+                <Timer startSeconds={120} endFunction={endFunction} />
               </View>
             ) : null}
           </View>

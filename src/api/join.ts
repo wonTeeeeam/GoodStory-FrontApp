@@ -21,20 +21,21 @@ export const requestEmailExist = async (email: string) => {
   }
 };
 
-export const requestSendEmail = async () => {
+export const requestSendEmail = async (email: string) => {
   try {
-    const result = await axios.post('/mail/authEmail', {});
-    if (!result.data) {
-      alert({title: '이메일 전송 실패', body: '이메일 전송에 실패했습니다.'});
-      return false;
+    const result = await axios.post('/mail/authEmail', {Account: email});
+    if (result.data) {
+      alert({title: '이메일 전송 성공', body: '인증번호를 입력해주세요.'});
+      return result.data.toString();
     }
-    return true;
+    alert({title: '이메일 전송 실패', body: '이메일 전송에 실패했습니다.'});
+    return null;
   } catch (e: any) {
     alert({
       title: '이메일 전송 실패',
       body: `이메일 전송에 실패했습니다.\n${e.message}`,
     });
-    return false;
+    return null;
   }
 };
 

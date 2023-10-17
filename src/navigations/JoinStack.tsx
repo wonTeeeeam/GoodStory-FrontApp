@@ -11,6 +11,7 @@ import {useDispatch} from 'react-redux';
 import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import {Ionicons} from 'utils/react-native-vector-helper';
 import {JoinStackParamList} from './types';
+import JoinProfile from 'screens/cert/JoinProfile';
 
 const Stack = createNativeStackNavigator<JoinStackParamList>();
 
@@ -56,6 +57,11 @@ const JoinStack = () => {
       <Stack.Screen
         name="JoinName"
         component={JoinName}
+        options={{headerShown: true, headerTitle: '회원가입'}}
+      />
+      <Stack.Screen
+        name="JoinProfile"
+        component={JoinProfile}
         options={{headerShown: true, headerTitle: '회원가입'}}
       />
       {/* <Stack.Screen
