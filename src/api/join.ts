@@ -42,17 +42,17 @@ export const requestSendEmail = async (email: string) => {
 export const registerUserInfo = async ({
   Email,
   Password,
-  name,
+  Nickname,
 }: {
   Email: string;
   Password: string;
-  name: string;
+  Nickname: string;
 }) => {
   try {
     const result = await axios.post('/user/create', {
       Account: Email,
       Password: Password,
-      Nickname: name,
+      Nickname,
       CompanyCode: '123123',
       CompanyName: '중소1',
     });

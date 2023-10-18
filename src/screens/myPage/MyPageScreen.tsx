@@ -13,19 +13,13 @@ import ActivityFeed from 'components/myPage/ActivityFeed';
 import AccountSettingItem from 'components/myPage/AccountSettingItem';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import FastImage from 'react-native-fast-image';
 import useLogout from 'hooks/useLogout';
 import {alert} from 'utils/alert';
 import LoadingModal from 'components/modal/LoadingModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
-import {
-  AntDesign,
-  Feather,
-  Ionicons,
-  MaterialIcons,
-} from 'utils/react-native-vector-helper';
+import {Feather, MaterialIcons} from 'utils/react-native-vector-helper';
 import {useAppSelector} from 'store/hooks';
 import {
   requestMyPageUserData,
@@ -33,6 +27,7 @@ import {
   requestPostUserProfile,
 } from 'api/myPage';
 import {MyPageStackProps} from 'navigations/types';
+import ProfileSetting from 'components/ProfileSetting';
 
 type UserData = {
   UserId: string;
@@ -153,27 +148,7 @@ const MyPageScreen = () => {
       </View>
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.profileImageContainer}>
-          <Pressable
-            style={styles.profileImagePressable}
-            onPress={changeProfileImage}>
-            <AntDesign
-              name="setting"
-              color={'#DCDCDC'}
-              size={ss(20)}
-              style={styles.settingIcon}
-            />
-            {profileImage ? (
-              <FastImage
-                style={{height: '100%', width: '100%', borderRadius: ss(100)}}
-                // resizeMode="contain"
-                source={{
-                  uri: profileImage + `?` + new Date().getTime(),
-                }}
-              />
-            ) : (
-              <Ionicons name="person-outline" color={'white'} size={ss(55)} />
-            )}
-          </Pressable>
+          <ProfileSetting />
           <Pressable style={styles.gogoIcon}>
             <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
             <MaterialIcons
