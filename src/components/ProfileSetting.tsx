@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Pressable, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -6,9 +6,15 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {AntDesign, Ionicons} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 
-const ProfileSetting = () => {
-  const [profileImage, setProfileImage] = useState<ImageOrVideo>();
+type Props = {
+  profileImage: ImageOrVideo | undefined;
+  handleSetProfileImage: (newImage: ImageOrVideo) => void;
+};
 
+const ProfileSetting: React.FC<Props> = ({
+  profileImage,
+  handleSetProfileImage,
+}) => {
   const selectProfileImage = async () => {
     const image = await ImagePicker.openPicker({
       width: 300,
@@ -18,7 +24,7 @@ const ProfileSetting = () => {
       cropperToolbarTitle: '원안에 사진을 맞춰주세요!',
       showCropGuidelines: true,
     });
-    setProfileImage(image);
+    handleSetProfileImage(image);
   };
 
   return (

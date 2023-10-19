@@ -15,7 +15,7 @@ const initialState = {
   userId: '',
   account: '',
   nickName: '',
-  profileImage: '',
+  profileUrl: '',
   createdDate: '',
   companyCode: '',
   companyName: '',
@@ -36,13 +36,13 @@ export const userSlice = createSlice({
       state.accessToken = action.payload;
     },
     changeProfile: (state, action) => {
-      state.profileImage = action.payload;
+      state.profileUrl = action.payload;
     },
     handleUserInfo: (state, action) => {
       state.userId = action.payload.UserId;
       // state.account = action.payload.Account;
       state.nickName = action.payload.Nickname;
-      state.profileImage = action.payload.ProfilePhoto;
+      state.profileUrl = action.payload.ProfilePhoto;
       // state.createdDate = action.payload.Created_date;
       // state.companyCode = action.payload.CompanyCode;
       state.companyName = action.payload.CompanyName;

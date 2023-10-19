@@ -28,6 +28,7 @@ import {
 } from 'api/myPage';
 import {MyPageStackProps} from 'navigations/types';
 import ProfileSetting from 'components/ProfileSetting';
+import useProfileSetting from 'hooks/useProfileSetting';
 
 type UserData = {
   UserId: string;
@@ -50,7 +51,9 @@ const MyPageScreen = () => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation<MyPageStackProps['navigation']>();
-  const {nickName, profileImage, userId} = useAppSelector(state => state.user);
+  const {nickName, profileUrl, userId} = useAppSelector(state => state.user);
+  const {profileImage, handleSetProfileImage} = useProfileSetting();
+
   const {handleLogout} = useLogout();
 
   useEffect(() => {
@@ -64,6 +67,10 @@ const MyPageScreen = () => {
     };
     fetchMypageData();
   }, []);
+
+  useEffect(() => {
+    handleSetProfileImage(profileUrl);
+  }, [profileUrl]);
 
   const handleWithdrawal = async () => {
     const keepGoing = await alert({
@@ -148,7 +155,10 @@ const MyPageScreen = () => {
       </View>
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.profileImageContainer}>
-          <ProfileSetting />
+          <ProfileSetting
+            profileImage={profileImage}
+            handleSetProfileImage={handleSetProfileImage}
+          />
           <Pressable style={styles.gogoIcon}>
             <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
             <MaterialIcons
