@@ -39,15 +39,7 @@ export const requestSendEmail = async (email: string) => {
   }
 };
 
-export const registerUserInfo = async ({
-  Email,
-  Password,
-  Nickname,
-}: {
-  Email: string;
-  Password: string;
-  Nickname: string;
-}) => {
+export const registerUserInfo = async ({formData}: {formData}) => {
   try {
     const result = await axios.post('/user/create', {
       Account: Email,

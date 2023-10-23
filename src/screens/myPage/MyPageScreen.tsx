@@ -19,7 +19,12 @@ import LoadingModal from 'components/modal/LoadingModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {changeProfile} from 'slice/userSlice';
 import {showToast} from 'utils/toast';
-import {Feather, MaterialIcons} from 'utils/react-native-vector-helper';
+import {
+  AntDesign,
+  Feather,
+  Ionicons,
+  MaterialIcons,
+} from 'utils/react-native-vector-helper';
 import {useAppSelector} from 'store/hooks';
 import {
   requestMyPageUserData,
@@ -27,8 +32,7 @@ import {
   requestPostUserProfile,
 } from 'api/myPage';
 import {MyPageStackProps} from 'navigations/types';
-import ProfileSetting from 'components/ProfileSetting';
-import useProfileSetting from 'hooks/useProfileSetting';
+import FastImage from 'react-native-fast-image';
 
 type UserData = {
   UserId: string;
@@ -52,7 +56,6 @@ const MyPageScreen = () => {
 
   const navigation = useNavigation<MyPageStackProps['navigation']>();
   const {nickName, profileUrl, userId} = useAppSelector(state => state.user);
-  const {profileImage, handleSetProfileImage} = useProfileSetting();
 
   const {handleLogout} = useLogout();
 
@@ -67,10 +70,6 @@ const MyPageScreen = () => {
     };
     fetchMypageData();
   }, []);
-
-  useEffect(() => {
-    handleSetProfileImage(profileUrl);
-  }, [profileUrl]);
 
   const handleWithdrawal = async () => {
     const keepGoing = await alert({
@@ -155,10 +154,27 @@ const MyPageScreen = () => {
       </View>
       <ScrollView contentContainerStyle={{}}>
         <View style={styles.profileImageContainer}>
-          <ProfileSetting
-            profileImage={profileImage}
-            handleSetProfileImage={handleSetProfileImage}
-          />
+          <Pressable
+            style={styles.profileImagePressable}
+            onPress={changeProfileImage}>
+            <AntDesign
+              name="setting"
+              color={'#DCDCDC'}
+              size={ss(20)}
+              style={styles.settingIcon}
+            />
+            {profileUrl ? (
+              <FastImage
+                style={{height: '100%', width: '100%', borderRadius: ss(100)}}
+                // resizeMode="contain"
+                source={{
+                  uri: profileUrl + `?` + new Date().getTime(),
+                }}
+              />
+            ) : (
+              <Ionicons name="person-outline" color={'white'} size={ss(55)} />
+            )}
+          </Pressable>
           <Pressable style={styles.gogoIcon}>
             <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
             <MaterialIcons
