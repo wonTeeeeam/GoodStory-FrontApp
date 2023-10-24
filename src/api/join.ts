@@ -39,14 +39,13 @@ export const requestSendEmail = async (email: string) => {
   }
 };
 
-export const registerUserInfo = async ({formData}: {formData}) => {
+export const registerUserInfo = async (formData: FormData) => {
   try {
-    const result = await axios.post('/user/create', {
-      Account: Email,
-      Password: Password,
-      Nickname,
-      CompanyCode: '123123',
-      CompanyName: '중소1',
+    console.log(formData);
+    const result = await axios.post('/user/create', formData, {
+      headers: {
+        'Content-topic': 'multipart/form-data',
+      },
     });
     return true;
   } catch (e: any) {
