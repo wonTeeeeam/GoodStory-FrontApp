@@ -31,8 +31,9 @@ import {
   requestMyPageWithDrawal,
   requestPostUserProfile,
 } from 'api/myPage';
-import {MyPageStackProps} from 'navigations/types';
+import {MainStackProps} from 'navigations/types';
 import FastImage from 'react-native-fast-image';
+import {gray, white} from 'styles';
 
 type UserData = {
   UserId: string;
@@ -54,7 +55,7 @@ const MyPageScreen = () => {
   // const version = DeviceInfo.getVersion();
   const dispatch = useDispatch();
 
-  const navigation = useNavigation<MyPageStackProps['navigation']>();
+  const navigation = useNavigation<MainStackProps['navigation']>();
   const {nickName, profileUrl, userId} = useAppSelector(state => state.user);
 
   const {handleLogout} = useLogout();
@@ -145,94 +146,148 @@ const MyPageScreen = () => {
   }
 
   return (
-    <View style={{marginHorizontal: hs(20)}}>
-      <View style={styles.mypageTextContainer}>
-        <Text style={styles.mypageText}>마이페이지</Text>
-        <View>
-          <Feather name="bell" color={'#696969'} size={ss(25)} />
+    <View style={{backgroundColor: gray.lightGray, flex: 1}}>
+      <View style={{}}>
+        <View style={{backgroundColor: white.origin}}>
+          <View style={styles.mypageTextContainer}>
+            <Text style={styles.mypageText}>마이페이지</Text>
+            <View>
+              <Feather name="bell" color={'#696969'} size={ss(25)} />
+            </View>
+          </View>
         </View>
-      </View>
-      <ScrollView contentContainerStyle={{}}>
-        <View style={styles.profileImageContainer}>
-          <Pressable
-            style={styles.profileImagePressable}
-            onPress={changeProfileImage}>
-            <AntDesign
-              name="setting"
-              color={'#DCDCDC'}
-              size={ss(20)}
-              style={styles.settingIcon}
-            />
-            {profileUrl ? (
-              <FastImage
-                style={{height: '100%', width: '100%', borderRadius: ss(100)}}
-                // resizeMode="contain"
-                source={{
-                  uri: profileUrl + `?` + new Date().getTime(),
+        <ScrollView contentContainerStyle={{}}>
+          <View style={{backgroundColor: white.origin, marginTop: vs(2)}}>
+            <View style={styles.profileImageContainer}>
+              <Pressable
+                style={styles.profileImagePressable}
+                onPress={changeProfileImage}>
+                <AntDesign
+                  name="setting"
+                  color={'#DCDCDC'}
+                  size={ss(20)}
+                  style={styles.settingIcon}
+                />
+                {profileUrl ? (
+                  <FastImage
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      borderRadius: ss(100),
+                    }}
+                    // resizeMode="contain"
+                    source={{
+                      uri: profileUrl + `?` + new Date().getTime(),
+                    }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="person-outline"
+                    color={'white'}
+                    size={ss(55)}
+                  />
+                )}
+              </Pressable>
+              <Pressable style={styles.gogoIcon}>
+                <Text style={{color: 'black', fontSize: ss(15)}}>
+                  {nickName}님
+                </Text>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  color={'black'}
+                  size={ss(15)}
+                  style={{marginLeft: hs(5)}}
+                />
+              </Pressable>
+            </View>
+          </View>
+          <View style={{backgroundColor: white.origin, paddingBottom: vs(40)}}>
+            <View style={styles.ActivityFeedContainer}>
+              <ActivityFeed
+                like={userData?.likeBoards}
+                post={userData?.boards}
+                reply={userData?.replies}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: white.origin,
+              marginTop: vs(2),
+            }}>
+            <View
+              style={{
+                paddingVertical: vs(10),
+                marginHorizontal: hs(10),
+                borderBottomWidth: ss(1),
+                borderBottomColor: gray.lightGray,
+              }}>
+              <AccountSettingItem
+                text={'비밀번호 변경'}
+                handleOnPressBtn={() => {
+                  if (!userData) {
+                    return showToast('유저정보를 조회하는 데 실패하였습니다!');
+                  }
+                  navigation.navigate('MyPageStack', {
+                    screen: 'ResetPassword',
+                    params: {account: userData.Account},
+                  });
                 }}
               />
-            ) : (
-              <Ionicons name="person-outline" color={'white'} size={ss(55)} />
-            )}
-          </Pressable>
-          <Pressable style={styles.gogoIcon}>
-            <Text style={{color: 'black', fontSize: ss(15)}}>{nickName}님</Text>
-            <MaterialIcons
-              name="arrow-forward-ios"
-              color={'black'}
-              size={ss(15)}
-              style={{marginLeft: hs(5)}}
-            />
-          </Pressable>
-        </View>
-        <View style={styles.ActivityFeedContainer}>
-          <ActivityFeed
-            like={userData?.likeBoards}
-            post={userData?.boards}
-            reply={userData?.replies}
-          />
-        </View>
-        <View
-          style={{
-            marginTop: vs(50),
-          }}>
-          <AccountSettingItem
-            text={'비밀번호 변경'}
-            handleOnPressBtn={() => {
-              if (!userData) {
-                return showToast('유저정보를 조회하는 데 실패하였습니다!');
-              }
-              navigation.navigate('ResetPassword', {
-                account: userData.Account,
-              });
-            }}
-          />
-          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
-            <AccountSettingItem
-              text={'공지사항'}
-              handleOnPressBtn={() => navigation.navigate('Announcement')}
-            />
+            </View>
+            <View
+              style={{
+                paddingVertical: vs(10),
+                marginHorizontal: hs(10),
+                borderBottomWidth: ss(1),
+                borderBottomColor: gray.lightGray,
+              }}>
+              <AccountSettingItem
+                text={'공지사항'}
+                handleOnPressBtn={() =>
+                  navigation.navigate('MyPageStack', {
+                    screen: 'Announcement',
+                  })
+                }
+              />
+            </View>
+            <View
+              style={{
+                paddingVertical: vs(10),
+                marginHorizontal: hs(10),
+                borderBottomWidth: ss(1),
+                borderBottomColor: gray.lightGray,
+              }}>
+              <AccountSettingItem
+                text={'환경설정'}
+                handleOnPressBtn={() =>
+                  navigation.navigate('MyPageStack', {
+                    screen: 'Configuration',
+                  })
+                }
+              />
+            </View>
+            <View
+              style={{
+                paddingVertical: vs(10),
+                marginHorizontal: hs(10),
+                borderBottomWidth: ss(1),
+                borderBottomColor: gray.lightGray,
+              }}>
+              <AccountSettingItem
+                text={'로그아웃'}
+                handleOnPressBtn={handlePressLogout}
+              />
+            </View>
+            <View style={{paddingVertical: vs(10), marginHorizontal: hs(10)}}>
+              <AccountSettingItem
+                text={'회원탈퇴'}
+                handleOnPressBtn={handleWithdrawal}
+              />
+            </View>
           </View>
-          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
-            <AccountSettingItem
-              text={'환경설정'}
-              handleOnPressBtn={() => navigation.navigate('Configuration')}
-            />
-          </View>
-          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
-            <AccountSettingItem
-              text={'로그아웃'}
-              handleOnPressBtn={handlePressLogout}
-            />
-          </View>
-          <View style={{marginTop: vs(20), borderTopWidth: ss(1)}}>
-            <AccountSettingItem
-              text={'회원탈퇴'}
-              handleOnPressBtn={handleWithdrawal}
-            />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -241,9 +296,8 @@ const styles = StyleSheet.create({
   mypageTextContainer: {
     marginTop: vs(20),
     flexDirection: 'row',
-    borderBottomWidth: ss(1),
-    borderBottomColor: '#D8D8D8',
     paddingBottom: vs(10),
+    marginHorizontal: hs(20),
   },
   mypageText: {
     flex: 1,
@@ -254,6 +308,7 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     marginTop: vs(20),
     flexDirection: 'row',
+    marginHorizontal: hs(20),
   },
   profileImagePressable: {
     backgroundColor: '#D3D3D3',
@@ -280,6 +335,7 @@ const styles = StyleSheet.create({
     marginTop: vs(20),
     borderWidth: ss(1),
     borderRadius: ss(10),
+    marginHorizontal: hs(20),
   },
 });
 
