@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import {alert} from 'utils/alert';
 import {AntDesign, Ionicons} from 'utils/react-native-vector-helper';
 
 import {hs, ss, vs} from 'utils/scailing';
@@ -15,6 +16,7 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
     Password: string;
     Nickname: string;
   };
+
   const [profileImage, setProfileImage] = useState<ImageOrVideo>();
 
   const makeFormData = () => {
@@ -39,7 +41,10 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
   };
 
   const handlePressButton = async () => {
-    await registerUserInfo(makeFormData());
+    const result = await registerUserInfo(makeFormData());
+    if (result) {
+      alert({title: '회원가입 성공', body: '회원가입에 성공하였습니다!'});
+    }
   };
 
   const selectProfileImage = async () => {

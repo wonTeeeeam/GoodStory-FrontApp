@@ -41,7 +41,6 @@ export const requestSendEmail = async (email: string) => {
 
 export const registerUserInfo = async (formData: FormData) => {
   try {
-    console.log(formData);
     const result = await axios.post('/user/create', formData, {
       headers: {
         'Content-topic': 'multipart/form-data',

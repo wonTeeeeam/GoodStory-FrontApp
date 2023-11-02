@@ -1,12 +1,11 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {gray} from 'styles';
 import {MaterialIcons} from 'utils/react-native-vector-helper';
-import {hs, ss, vs} from 'utils/scailing';
+import {hs, ss} from 'utils/scailing';
 
 type Props = {
   text: string;
-  handleOnPressBtn: () => void;
+  handleOnPressBtn: () => Promise<void>;
 };
 
 const AccountSettingItem: React.FC<Props> = ({text, handleOnPressBtn}) => {

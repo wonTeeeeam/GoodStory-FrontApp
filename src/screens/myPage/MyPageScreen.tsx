@@ -146,8 +146,9 @@ const MyPageScreen = () => {
   }
 
   return (
-    <View style={{backgroundColor: gray.lightGray, flex: 1}}>
-      <View style={{}}>
+    <ScrollView
+      contentContainerStyle={{backgroundColor: gray.lightGray, flex: 1}}>
+      <View style={{flex: 0.45}}>
         <View style={{backgroundColor: white.origin}}>
           <View style={styles.mypageTextContainer}>
             <Text style={styles.mypageText}>마이페이지</Text>
@@ -156,139 +157,138 @@ const MyPageScreen = () => {
             </View>
           </View>
         </View>
-        <ScrollView contentContainerStyle={{}}>
-          <View style={{backgroundColor: white.origin, marginTop: vs(2)}}>
-            <View style={styles.profileImageContainer}>
-              <Pressable
-                style={styles.profileImagePressable}
-                onPress={changeProfileImage}>
-                <AntDesign
-                  name="setting"
-                  color={'#DCDCDC'}
-                  size={ss(20)}
-                  style={styles.settingIcon}
+        <View style={{backgroundColor: white.origin, marginTop: vs(2)}}>
+          <View style={styles.profileImageContainer}>
+            <Pressable
+              style={styles.profileImagePressable}
+              onPress={changeProfileImage}>
+              <AntDesign
+                name="setting"
+                color={'#DCDCDC'}
+                size={ss(20)}
+                style={styles.settingIcon}
+              />
+              {profileUrl ? (
+                <FastImage
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: ss(100),
+                  }}
+                  // resizeMode="contain"
+                  source={{
+                    uri: profileUrl + `?` + new Date().getTime(),
+                  }}
                 />
-                {profileUrl ? (
-                  <FastImage
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      borderRadius: ss(100),
-                    }}
-                    // resizeMode="contain"
-                    source={{
-                      uri: profileUrl + `?` + new Date().getTime(),
-                    }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="person-outline"
-                    color={'white'}
-                    size={ss(55)}
-                  />
-                )}
-              </Pressable>
-              <Pressable style={styles.gogoIcon}>
-                <Text style={{color: 'black', fontSize: ss(15)}}>
-                  {nickName}님
-                </Text>
-                <MaterialIcons
-                  name="arrow-forward-ios"
-                  color={'black'}
-                  size={ss(15)}
-                  style={{marginLeft: hs(5)}}
-                />
-              </Pressable>
-            </View>
+              ) : (
+                <Ionicons name="person-outline" color={'white'} size={ss(55)} />
+              )}
+            </Pressable>
+            <Pressable style={styles.gogoIcon}>
+              <Text style={{color: 'black', fontSize: ss(15)}}>
+                {nickName}님
+              </Text>
+              <MaterialIcons
+                name="arrow-forward-ios"
+                color={'black'}
+                size={ss(15)}
+                style={{marginLeft: hs(5)}}
+              />
+            </Pressable>
           </View>
-          <View style={{backgroundColor: white.origin, paddingBottom: vs(40)}}>
-            <View style={styles.ActivityFeedContainer}>
-              <ActivityFeed
-                like={userData?.likeBoards}
-                post={userData?.boards}
-                reply={userData?.replies}
-              />
-            </View>
+        </View>
+        <View style={{backgroundColor: white.origin, paddingBottom: vs(40)}}>
+          <View style={styles.ActivityFeedContainer}>
+            <ActivityFeed
+              like={userData?.likeBoards}
+              post={userData?.boards}
+              reply={userData?.replies}
+            />
           </View>
-          <View
-            style={{
-              backgroundColor: white.origin,
-              marginTop: vs(2),
-            }}>
-            <View
-              style={{
-                paddingVertical: vs(10),
-                marginHorizontal: hs(10),
-                borderBottomWidth: ss(1),
-                borderBottomColor: gray.lightGray,
-              }}>
-              <AccountSettingItem
-                text={'비밀번호 변경'}
-                handleOnPressBtn={() => {
-                  if (!userData) {
-                    return showToast('유저정보를 조회하는 데 실패하였습니다!');
-                  }
-                  navigation.navigate('MyPageStack', {
-                    screen: 'ResetPassword',
-                    params: {account: userData.Account},
-                  });
-                }}
-              />
-            </View>
-            <View
-              style={{
-                paddingVertical: vs(10),
-                marginHorizontal: hs(10),
-                borderBottomWidth: ss(1),
-                borderBottomColor: gray.lightGray,
-              }}>
-              <AccountSettingItem
-                text={'공지사항'}
-                handleOnPressBtn={() =>
-                  navigation.navigate('MyPageStack', {
-                    screen: 'Announcement',
-                  })
-                }
-              />
-            </View>
-            <View
-              style={{
-                paddingVertical: vs(10),
-                marginHorizontal: hs(10),
-                borderBottomWidth: ss(1),
-                borderBottomColor: gray.lightGray,
-              }}>
-              <AccountSettingItem
-                text={'환경설정'}
-                handleOnPressBtn={() =>
-                  navigation.navigate('MyPageStack', {
-                    screen: 'Configuration',
-                  })
-                }
-              />
-            </View>
-            <View
-              style={{
-                paddingVertical: vs(10),
-                marginHorizontal: hs(10),
-                borderBottomWidth: ss(1),
-                borderBottomColor: gray.lightGray,
-              }}>
-              <AccountSettingItem
-                text={'로그아웃'}
-                handleOnPressBtn={handlePressLogout}
-              />
-            </View>
-            <View style={{paddingVertical: vs(10), marginHorizontal: hs(10)}}>
-              <AccountSettingItem
-                text={'회원탈퇴'}
-                handleOnPressBtn={handleWithdrawal}
-              />
-            </View>
-          </View>
-        </ScrollView>
+        </View>
       </View>
-    </View>
+      <View
+        style={{
+          backgroundColor: white.origin,
+          marginTop: vs(2),
+          flex: 0.61,
+        }}>
+        <View
+          style={{
+            paddingVertical: vs(10),
+            marginHorizontal: hs(10),
+            borderBottomWidth: ss(1),
+            borderBottomColor: gray.lightGray,
+          }}>
+          <AccountSettingItem
+            text={'비밀번호 변경'}
+            handleOnPressBtn={() => {
+              if (!userData) {
+                return showToast('유저정보를 조회하는 데 실패하였습니다!');
+              }
+              navigation.navigate('MyPageStack', {
+                screen: 'ResetPassword',
+                params: {account: userData.Account},
+              });
+            }}
+          />
+        </View>
+        <View
+          style={{
+            paddingVertical: vs(10),
+            marginHorizontal: hs(10),
+            borderBottomWidth: ss(1),
+            borderBottomColor: gray.lightGray,
+          }}>
+          <AccountSettingItem
+            text={'공지사항'}
+            handleOnPressBtn={() =>
+              navigation.navigate('MyPageStack', {
+                screen: 'Announcement',
+              })
+            }
+          />
+        </View>
+        <View
+          style={{
+            paddingVertical: vs(10),
+            marginHorizontal: hs(10),
+            borderBottomWidth: ss(1),
+            borderBottomColor: gray.lightGray,
+          }}>
+          <AccountSettingItem
+            text={'환경설정'}
+            handleOnPressBtn={() =>
+              navigation.navigate('MyPageStack', {
+                screen: 'Configuration',
+              })
+            }
+          />
+        </View>
+        <View
+          style={{
+            paddingVertical: vs(10),
+            marginHorizontal: hs(10),
+            borderBottomWidth: ss(1),
+            borderBottomColor: gray.lightGray,
+          }}>
+          <AccountSettingItem
+            text={'로그아웃'}
+            handleOnPressBtn={handlePressLogout}
+          />
+        </View>
+        <View
+          style={{
+            paddingVertical: vs(10),
+            marginHorizontal: hs(10),
+          }}>
+          <AccountSettingItem
+            text={'회원탈퇴'}
+            handleOnPressBtn={handleWithdrawal}
+          />
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
