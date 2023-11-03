@@ -17,7 +17,7 @@ export const requestMyPageUserData = async (userId: string) => {
 
 export const requestMyPageWithDrawal = async (userId: string) => {
   try {
-    await axios.delete('/user/delete', {id: userId});
+    await axios.delete('/user/delete', {params: {id: userId}});
     return true;
   } catch (e: any) {
     alert({title: '회원탈퇴 실패', body: e.message});

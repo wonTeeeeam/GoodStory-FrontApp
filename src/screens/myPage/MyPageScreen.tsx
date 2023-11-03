@@ -78,16 +78,15 @@ const MyPageScreen = () => {
       body: '회원탈퇴하시겠습니까?',
       isConfirm: true,
     });
-    if (!keepGoing) {
-      return;
-    }
+    if (!keepGoing) return;
+
+    setIsLoading(true);
     const withDrawalResult = await requestMyPageWithDrawal(userId);
     if (withDrawalResult) {
-      setIsLoading(true);
       await handleLogout();
-      setIsLoading(false);
       alert({title: '회원탈퇴 성공', body: '회원 탈퇴되었습니다!'});
     }
+    setIsLoading(false);
   };
 
   const handlePressLogout = async () => {

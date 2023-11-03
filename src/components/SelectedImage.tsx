@@ -13,15 +13,18 @@ type Props = {
 
 const SelectedImage: React.FC<Props> = ({images, removeImageFromContent}) => {
   return (
-    <View>
+    <View
+      style={{
+        flexDirection: 'row',
+      }}>
       {images.map((image, index) => {
         return (
           <View key={index} style={styles.totalContainer}>
             <FastImage
               source={{uri: image.uri}}
-              style={{width: 50, height: 50}}
+              style={{width: vs(50), height: hs(50)}}
             />
-            <View style={{marginLeft: hs(52), position: 'absolute'}}>
+            <View style={{marginLeft: hs(50), position: 'absolute'}}>
               <AntDesign
                 name="closecircle"
                 color={'#4682B4'}
@@ -40,11 +43,10 @@ const SelectedImage: React.FC<Props> = ({images, removeImageFromContent}) => {
 
 const styles = StyleSheet.create({
   totalContainer: {
-    marginTop: vs(20),
-    height: vs(100),
+    // height: vs(100),
     alignItems: 'flex-start',
-    paddingLeft: hs(10),
-    paddingVertical: vs(5),
+    paddingLeft: hs(9),
+    paddingVertical: vs(7),
     flexDirection: 'row',
   },
 });

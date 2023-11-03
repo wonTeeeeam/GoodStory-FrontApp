@@ -141,7 +141,7 @@ const PostingMain = () => {
       </View>
 
       <ScrollView
-        // contentContainerStyle={{flex: 1}}
+        contentContainerStyle={{flex: 1}}
         showsVerticalScrollIndicator={false}>
         {/* <View style={{}}>
           <TypeModal category={category} handleSetCategory={setCategory} />
@@ -204,7 +204,7 @@ const PostingMain = () => {
           }}>
           <AntDesign name="picture" color={gray.dimGray} size={ss(25)} />
         </Pressable>
-        <View>
+        <View style={{flex: 1}}>
           <TextInput
             style={styles.bodyInput}
             placeholder="내용을 입력해주세요(최대 500자)."
@@ -215,7 +215,7 @@ const PostingMain = () => {
             value={content}
           />
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View>
           <SelectedImage
             images={imageList}
             removeImageFromContent={removeImageFromContent}
