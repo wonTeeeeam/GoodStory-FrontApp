@@ -10,6 +10,7 @@ import Timer from 'components/Timer';
 import {AntDesign, Fontisto} from 'utils/react-native-vector-helper';
 import {requestEmailExist, requestSendEmail} from 'api/join';
 import {JoinStackProps} from 'navigations/types';
+import LoadingModal from 'components/modal/LoadingModal';
 
 const JoinEmail = () => {
   const [email, setEmail] = useState('');
@@ -44,6 +45,7 @@ const JoinEmail = () => {
   const [isEmailAbled, setIsEmailAbled] = useState(false);
   const [isCertAbled, setIsCertAbled] = useState(false);
   const [certAnswer, setCertAnswer] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation<JoinStackProps['navigation']>();
 
   // 이메일 변경 관련 로직
@@ -72,15 +74,18 @@ const JoinEmail = () => {
   }, [email, isEmailSended, emailCert]);
 
   const handlePressSendButton = async () => {
+    setIsLoading(true);
     if (await requestEmailExist(email)) {
       const sendEmailResult = await requestSendEmail(email);
-      if (!sendEmailResult) return;
-      setCertAnswer(sendEmailResult);
-      setIsEmailAbled(false);
-      setIsTimerVisible(true);
-      setIsEmailSended(true);
-      setNeedAlertForCert(false);
+      if (sendEmailResult) {
+        setCertAnswer(sendEmailResult);
+        setIsEmailAbled(false);
+        setIsTimerVisible(true);
+        setIsEmailSended(true);
+        setNeedAlertForCert(false);
+      }
     }
+    setIsLoading(false);
   };
 
   const validateCert = (value: string) => {
@@ -98,8 +103,6 @@ const JoinEmail = () => {
   };
 
   const handlePressNextButton = () => {
-    console.log(certAnswer);
-    console.log(emailCert);
     if (certAnswer !== emailCert) {
       setAlertMSGIndexForCert(0);
       setNeedAlertForCert(true);
@@ -111,6 +114,7 @@ const JoinEmail = () => {
 
   return (
     <View style={{flex: 1}}>
+      {isLoading && <LoadingModal isVisible={isLoading} />}
       <ScrollView keyboardShouldPersistTaps={'always'}>
         <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
           <UTextInput

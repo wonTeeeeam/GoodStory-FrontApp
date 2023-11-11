@@ -10,13 +10,14 @@ import {
   View,
 } from 'react-native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+
 import {AntDesign} from 'utils/react-native-vector-helper';
 import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
-import useHandleImage from 'hooks/useHandleImage';
-import {black, gray} from 'styles';
+import {black, gray, white} from 'styles';
 import {useAppSelector} from 'store/hooks';
 import {requestNewPosting} from 'api/board';
 import {BottomStackProps} from 'navigations/types';
@@ -29,10 +30,9 @@ const PostingMain = () => {
   const [content, setContent] = useState('');
   const [imageList, setImageList] = useState<Asset[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [imagePlace, setImagePlace] = useState(0);
   const {nickName, account, userId} = useAppSelector(state => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const {InsertImageInContent} = useHandleImage();
+  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -54,15 +54,12 @@ const PostingMain = () => {
       return;
     }
     setImageList([...imageList, result.assets[0]]);
-    setContent(content + `image://${imagePlace}/`);
-    setImagePlace(imagePlace + 1);
   };
 
   const removeImageFromContent = (index: number) => {
     const newImages = [...imageList];
     newImages.splice(index, 1);
     setImageList([...newImages]);
-    setImagePlace(imagePlace - 1);
   };
 
   const makeFormData = () => {
@@ -186,6 +183,18 @@ const PostingMain = () => {
             {InsertImageInContent(content, image)}
           </Text>
         </ScrollView> */}
+        <Pressable
+          onPress={() => setIsCategoryModalVisible(true)}
+          style={{
+            marginTop: vs(50),
+            borderBottomWidth: ss(1),
+            borderBottomColor: gray.lightGray,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={{}}>{category}</Text>
+          <AntDesign name="caretdown" size={ss(10)} color={'#B2B0B0'} />
+        </Pressable>
         <View>
           <TextInput
             style={styles.titleInput}
@@ -222,6 +231,28 @@ const PostingMain = () => {
           />
         </View>
       </ScrollView>
+      <Modal
+        isVisible={isCategoryModalVisible}
+        backdropOpacity={0.3}
+        onBackdropPress={() => setIsCategoryModalVisible(false)}
+        onBackButtonPress={() => setIsCategoryModalVisible(false)}
+        backdropColor={'black'}>
+        <View
+          style={{
+            flex: 0.2,
+            backgroundColor: gray.lightGray,
+            borderRadius: ss(10),
+          }}>
+          <ScrollView>
+            <Text style={styles.categoryItems}>꿀팁</Text>
+            <Text style={styles.categoryItems}>뒷담</Text>
+            <Text style={styles.categoryItems}>연봉</Text>
+            <Text style={styles.categoryItems}>이직</Text>
+            <Text style={styles.categoryItems}>자유</Text>
+            <Text style={styles.categoryItems}>유머</Text>
+          </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -244,6 +275,11 @@ const styles = StyleSheet.create({
   bodyInput: {
     color: 'black',
     marginTop: vs(10),
+  },
+  categoryItems: {
+    color: black.origin,
+    paddingLeft: hs(10),
+    paddingVertical: vs(6),
   },
 });
 

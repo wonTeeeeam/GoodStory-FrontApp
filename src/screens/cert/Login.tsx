@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <ScrollView
       style={{flex: 1, paddingHorizontal: hs(20)}}
-      contentContainerStyle={{flex: 1}}>
+      contentContainerStyle={{flexGrow: 1}}>
       <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
         <View style={{marginTop: vs(60), alignItems: 'center'}}>
           <Image source={logo} style={{width: hs(100), height: vs(100)}} />

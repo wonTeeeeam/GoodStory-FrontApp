@@ -43,7 +43,7 @@ export const registerUserInfo = async (formData: FormData) => {
   try {
     const result = await axios.post('/user/create', formData, {
       headers: {
-        'Content-topic': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
     });
     return true;

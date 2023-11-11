@@ -17,9 +17,10 @@ export const requestMyPageUserData = async (userId: string) => {
 
 export const requestMyPageWithDrawal = async (userId: string) => {
   try {
-    await axios.delete('/user/delete', {params: {id: userId}});
+    await axios.delete(`/user/delete/${userId}`);
     return true;
   } catch (e: any) {
+    console.log(e.response.data);
     alert({title: '회원탈퇴 실패', body: e.message});
     return false;
   }
@@ -29,7 +30,7 @@ export const requestPostUserProfile = async (formData: FormData) => {
   try {
     const result = await axios.post('/user/updateProfilePhoto', formData, {
       headers: {
-        'Content-topic': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
     });
     return result;

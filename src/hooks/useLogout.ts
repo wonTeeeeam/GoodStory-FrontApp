@@ -11,11 +11,7 @@ const useLogout = () => {
   const dispatch = useDispatch();
   const {userId} = useAppSelector((state: RootState) => state.user);
 
-  const handleLogout = async () => {
-    const logoutResult = await requestLogOut(userId);
-    if (!logoutResult) {
-      return;
-    }
+  const handleDeleteLocalDatas = async () => {
     await Keychain.resetInternetCredentials('ID');
     await Keychain.resetInternetCredentials('password');
     await Keychain.resetInternetCredentials('refreshToken');
@@ -24,7 +20,13 @@ const useLogout = () => {
     alert({title: '로그아웃 성공', body: '로그아웃 되었습니다!'});
   };
 
-  return {handleLogout};
+  const handleLogout = async () => {
+    const logoutResult = await requestLogOut(userId);
+    if (!logoutResult) return;
+    await handleDeleteLocalDatas();
+  };
+
+  return {handleLogout, handleDeleteLocalDatas};
 };
 
 export default useLogout;

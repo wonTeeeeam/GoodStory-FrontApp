@@ -58,7 +58,7 @@ const MyPageScreen = () => {
   const navigation = useNavigation<MainStackProps['navigation']>();
   const {nickName, profileUrl, userId} = useAppSelector(state => state.user);
 
-  const {handleLogout} = useLogout();
+  const {handleLogout, handleDeleteLocalDatas} = useLogout();
 
   useEffect(() => {
     const fetchMypageData = async () => {
@@ -81,9 +81,8 @@ const MyPageScreen = () => {
     if (!keepGoing) return;
 
     setIsLoading(true);
-    const withDrawalResult = await requestMyPageWithDrawal(userId);
-    if (withDrawalResult) {
-      await handleLogout();
+    if (await requestMyPageWithDrawal(userId)) {
+      await handleDeleteLocalDatas();
       alert({title: '회원탈퇴 성공', body: '회원 탈퇴되었습니다!'});
     }
     setIsLoading(false);

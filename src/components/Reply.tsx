@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
   replyPhoto: {
     height: vs(150),
     width: hs(150),
-    backgroundColor: 'red',
     marginTop: vs(10),
     borderRadius: ss(10),
   },

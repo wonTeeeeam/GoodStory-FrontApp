@@ -63,7 +63,6 @@ const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
       Password: Password,
       Nickname: name,
     });
-    // await registerUserInfo({Email, Password, name});
   };
 
   return (

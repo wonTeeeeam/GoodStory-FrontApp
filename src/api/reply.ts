@@ -6,7 +6,7 @@ export const requestRegisterReply = async (formData: FormData) => {
   try {
     const result = await axios.post('/reply/create', formData, {
       headers: {
-        'Content-topic': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
     });
     return result.data;

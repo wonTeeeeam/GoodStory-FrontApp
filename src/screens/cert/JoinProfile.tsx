@@ -1,10 +1,13 @@
 import {registerUserInfo} from 'api/join';
 import JoinButton from 'components/button/JoinButton';
+import LoadingModal from 'components/modal/LoadingModal';
 import {JoinStackProps} from 'navigations/types';
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import {useDispatch} from 'react-redux';
+import {handleIsUserStartJoin} from 'slice/navigationSlice';
 import {alert} from 'utils/alert';
 import {AntDesign, Ionicons} from 'utils/react-native-vector-helper';
 
@@ -18,6 +21,8 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
   };
 
   const [profileImage, setProfileImage] = useState<ImageOrVideo>();
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const makeFormData = () => {
     const formData = new FormData();
@@ -41,9 +46,12 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
   };
 
   const handlePressButton = async () => {
+    setIsLoading(true);
     const result = await registerUserInfo(makeFormData());
+    setIsLoading(false);
     if (result) {
       alert({title: '회원가입 성공', body: '회원가입에 성공하였습니다!'});
+      dispatch(handleIsUserStartJoin());
     }
   };
 
@@ -61,6 +69,7 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
 
   return (
     <View>
+      {isLoading && <LoadingModal isVisible={isLoading} />}
       <View style={{marginHorizontal: hs(20)}}>
         <Text style={{color: 'black', marginTop: vs(30)}}>
           프로필 이미지를 설정해주세요

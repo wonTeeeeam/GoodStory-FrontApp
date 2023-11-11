@@ -27,6 +27,7 @@ import {requestRegisterReply} from 'api/reply';
 import {useDispatch} from 'react-redux';
 import {changeBoardCountExisted} from 'slice/boardCountDetailSlice';
 import {RootState} from 'store/store';
+import LoadingModal from './LoadingModal';
 
 type Props = {
   isCommentModalVisible: boolean;
@@ -42,6 +43,7 @@ const CommentModal: React.FC<Props> = ({
   handleSetReplyDatum,
 }) => {
   const {isModalVisible, changeModalVisible} = useBottomModal();
+  const [isLoading, setIsLoading] = useState(false);
   const [img, setImage] = useState<Asset>();
   const [input, setInput] = useState('');
   const {userId} = useAppSelector(state => state.user);
@@ -88,12 +90,15 @@ const CommentModal: React.FC<Props> = ({
       showToast('로그인이 필요한 서비스입니다!');
     }
     const formData = makeFormData();
+    setIsLoading(true);
     const registerResult = await requestRegisterReply(formData);
-    if (!registerResult) return;
+    if (registerResult) {
+      showToast('댓글 작성 완료!');
+      handleSetIsCommentModalVisible(false);
+      handleSetReplyDatum(registerResult);
+    }
 
-    showToast('댓글 작성 완료!');
-    handleSetIsCommentModalVisible(false);
-    handleSetReplyDatum(registerResult);
+    setIsLoading(false);
     if (!boardCountDetail) {
       return showToast(
         '댓글 개수 업데이트에 실패하였습니다!\n재접속 시 정상작동합니다.',
@@ -116,6 +121,7 @@ const CommentModal: React.FC<Props> = ({
         backdropOpacity={1}
         backdropColor={white.snow}>
         <View style={{flex: 1}}>
+          {isLoading && <LoadingModal isVisible={isLoading} />}
           <View style={styles.commentBarContainer}>
             <AntDesign
               name="close"

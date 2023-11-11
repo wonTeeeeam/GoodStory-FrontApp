@@ -5,7 +5,7 @@ export const requestNewPosting = async (formData: FormData) => {
   try {
     await axios.post('/board/create', formData, {
       headers: {
-        'Content-topic': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
     });
     return true;
