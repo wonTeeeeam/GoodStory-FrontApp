@@ -11,7 +11,6 @@ import FastImage from 'react-native-fast-image';
 import {black, red} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
-import useHandleImage from 'hooks/useHandleImage';
 import {useEffect} from 'react';
 import {useCallback} from 'react';
 import {gray} from 'styles';
@@ -24,13 +23,13 @@ import {RootState} from '../store/store';
 import {useAppSelector} from '../store/hooks';
 import {PostListElement} from 'hooks/useFetchPostList';
 import useReply from 'hooks/useReply';
+import {changeTopicToKorean} from 'utils/translation';
 
 type Props = {
   singleData: PostListElement;
 };
 
 const Post: React.FC<Props> = ({singleData}) => {
-  const {deleteImageFlagsInContent} = useHandleImage();
   const {likeBoards} = useAppSelector((state: RootState) => state.user);
 
   const boardCountDetail = useAppSelector(
@@ -62,6 +61,12 @@ const Post: React.FC<Props> = ({singleData}) => {
     navigateDetailPost(singleData);
   };
 
+  const hideContent = (content: string, maxLength: number) => {
+    return content.length > maxLength
+      ? content.slice(0, maxLength + 1) + '...'
+      : content;
+  };
+
   return (
     <View>
       <TouchableOpacity
@@ -70,7 +75,9 @@ const Post: React.FC<Props> = ({singleData}) => {
         <View style={styles.container}>
           <View style={styles.firstDetailContainer}>
             <View>
-              <Text style={styles.topicText}>{singleData.Category}</Text>
+              <Text style={styles.topicText}>
+                {changeTopicToKorean(singleData.Category)}
+              </Text>
             </View>
             <Text style={styles.timeText}>
               {convertTimeToKorean(singleData.Created_date)}
@@ -92,11 +99,13 @@ const Post: React.FC<Props> = ({singleData}) => {
         <View style={{flexDirection: 'row', flex: 0.7}}>
           <View style={{...styles.container, flex: 0.8}}>
             <View>
-              <Text style={styles.titleText}>{singleData.Title}</Text>
+              <Text style={styles.titleText}>
+                {hideContent(singleData.Title, 12)}
+              </Text>
             </View>
             <View style={{marginTop: vs(10), paddingLeft: hs(3)}}>
               <Text style={styles.contextText}>
-                {deleteImageFlagsInContent(singleData.Content)}
+                {hideContent(singleData.Content, 60)}
               </Text>
             </View>
           </View>

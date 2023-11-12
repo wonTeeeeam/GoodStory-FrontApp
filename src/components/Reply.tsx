@@ -1,7 +1,5 @@
-import React from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {black, gray, white} from 'styles';
@@ -12,16 +10,21 @@ import BottomModal from './modal/BottomModal';
 import BottomModalElement from './BottomModalElement';
 import {Entypo, Ionicons} from 'utils/react-native-vector-helper';
 import {ReplyDatum} from 'screens/main/DetailPost';
+import useImageModal from 'hooks/useImageModal';
+import ImageModal from './modal/ImageModal';
 
 type Props = {
   singleData: ReplyDatum;
 };
 
 const Reply: React.FC<Props> = ({singleData}) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const handleSetIsModalVisible = (newValue: boolean) => {
-    setIsModalVisible(newValue);
+  const [isAlertModalVisible, setIsAlertModalVisible] = useState(false);
+  const handleSetIsAlertModalVisible = (newValue: boolean) => {
+    setIsAlertModalVisible(newValue);
   };
+  const {isModalVisible, handleSetIsModalVisible, url, handleSetUrl} =
+    useImageModal();
+
   return (
     <View style={{marginTop: vs(5), flex: 1}}>
       <View style={styles.replyNickName}>
@@ -40,7 +43,7 @@ const Reply: React.FC<Props> = ({singleData}) => {
           />
         )}
 
-        <View style={{marginLeft: hs(10), flexDirection: 'row'}}>
+        <View style={{marginLeft: hs(10), flexDirection: 'row', width: '85%'}}>
           {/* <Text style={{color: 'red'}}>{singleData.user.CompanyName}</Text> */}
           <Text style={styles.user}>{singleData.user.Nickname}</Text>
           <View style={styles.replyDate}>
@@ -55,7 +58,7 @@ const Reply: React.FC<Props> = ({singleData}) => {
             color={'black'}
             size={ss(10)}
             onPress={() => {
-              setIsModalVisible(true);
+              handleSetIsAlertModalVisible(true);
             }}
           />
         </View>
@@ -63,21 +66,34 @@ const Reply: React.FC<Props> = ({singleData}) => {
       <View style={{marginTop: vs(10), marginLeft: hs(25)}}>
         <Text style={{color: 'black'}}>{singleData.Content}</Text>
         {singleData.ReplyPhoto && (
-          <FastImage
-            style={styles.replyPhoto}
-            source={{uri: singleData.ReplyPhoto}}
-            resizeMode="stretch"
-          />
+          <Pressable
+            onPress={() => {
+              if (singleData.ReplyPhoto) {
+                handleSetUrl(singleData.ReplyPhoto);
+                handleSetIsModalVisible(true);
+              }
+            }}>
+            <FastImage
+              style={styles.replyPhoto}
+              source={{uri: singleData.ReplyPhoto}}
+              resizeMode="stretch"
+            />
+          </Pressable>
         )}
       </View>
       <BottomModal
-        isModalVisible={isModalVisible}
-        changeModalVisible={handleSetIsModalVisible}>
+        isModalVisible={isAlertModalVisible}
+        changeModalVisible={handleSetIsAlertModalVisible}>
         <BottomModalElement
-          onPress={() => setIsModalVisible(false)}
+          onPress={() => setIsAlertModalVisible(false)}
           text={'신고하기'}
         />
       </BottomModal>
+      <ImageModal
+        isModalVisible={isModalVisible}
+        handleSetIsModalVisible={() => handleSetIsModalVisible(!isModalVisible)}
+        url={url}
+      />
     </View>
   );
 };
@@ -122,7 +138,6 @@ const styles = StyleSheet.create({
   threeDotView: {
     justifyContent: 'center',
     alignItems: 'flex-end',
-    width: '35%',
   },
   replyPhoto: {
     height: vs(150),

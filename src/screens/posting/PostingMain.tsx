@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -17,11 +18,12 @@ import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
-import {black, gray, white} from 'styles';
+import {black, gray} from 'styles';
 import {useAppSelector} from 'store/hooks';
 import {requestNewPosting} from 'api/board';
 import {BottomStackProps} from 'navigations/types';
 import {alert} from 'utils/alert';
+import {changeTopicToEnglish} from 'utils/translation';
 
 const PostingMain = () => {
   const navigation = useNavigation<BottomStackProps['navigation']>();
@@ -64,7 +66,7 @@ const PostingMain = () => {
 
   const makeFormData = () => {
     const formData = new FormData();
-    formData.append('Category', category);
+    formData.append('Category', changeTopicToEnglish(category));
     formData.append('Title', title);
     formData.append('Content', content);
 
@@ -97,13 +99,27 @@ const PostingMain = () => {
     if (!formData) {
       return;
     }
-
+    setIsLoading(true);
     const newPostingResult = await requestNewPosting(formData);
     if (!newPostingResult) {
       return;
     }
     showToast('게시글 등록에 성공하였습니다.');
+    setIsLoading(false);
     navigation.navigate('Board', {boardTopic: category});
+  };
+
+  const TopicItem = (text: string) => {
+    const handleOnPress = () => {
+      setCategory(text);
+      setIsCategoryModalVisible(false);
+    };
+
+    return (
+      <TouchableOpacity onPress={handleOnPress}>
+        <Text style={styles.categoryItems}>{text}</Text>
+      </TouchableOpacity>
+    );
   };
 
   if (isLoading) {
@@ -119,9 +135,14 @@ const PostingMain = () => {
           }`}</Text>
         </View>
         <Pressable
-          onPress={() => {
+          onPress={async () => {
             if (!isDisabled) {
-              postBoard();
+              const keepGo = await alert({
+                title: '게시글을 등록하시겠습니까?',
+                body: '게시글을 최종적으로 등록하시겠습니까?',
+                isConfirm: true,
+              });
+              if (keepGo) postBoard();
             } else {
               showToast('제목, 내용, 카테고리를 입력해주세요');
             }
@@ -132,7 +153,7 @@ const PostingMain = () => {
               color: isDisabled ? gray.gainsboro : black.origin,
               fontSize: ss(15),
             }}>
-            다음
+            등록
           </Text>
         </Pressable>
       </View>
@@ -140,49 +161,6 @@ const PostingMain = () => {
       <ScrollView
         contentContainerStyle={{flex: 1}}
         showsVerticalScrollIndicator={false}>
-        {/* <View style={{}}>
-          <TypeModal category={category} handleSetCategory={setCategory} />
-        </View> */}
-
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: vs(0),
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-            }}> */}
-
-        {/* <View style={{marginLeft: hs(10)}}>
-              <Pressable onPress={() => {}}>
-                <MaterialCommunityIcons
-                  name="vote"
-                  color={'#4682B4'}
-                  size={ss(30)}
-                />
-              </Pressable>
-            </View> */}
-        {/* </View> */}
-        {/* </View> */}
-        {/* <ScrollView
-          style={{
-            borderWidth: ss(1),
-            flex: 0.8,
-            borderRadius: ss(10),
-            marginTop: ss(10),
-            borderColor: 'darkgray',
-          }}
-          nestedScrollEnabled={true}>
-          <Text style={{color: 'black'}}>
-            <Text style={{fontSize: ss(15), fontWeight: 'bold'}}>{title}</Text>
-            {'\n'}
-            {'\n'}
-            {InsertImageInContent(content, image)}
-          </Text>
-        </ScrollView> */}
         <Pressable
           onPress={() => setIsCategoryModalVisible(true)}
           style={{
@@ -192,7 +170,9 @@ const PostingMain = () => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Text style={{}}>{category}</Text>
+          <Text style={{color: black.origin}}>
+            {category || '카테고리를 선택해주세요'}
+          </Text>
           <AntDesign name="caretdown" size={ss(10)} color={'#B2B0B0'} />
         </Pressable>
         <View>
@@ -206,13 +186,13 @@ const PostingMain = () => {
             autoFocus={true}
           />
         </View>
-        <Pressable
+        <TouchableOpacity
           style={{alignSelf: 'flex-end'}}
           onPress={() => {
             handleChoosePhoto();
           }}>
           <AntDesign name="picture" color={gray.dimGray} size={ss(25)} />
-        </Pressable>
+        </TouchableOpacity>
         <View style={{flex: 1}}>
           <TextInput
             style={styles.bodyInput}
@@ -244,12 +224,12 @@ const PostingMain = () => {
             borderRadius: ss(10),
           }}>
           <ScrollView>
-            <Text style={styles.categoryItems}>꿀팁</Text>
-            <Text style={styles.categoryItems}>뒷담</Text>
-            <Text style={styles.categoryItems}>연봉</Text>
-            <Text style={styles.categoryItems}>이직</Text>
-            <Text style={styles.categoryItems}>자유</Text>
-            <Text style={styles.categoryItems}>유머</Text>
+            {TopicItem('꿀팁')}
+            {TopicItem('뒷담')}
+            {TopicItem('연봉')}
+            {TopicItem('이직')}
+            {TopicItem('자유')}
+            {TopicItem('유머')}
           </ScrollView>
         </View>
       </Modal>
@@ -278,8 +258,8 @@ const styles = StyleSheet.create({
   },
   categoryItems: {
     color: black.origin,
-    paddingLeft: hs(10),
-    paddingVertical: vs(6),
+    paddingLeft: hs(12),
+    paddingVertical: vs(7),
   },
 });
 

@@ -4,36 +4,21 @@ import {ss, vs} from 'utils/scailing';
 import {useNavigation} from '@react-navigation/native';
 import {BottomStackProps} from 'navigations/types';
 import {blue, white} from 'styles';
+import {changeTopicToEnglish} from 'utils/translation';
 
 type Props = {text: string; children: React.ReactNode};
 
 const HandleTopicCard: React.FC<Props> = ({text, children}) => {
   const navigation = useNavigation<BottomStackProps['navigation']>();
-  const makeTopicEnglish = () => {
-    switch (text) {
-      case '꿀팁':
-        return 'Tip';
-      case '뒷담':
-        return 'Backbiting';
-      case '연봉':
-        return 'Salary';
-      case '이직':
-        return 'Turnover';
-      case '자유':
-        return 'Free';
-      case '유머':
-        return 'Humor';
-      default:
-        return 'Free';
-    }
-  };
 
   return (
     <TouchableOpacity
       style={styles.totalContainer}
       onPress={() => {
         navigation.reset({
-          routes: [{name: 'Board', params: {boardTopic: makeTopicEnglish()}}],
+          routes: [
+            {name: 'Board', params: {boardTopic: changeTopicToEnglish(text)}},
+          ],
         });
       }}>
       {children}
