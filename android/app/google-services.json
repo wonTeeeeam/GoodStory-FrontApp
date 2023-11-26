@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965102572766",
+    "project_id": "goodstory-f1b3a",
+    "storage_bucket": "goodstory-f1b3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965102572766:android:114e67b0d1ce3c3a1fde4f",
+        "android_client_info": {
+          "package_name": "com.goodstroyfrontapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD28MdVDWjSPA_4rsBP2TfywQXB4ZG3FJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
