@@ -1561,6 +1561,11 @@
     opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
 
+"@react-native-firebase/messaging@^18.6.2":
+  version "18.6.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.6.2.tgz#1a52635293e1fbd413c64289be0cfa1c8a329073"
+  integrity sha512-xGkv9tBjRaSqN6iGRC2euDiZVlraXVva4s/UQNbz5JBehTiStRP2lsRfGKiWuSWMMQgeKR0abRBgJLor8/OfwA==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -6541,6 +6546,11 @@ react-native-modal@^13.0.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
+
+react-native-permissions@^3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.10.1.tgz#cb0171c8d12113869deaabbdfb979aad1a44752b"
+  integrity sha512-Gc5BxxpjZn4QNUDiVeHOO0vXh3AH7ToolmwTJozqC6DsxV7NAf3ttap+8BSmzDR8WxuAM3Cror+YNiBhHJx7/w==
 
 react-native-reanimated@^3.5.4:
   version "3.5.4"
