@@ -15,7 +15,6 @@ import {store} from 'store/store';
 const App = () => {
   useEffect(() => {
     const initializeApp = async () => {
-      SplashScreen.hide();
       await requestPermission();
     };
     initializeApp();
@@ -50,27 +49,27 @@ const App = () => {
     return unsubscribe;
   }, []);
 
-  // 토큰 설정
-  useEffect(() => {
-    async function getToken() {
-      try {
-        // 기기 등록이 안되어있다면, 기기 토큰을 먼저 등록해야 한다.
-        if (!messaging().isDeviceRegisteredForRemoteMessages) {
-          await messaging().registerDeviceForRemoteMessages();
-        }
+  // // 토큰 설정
+  // useEffect(() => {
+  //   async function getToken() {
+  //     try {
+  //       // 기기 등록이 안되어있다면, 기기 토큰을 먼저 등록해야 한다.
+  //       if (!messaging().isDeviceRegisteredForRemoteMessages) {
+  //         await messaging().registerDeviceForRemoteMessages();
+  //       }
 
-        // 토큰 가져오기
-        const token = await messaging().getToken();
-        console.log('phone token', token);
+  //       // 토큰 가져오기
+  //       const token = await messaging().getToken();
+  //       console.log('phone token', token);
 
-        // 유저 토큰 저장하기
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  //       // 유저 토큰 저장하기
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    getToken();
-  }, []);
+  //   getToken();
+  // }, []);
 
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open

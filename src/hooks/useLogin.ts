@@ -1,6 +1,7 @@
 import {LoginUserInfo, requestUserInfo} from 'api/login';
 import {useState} from 'react';
 import * as Keychain from 'react-native-keychain';
+import SplashScreen from 'react-native-splash-screen';
 import {useDispatch} from 'react-redux';
 import {handleUserInfo} from 'slice/userSlice';
 import {alert} from 'utils/alert';
@@ -61,6 +62,7 @@ const useLogin = () => {
         autoLoginResult = true;
       }
     }
+    SplashScreen.hide();
     if (!autoLoginResult) {
       alert({title: '자동로그인 실패', body: '자동 로그인 실패하였습니다.'});
     }
