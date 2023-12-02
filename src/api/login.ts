@@ -35,12 +35,12 @@ export const requestUserInfo = async (
   password: string,
 ): Promise<LoginUserInfo | null> => {
   try {
-    const FCMToken = getToken();
+    const FcmToken = await getToken();
 
     const loginUserInfo = await axios.post('/auth/login', {
       Account: ID,
       Password: password,
-      FCMToken,
+      FcmToken,
     });
     return loginUserInfo.data;
   } catch (error: any) {
