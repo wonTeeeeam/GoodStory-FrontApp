@@ -40,6 +40,7 @@ export type DetailBoardStackProps = NativeStackScreenProps<
 >;
 
 export type MyPageStackParamList = {
+  MyActivityFeed: {listData};
   ResetPassword: {account: string};
   Announcement: undefined;
   AnnouncementDetail: {announcement: Announcement};
@@ -49,7 +50,7 @@ export type MyPageStackParamList = {
 
 export type MyPageStackProps = NativeStackScreenProps<
   MyPageStackParamList,
-  'ResetPassword' | 'AnnouncementDetail'
+  'ResetPassword' | 'AnnouncementDetail' | 'MyActivityFeed'
 >;
 
 export type JoinStackParamList = {

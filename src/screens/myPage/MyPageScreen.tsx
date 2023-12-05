@@ -198,9 +198,9 @@ const MyPageScreen = () => {
         <View style={{backgroundColor: white.origin, paddingBottom: vs(40)}}>
           <View style={styles.ActivityFeedContainer}>
             <ActivityFeed
-              like={userData?.likeBoards}
-              post={userData?.boards}
-              reply={userData?.replies}
+              like={userData?.likeBoards || 0}
+              post={userData?.boards || 0}
+              reply={userData?.replies || 0}
             />
           </View>
         </View>

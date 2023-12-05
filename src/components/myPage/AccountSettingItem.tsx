@@ -5,7 +5,7 @@ import {hs, ss} from 'utils/scailing';
 
 type Props = {
   text: string;
-  handleOnPressBtn: () => Promise<void>;
+  handleOnPressBtn: () => Promise<void> | void;
 };
 
 const AccountSettingItem: React.FC<Props> = ({text, handleOnPressBtn}) => {

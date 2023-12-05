@@ -8,12 +8,18 @@ import Configuration from 'screens/myPage/Configuration';
 import Withdrawal from 'screens/myPage/Withdrawal';
 import AnnouncementDetail from 'screens/myPage/AnnouncementDetail';
 import {MyPageStackParamList} from './types';
+import MyActivityFeed from 'screens/myPage/MyActivityFeed';
 
 function MyPageStack() {
   const Stack = createNativeStackNavigator<MyPageStackParamList>();
 
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="MyActivityFeed"
+        component={MyActivityFeed}
+        options={{headerShown: true, headerTitle: '활동 피드'}}
+      />
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
