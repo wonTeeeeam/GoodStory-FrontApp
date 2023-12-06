@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import {alert} from 'utils/alert';
 import * as Keychain from 'react-native-keychain';
-import {requestPatchPassword} from 'api/myPage';
+import {requestPatchPassword} from 'api/myPage/myPage';
 import {MyPageStackProps} from 'navigations/types';
 
 const ResetPassword: React.FC<MyPageStackProps> = ({route}) => {

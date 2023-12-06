@@ -1,20 +1,25 @@
-import NoPost from 'components/NoPost';
-import Post from 'components/Post';
-import {PostListElement} from 'hooks/useFetchPostList';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 
-type Props = {
-  list: PostListElement[];
-};
+import NoPost from 'components/NoPost';
+import Post from 'components/Post';
+import {PostListElement} from 'hooks/useFetchPostList';
+import {MyPageStackProps} from 'navigations/types';
+import useFetchMyActivity from 'hooks/useFetchMyActivity';
 
-const MyActivityFeed: React.FC<Props> = ({list}) => {
+const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
+  const {type} = route.params;
+  const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
+    useFetchMyActivity(type);
+
+  useEffect(() => {}, []);
+
   return (
     <View style={{flex: 1}}>
-      {isPostListExist === true && (
+      {/* {isPostListExist === true && (
         <FlatList
           data={list}
           refreshControl={
@@ -33,14 +38,14 @@ const MyActivityFeed: React.FC<Props> = ({list}) => {
           onEndReachedThreshold={0.1}
           onEndReached={() => fetchNextPostList(nextPostListLength)}
         />
-      )}
+      )} */}
       {/* fetchNextData하고 난 뒤에 게시글 없을 때만 보여줘야함. undefined일 때는 보여주면 안됨.*/}
-      {isPostListExist === false && (
+      {/* {isPostListExist === false && (
         <NoPost
           onPress={() => navigation.navigate('Posting')}
           btnText={'게시글 등록'}
         />
-      )}
+      )} */}
     </View>
   );
 };

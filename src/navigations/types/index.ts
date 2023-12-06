@@ -40,7 +40,7 @@ export type DetailBoardStackProps = NativeStackScreenProps<
 >;
 
 export type MyPageStackParamList = {
-  MyActivityFeed: {listData};
+  MyActivityFeed: {type: string};
   ResetPassword: {account: string};
   Announcement: undefined;
   AnnouncementDetail: {announcement: Announcement};

@@ -30,7 +30,7 @@ import {
   requestMyPageUserData,
   requestMyPageWithDrawal,
   requestPostUserProfile,
-} from 'api/myPage';
+} from 'api/myPage/myPage';
 import {MainStackProps} from 'navigations/types';
 import FastImage from 'react-native-fast-image';
 import {gray, white} from 'styles';

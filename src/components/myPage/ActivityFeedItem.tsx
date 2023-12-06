@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {ss, vs} from 'utils/scailing';
 
 const ActivityFeedItem = ({
@@ -11,12 +11,12 @@ const ActivityFeedItem = ({
 }) => {
   return (
     <View>
-      <Pressable style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center'}}>
         <Text style={styles.titleText}>{title}</Text>
         <Text style={{color: '#FF6347', marginVertical: vs(10)}}>
           {value}개
         </Text>
-      </Pressable>
+      </View>
     </View>
   );
 };
