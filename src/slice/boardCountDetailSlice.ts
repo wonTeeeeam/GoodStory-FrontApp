@@ -37,11 +37,14 @@ export const BoardCountDetailSlice = createSlice({
         },
       ];
     },
+    initBoardCountDetail: () => {
+      return initialState;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {addBoardCount, changeBoardCountExisted} =
+export const {addBoardCount, changeBoardCountExisted, initBoardCountDetail} =
   BoardCountDetailSlice.actions;
 
 export default BoardCountDetailSlice.reducer;
