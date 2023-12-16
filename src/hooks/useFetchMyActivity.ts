@@ -3,9 +3,7 @@ import {
   requestMyLikeBoards,
   requestMyReplies,
 } from 'api/myPage/myActivityFeed';
-import axios from 'axios';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {addBoardCount} from 'slice/boardCountDetailSlice';
 import {useAppSelector} from 'store/hooks';
@@ -106,13 +104,13 @@ const useFetchMyActivity = (type: string) => {
           break;
       }
 
-      const newUpdatePostList = updatePostList(nextPostList.data);
+      const newUpdatePostList = updatePostList(nextPostList);
       setPostList(newUpdatePostList);
       dispatch(addBoardCount(newUpdatePostList));
       // // 지금 가지고 있는 게시글 이후부터 가져오기 위한 skip
       setSkip(newUpdatePostList.length);
 
-      postList.length === 0 && nextPostList.data.length === 0
+      postList.length === 0 && nextPostList.length === 0
         ? setIsPostListExist(false)
         : setIsPostListExist(true);
     } catch (e) {

@@ -46,6 +46,7 @@ export type MyPageStackParamList = {
   AnnouncementDetail: {announcement: Announcement};
   Configuration: undefined;
   Withdrawal: undefined;
+  Alarm: undefined;
 };
 
 export type MyPageStackProps = NativeStackScreenProps<

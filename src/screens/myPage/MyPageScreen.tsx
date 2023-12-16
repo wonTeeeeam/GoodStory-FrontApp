@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   Platform,
   Pressable,
@@ -8,32 +8,32 @@ import {
   View,
 } from 'react-native';
 
-import {hs, ss, vs} from 'utils/scailing';
-import ActivityFeed from 'components/myPage/ActivityFeed';
-import AccountSettingItem from 'components/myPage/AccountSettingItem';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import useLogout from 'hooks/useLogout';
-import {alert} from 'utils/alert';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  requestMyPageUserData,
+  requestMyPageWithDrawal,
+  requestPostUserProfile,
+} from 'api/myPage/myPage';
 import LoadingModal from 'components/modal/LoadingModal';
+import AccountSettingItem from 'components/myPage/AccountSettingItem';
+import ActivityFeed from 'components/myPage/ActivityFeed';
+import useLogout from 'hooks/useLogout';
+import {MainStackProps} from 'navigations/types';
+import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useDispatch} from 'react-redux';
 import {changeProfile} from 'slice/userSlice';
-import {showToast} from 'utils/toast';
+import {useAppSelector} from 'store/hooks';
+import {gray, white} from 'styles';
+import {alert} from 'utils/alert';
 import {
   AntDesign,
   Feather,
   Ionicons,
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
-import {useAppSelector} from 'store/hooks';
-import {
-  requestMyPageUserData,
-  requestMyPageWithDrawal,
-  requestPostUserProfile,
-} from 'api/myPage/myPage';
-import {MainStackProps} from 'navigations/types';
-import FastImage from 'react-native-fast-image';
-import {gray, white} from 'styles';
+import {hs, ss, vs} from 'utils/scailing';
+import {showToast} from 'utils/toast';
 
 type UserData = {
   UserId: string;
@@ -60,17 +60,20 @@ const MyPageScreen = () => {
 
   const {handleLogout, handleDeleteLocalDatas} = useLogout();
 
-  useEffect(() => {
-    const fetchMypageData = async () => {
-      setIsLoading(true);
-      const myPageUserData = await requestMyPageUserData(userId);
-      setIsLoading(false);
-      if (myPageUserData) {
-        setUserData(myPageUserData);
-      }
-    };
-    fetchMypageData();
-  }, []);
+  // 화면 포커싱 될 때 유저정보 업데이트 해줍니다.
+  useFocusEffect(
+    useCallback(() => {
+      const fetchMypageData = async () => {
+        setIsLoading(true);
+        const myPageUserData = await requestMyPageUserData(userId);
+        setIsLoading(false);
+        if (myPageUserData) {
+          setUserData(myPageUserData);
+        }
+      };
+      fetchMypageData();
+    }, [userId]),
+  );
 
   const handleWithdrawal = async () => {
     const keepGoing = await alert({
@@ -151,7 +154,14 @@ const MyPageScreen = () => {
           <View style={styles.mypageTextContainer}>
             <Text style={styles.mypageText}>마이페이지</Text>
             <View>
-              <Feather name="bell" color={'#696969'} size={ss(25)} />
+              <Feather
+                name="bell"
+                color={'#696969'}
+                size={ss(25)}
+                onPress={() => {
+                  navigation.navigate('MyPageStack', {screen: 'Alarm'});
+                }}
+              />
             </View>
           </View>
         </View>

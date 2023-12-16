@@ -1,17 +1,21 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
-import {RefreshControl} from 'react-native-gesture-handler';
+import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import {gray} from 'styles';
 import {ss} from 'utils/scailing';
 
 import NoPost from 'components/NoPost';
 import Post from 'components/Post';
-import {PostListElement} from 'hooks/useFetchPostList';
-import {MyPageStackProps} from 'navigations/types';
+import {MainStackProps, MyPageStackProps} from 'navigations/types';
 import useFetchMyActivity from 'hooks/useFetchMyActivity';
+import {useNavigation} from '@react-navigation/native';
 
 const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
-  const {type} = route.params;
+  const {type} = route.params as {type: string};
+
+  const navigation = useNavigation<MainStackProps['navigation']>();
+
+  const nextPostListLength = 10;
+
   const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
     useFetchMyActivity(type);
 
@@ -19,9 +23,9 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
 
   return (
     <View style={{flex: 1}}>
-      {/* {isPostListExist === true && (
+      {isPostListExist === true && (
         <FlatList
-          data={list}
+          data={postList}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -38,14 +42,16 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
           onEndReachedThreshold={0.1}
           onEndReached={() => fetchNextPostList(nextPostListLength)}
         />
-      )} */}
+      )}
       {/* fetchNextData하고 난 뒤에 게시글 없을 때만 보여줘야함. undefined일 때는 보여주면 안됨.*/}
-      {/* {isPostListExist === false && (
+      {isPostListExist === false && (
         <NoPost
-          onPress={() => navigation.navigate('Posting')}
+          onPress={() =>
+            navigation.navigate('BottomStack', {screen: 'Posting'})
+          }
           btnText={'게시글 등록'}
         />
-      )} */}
+      )}
     </View>
   );
 };

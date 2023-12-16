@@ -9,6 +9,7 @@ import Withdrawal from 'screens/myPage/Withdrawal';
 import AnnouncementDetail from 'screens/myPage/AnnouncementDetail';
 import {MyPageStackParamList} from './types';
 import MyActivityFeed from 'screens/myPage/MyActivityFeed';
+import Alarm from 'screens/alarm/Alarm';
 
 function MyPageStack() {
   const Stack = createNativeStackNavigator<MyPageStackParamList>();
@@ -44,6 +45,11 @@ function MyPageStack() {
         name="Withdrawal"
         component={Withdrawal}
         options={{headerShown: true, headerTitle: '회원탈퇴'}}
+      />
+      <Stack.Screen
+        name="Alarm"
+        component={Alarm}
+        options={{headerShown: true, headerTitle: '알람'}}
       />
     </Stack.Navigator>
   );
