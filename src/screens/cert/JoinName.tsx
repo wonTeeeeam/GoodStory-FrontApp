@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Keyboard, Pressable, Text} from 'react-native';
 import UTextInput from 'components/UTextInput';
 import {hs, ss} from 'utils/scailing';
-import JoinButton from 'components/button/JoinButton';
+import LongButton from 'components/button/LongButton';
 import {validateUserName} from 'utils/regex';
 import {Ionicons} from 'utils/react-native-vector-helper';
 import {JoinStackProps} from 'navigations/types';
@@ -82,7 +82,7 @@ const JoinName: React.FC<JoinStackProps> = ({route, navigation}) => {
           {alertMSG[alertMsgIndex]}
         </Text>
       ) : null}
-      <JoinButton isAbled={isAbled} handleOnPressBtn={handlePressButton} />
+      <LongButton isAbled={isAbled} handleOnPressBtn={handlePressButton} />
     </Pressable>
   );
 };

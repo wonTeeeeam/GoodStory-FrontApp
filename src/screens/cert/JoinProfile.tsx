@@ -1,5 +1,5 @@
 import {registerUserInfo} from 'api/join';
-import JoinButton from 'components/button/JoinButton';
+import LongButton from 'components/button/LongButton';
 import LoadingModal from 'components/modal/LoadingModal';
 import {JoinStackProps} from 'navigations/types';
 import React, {useState} from 'react';
@@ -97,7 +97,7 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
             )}
           </Pressable>
         </View>
-        <JoinButton isAbled={true} handleOnPressBtn={handlePressButton} />
+        <LongButton isAbled={true} handleOnPressBtn={handlePressButton} />
       </View>
     </View>
   );

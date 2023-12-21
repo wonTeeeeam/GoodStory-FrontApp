@@ -5,7 +5,6 @@ import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
 // import codePush from 'react-native-code-push';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import SplashScreen from 'react-native-splash-screen';
 
 import {MIN_ANDROID_VERSION} from './config';
 import RootNavigation from './navigations/RootNavigation';

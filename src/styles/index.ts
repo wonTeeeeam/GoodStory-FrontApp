@@ -22,4 +22,5 @@ export const red = {
 export const blue = {
   steelBlue: '#4682B4',
   aero: '#7CB9E8',
+  dodgerblue: '#1E90FF',
 };

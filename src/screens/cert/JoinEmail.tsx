@@ -3,7 +3,7 @@ import {Keyboard, Pressable, ScrollView, Text, View} from 'react-native';
 import {hs, ss, vs} from 'utils/scailing';
 
 import UTextInput from 'components/UTextInput';
-import JoinButton from 'components/button/JoinButton';
+import LongButton from 'components/button/LongButton';
 import {validateEmail} from 'utils/regex';
 import {useNavigation} from '@react-navigation/native';
 import Timer from 'components/Timer';
@@ -137,7 +137,7 @@ const JoinEmail = () => {
               {alertMSGForEmail[alertMSGIndexForEmail]}
             </Text>
           ) : null}
-          <JoinButton
+          <LongButton
             text={'인증번호 전송'}
             isAbled={isEmailAbled}
             handleOnPressBtn={handlePressSendButton}
@@ -176,7 +176,7 @@ const JoinEmail = () => {
               </View>
             ) : null}
           </View>
-          <JoinButton
+          <LongButton
             isAbled={isCertAbled}
             handleOnPressBtn={handlePressNextButton}
           />

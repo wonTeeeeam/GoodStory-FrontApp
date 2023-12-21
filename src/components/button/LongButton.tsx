@@ -8,7 +8,7 @@ type Props = {
   text?: string;
 };
 
-const JoinButton: React.FC<Props> = ({
+const LongButton: React.FC<Props> = ({
   isAbled,
   handleOnPressBtn,
   text = '다음',
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JoinButton;
+export default LongButton;

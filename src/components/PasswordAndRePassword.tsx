@@ -2,7 +2,7 @@ import React, {useEffect, useCallback, useState} from 'react';
 import {Keyboard, Pressable, ScrollView, Text} from 'react-native';
 import {validatePWD} from 'utils/regex';
 import UTextInput from './UTextInput';
-import JoinButton from './button/JoinButton';
+import LongButton from './button/LongButton';
 import {hs, ss} from 'utils/scailing';
 import {AntDesign} from 'utils/react-native-vector-helper';
 
@@ -121,7 +121,7 @@ const PasswordAndRePassword: React.FC<Props> = ({
             {alertMSGForRePWD[alertMsgRePWDIndex]}
           </Text>
         ) : null}
-        <JoinButton
+        <LongButton
           isAbled={isAbled}
           handleOnPressBtn={handleOnPressBtn}
           text={btnText}

@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -24,13 +25,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import {changeProfile} from 'slice/userSlice';
 import {useAppSelector} from 'store/hooks';
-import {gray, white} from 'styles';
+import {gray, red, white} from 'styles';
 import {alert} from 'utils/alert';
 import {
   AntDesign,
   Feather,
   Ionicons,
   MaterialIcons,
+  Entypo,
 } from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
@@ -153,16 +155,15 @@ const MyPageScreen = () => {
         <View style={{backgroundColor: white.origin}}>
           <View style={styles.mypageTextContainer}>
             <Text style={styles.mypageText}>마이페이지</Text>
-            <View>
-              <Feather
-                name="bell"
-                color={'#696969'}
-                size={ss(25)}
-                onPress={() => {
-                  navigation.navigate('MyPageStack', {screen: 'Alarm'});
-                }}
-              />
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('MyPageStack', {screen: 'Alarm'});
+              }}>
+              <Feather name="bell" color={'#696969'} size={ss(25)} />
+              <View style={{position: 'absolute'}}>
+                <Entypo name={'dot-single'} size={ss(40)} color={red.hotLips} />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{backgroundColor: white.origin, marginTop: vs(2)}}>
