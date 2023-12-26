@@ -17,3 +17,17 @@ export const requestNewPosting = async (formData: FormData) => {
   }
   return false;
 };
+
+export const request_deleteBoard = async (user, BoardId) => {
+  try {
+    const response = await axios.delete('/board/delete', {
+      data: {user, BoardId},
+    });
+    return true;
+  } catch (e: any) {
+    alert({
+      title: '게시글 삭제 실패',
+      body: `게시글 삭제에 실패했습니다.\n${e.message}`,
+    });
+  }
+};

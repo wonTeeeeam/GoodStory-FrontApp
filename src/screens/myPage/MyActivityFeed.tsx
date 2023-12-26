@@ -1,13 +1,20 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
-import {gray} from 'styles';
-import {ss} from 'utils/scailing';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
+import {black, gray} from 'styles';
+import {hs, ss, vs} from 'utils/scailing';
 
 import NoPost from 'components/NoPost';
 import Post from 'components/Post';
 import {MainStackProps, MyPageStackProps} from 'navigations/types';
 import useFetchMyActivity from 'hooks/useFetchMyActivity';
 import {useNavigation} from '@react-navigation/native';
+import {AntDesign, Octicons} from 'utils/react-native-vector-helper';
 
 const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
   const {type} = route.params as {type: string};
@@ -36,6 +43,14 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
                 key={index}
                 style={styles.container}>
                 <Post singleData={item} />
+                <TouchableOpacity
+                  style={{position: 'absolute', right: hs(50), top: vs(15)}}>
+                  <Octicons name="pencil" color={black.origin} size={ss(18)} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{position: 'absolute', right: hs(15), top: vs(15)}}>
+                  <AntDesign name="delete" color={black.origin} size={ss(18)} />
+                </TouchableOpacity>
               </View>
             );
           }}

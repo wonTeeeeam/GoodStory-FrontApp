@@ -34,8 +34,10 @@ export const requestMyReplies = async (
         skip,
       },
     });
+
     return replyList.data;
   } catch (e: any) {
+    console.log(e.message);
     alert({title: '작성한 댓글 조회 실패', body: e.message});
     return null;
   }
