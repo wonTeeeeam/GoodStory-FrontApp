@@ -18,7 +18,11 @@ export const requestNewPosting = async (formData: FormData) => {
   return false;
 };
 
-export const request_deleteBoard = async (user, BoardId) => {
+export type User = {
+  UserId: string;
+};
+
+export const request_deleteBoard = async (user: User, BoardId: string) => {
   try {
     const response = await axios.delete('/board/delete', {
       data: {user, BoardId},
