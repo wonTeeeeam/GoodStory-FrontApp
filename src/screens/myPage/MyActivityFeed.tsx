@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -24,6 +24,10 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
   const {type} = route.params as {type: string};
   const {userId} = useAppSelector((state: RootState) => state.user);
 
+  const boardCountDetails = useAppSelector(
+    (state: RootState) => state.myActivityCountDetail,
+  );
+
   const navigation = useNavigation<MainStackProps['navigation']>();
 
   const nextPostListLength = 10;
@@ -34,7 +38,6 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
   const {deleteBoard, deleteReply} = useDelete();
 
   const handleOnPressDelete = (item: PostListElement) => {
-    console.log(item);
     switch (type) {
       case '게시글':
         deleteBoard({UserId: userId}, item.BoardId);
@@ -43,8 +46,6 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
         deleteReply(item.BoardId);
     }
   };
-
-  useEffect(() => {}, []);
 
   return (
     <View style={{flex: 1}}>
@@ -60,7 +61,7 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
                 testID={'flatListItems'}
                 key={index}
                 style={styles.container}>
-                <Post singleData={item} />
+                <Post singleData={item} boardCountDetails={boardCountDetails} />
                 <TouchableOpacity
                   style={{position: 'absolute', right: hs(50), top: vs(15)}}>
                   <Octicons name="pencil" color={black.origin} size={ss(18)} />

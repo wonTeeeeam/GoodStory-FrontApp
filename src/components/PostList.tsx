@@ -7,6 +7,8 @@ import NoPost from './NoPost';
 import useFetchPostList, {PostListElement} from 'hooks/useFetchPostList';
 import {useNavigation} from '@react-navigation/native';
 import {BottomStackProps} from 'navigations/types';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
 
 export type Props = {
   filterValue: string;
@@ -16,6 +18,10 @@ export type Props = {
 const PostList: React.FC<Props> = ({filterValue, topic}) => {
   const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
     useFetchPostList({topic: topic});
+
+  const boardCountDetails = useAppSelector(
+    (state: RootState) => state.boardCountDetail,
+  );
 
   const nextPostListLength = 10;
 
@@ -52,7 +58,7 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
                 testID={'flatListItems'}
                 key={index}
                 style={styles.container}>
-                <Post singleData={item} />
+                <Post singleData={item} boardCountDetails={boardCountDetails} />
               </View>
             );
           }}

@@ -4,8 +4,6 @@ import {ss, vs} from 'utils/scailing';
 import ActivityFeedItem from './ActivityFeedItem';
 import {useNavigation} from '@react-navigation/native';
 import {MainStackProps} from 'navigations/types';
-import {initBoardCountDetail} from 'slice/boardCountDetailSlice';
-import {useDispatch} from 'react-redux';
 
 type Props = {
   like: number;
@@ -15,13 +13,11 @@ type Props = {
 
 const ActivityFeed: React.FC<Props> = ({like, post, reply}) => {
   const navigation = useNavigation<MainStackProps['navigation']>();
-  const dispatch = useDispatch();
 
   return (
     <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
       <TouchableOpacity
         onPress={() => {
-          dispatch(initBoardCountDetail());
           navigation.navigate('MyPageStack', {
             screen: 'MyActivityFeed',
             params: {type: '좋아요'},
@@ -32,7 +28,6 @@ const ActivityFeed: React.FC<Props> = ({like, post, reply}) => {
       <View style={{borderLeftWidth: ss(1), marginVertical: vs(10)}} />
       <TouchableOpacity
         onPress={() => {
-          dispatch(initBoardCountDetail());
           navigation.navigate('MyPageStack', {
             screen: 'MyActivityFeed',
             params: {type: '게시글'},
@@ -43,7 +38,6 @@ const ActivityFeed: React.FC<Props> = ({like, post, reply}) => {
       <View style={{borderLeftWidth: ss(1), marginVertical: vs(10)}} />
       <TouchableOpacity
         onPress={() => {
-          dispatch(initBoardCountDetail());
           navigation.navigate('MyPageStack', {
             screen: 'MyActivityFeed',
             params: {type: '댓글'},

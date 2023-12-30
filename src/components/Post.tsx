@@ -1,40 +1,39 @@
-import React from 'react';
+import {PostListElement} from 'hooks/useFetchPostList';
+import useLikeAndView from 'hooks/useLikeAndView';
+import useReply from 'hooks/useReply';
+import React, {useCallback, useEffect} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Pressable,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-
-import {black, red} from 'styles';
-import {hs, ss, vs} from 'utils/scailing';
-import {convertTimeToKorean} from 'utils/timeConverter';
-import {useEffect} from 'react';
-import {useCallback} from 'react';
-import {gray} from 'styles';
-import useLikeAndView from 'hooks/useLikeAndView';
+import {BoardCountDetail} from 'slice/boardCountDetailSlice';
+import {black, gray, red} from 'styles';
 import {
   AntDesign,
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
-import {RootState} from '../store/store';
-import {useAppSelector} from '../store/hooks';
-import {PostListElement} from 'hooks/useFetchPostList';
-import useReply from 'hooks/useReply';
+import {hs, ss, vs} from 'utils/scailing';
+import {convertTimeToKorean} from 'utils/timeConverter';
 import {changeTopicToKorean} from 'utils/translation';
+
+import {useAppSelector} from '../store/hooks';
+import {RootState} from '../store/store';
 
 type Props = {
   singleData: PostListElement;
+  boardCountDetails: BoardCountDetail[];
 };
 
-const Post: React.FC<Props> = ({singleData}) => {
+const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
   const {likeBoards} = useAppSelector((state: RootState) => state.user);
 
-  const boardCountDetail = useAppSelector(
-    (state: RootState) => state.boardCountDetail,
-  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+  const boardCountDetail = boardCountDetails.find(
+    boardCount => boardCount.BoardId === singleData.BoardId,
+  );
 
   const {
     handlePressLike,

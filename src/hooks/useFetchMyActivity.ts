@@ -5,7 +5,10 @@ import {
 } from 'api/myPage/myActivityFeed';
 import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {addBoardCount} from 'slice/boardCountDetailSlice';
+import {
+  addBoardCount,
+  initBoardCountDetail,
+} from 'slice/myActivityCountDetailSlice';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
 import {alert} from 'utils/alert';
@@ -47,6 +50,7 @@ const useFetchMyActivity = (type: string) => {
   const [postList, setPostList] = useState<any[]>([]);
   const [isPostListExist, setIsPostListExist] = useState<boolean>();
   const [refreshing, setRefreshing] = useState(false);
+
   const dispatch = useDispatch();
   const {userId} = useAppSelector((state: RootState) => state.user);
 
