@@ -14,8 +14,7 @@ import Post from 'components/Post';
 import {MainStackProps, MyPageStackProps} from 'navigations/types';
 import useFetchMyActivity from 'hooks/useFetchMyActivity';
 import {useNavigation} from '@react-navigation/native';
-import {AntDesign, Octicons} from 'utils/react-native-vector-helper';
-import useDelete from 'hooks/useDelete';
+import useDelete from 'hooks/useDeleteOrEdit';
 import {PostListElement} from 'hooks/useFetchPostList';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
@@ -35,18 +34,6 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
   const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
     useFetchMyActivity(type);
 
-  const {deleteBoard, deleteReply} = useDelete();
-
-  const handleOnPressDelete = (item: PostListElement) => {
-    switch (type) {
-      case '게시글':
-        deleteBoard({UserId: userId}, item.BoardId);
-        break;
-      case '댓글':
-        deleteReply(item.BoardId);
-    }
-  };
-
   return (
     <View style={{flex: 1}}>
       {isPostListExist === true && (
@@ -62,17 +49,6 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
                 key={index}
                 style={styles.container}>
                 <Post singleData={item} boardCountDetails={boardCountDetails} />
-                <TouchableOpacity
-                  style={{position: 'absolute', right: hs(50), top: vs(15)}}>
-                  <Octicons name="pencil" color={black.origin} size={ss(18)} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleOnPressDelete(item);
-                  }}
-                  style={{position: 'absolute', right: hs(15), top: vs(15)}}>
-                  <AntDesign name="delete" color={black.origin} size={ss(18)} />
-                </TouchableOpacity>
               </View>
             );
           }}

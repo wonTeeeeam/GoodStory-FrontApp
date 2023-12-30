@@ -1,6 +1,9 @@
+import {useNavigation} from '@react-navigation/native';
+import useDeleteOrEdit from 'hooks/useDeleteOrEdit';
 import {PostListElement} from 'hooks/useFetchPostList';
 import useLikeAndView from 'hooks/useLikeAndView';
 import useReply from 'hooks/useReply';
+import {BottomStackProps, MainStackProps} from 'navigations/types';
 import React, {useCallback, useEffect} from 'react';
 import {
   Pressable,
@@ -15,6 +18,7 @@ import {black, gray, red} from 'styles';
 import {
   AntDesign,
   MaterialCommunityIcons,
+  Octicons,
 } from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
@@ -29,7 +33,9 @@ type Props = {
 };
 
 const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
-  const {likeBoards} = useAppSelector((state: RootState) => state.user);
+  const {likeBoards, userId} = useAppSelector((state: RootState) => state.user);
+
+  const navigation = useNavigation<MainStackProps['navigation']>();
 
   const boardCountDetail = boardCountDetails.find(
     boardCount => boardCount.BoardId === singleData.BoardId,
@@ -44,6 +50,19 @@ const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
   } = useLikeAndView();
 
   const {handleSetReplyCnt} = useReply();
+
+  const {deleteBoard} = useDeleteOrEdit();
+
+  const handleOnDelete = (item: PostListElement) => {
+    deleteBoard(item.BoardId);
+  };
+
+  const handleOnEdit = (item: PostListElement) => {
+    navigation.navigate('BottomStack', {
+      screen: 'Posting',
+      params: {item},
+    });
+  };
 
   const checkIsLiked = useCallback(() => {
     const isLiked = likeBoards.find(element => element === singleData.BoardId);
@@ -94,6 +113,24 @@ const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
               </Text>
             </Pressable>
           </View>
+          {userId === singleData.user.UserId && (
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  handleOnEdit(singleData);
+                }}
+                style={{position: 'absolute', right: hs(40), top: vs(15)}}>
+                <Octicons name="pencil" color={black.origin} size={ss(18)} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  handleOnDelete(singleData);
+                }}
+                style={{position: 'absolute', right: hs(0), top: vs(15)}}>
+                <AntDesign name="delete" color={black.origin} size={ss(18)} />
+              </TouchableOpacity>
+            </>
+          )}
         </View>
         <View style={{flexDirection: 'row', flex: 0.7}}>
           <View style={{...styles.container, flex: 0.8}}>

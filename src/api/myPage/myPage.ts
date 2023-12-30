@@ -20,7 +20,6 @@ export const requestMyPageWithDrawal = async (userId: string) => {
     await axios.delete(`/user/delete/${userId}`);
     return true;
   } catch (e: any) {
-    console.log(e.response.data);
     alert({title: '회원탈퇴 실패', body: e.message});
     return false;
   }

@@ -1,4 +1,4 @@
-export const changeTopicToKorean = (topic: string) => {
+export const changeTopicToKorean = (topic: string | undefined) => {
   switch (topic) {
     case 'Tip':
       return '꿀팁';
@@ -13,6 +13,7 @@ export const changeTopicToKorean = (topic: string) => {
     case 'Humor':
       return '유머';
   }
+  return null;
 };
 
 export const changeTopicToEnglish = (topic: string) => {

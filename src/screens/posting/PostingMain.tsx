@@ -20,16 +20,24 @@ import {showToast} from 'utils/toast';
 import LoadingModal from 'components/modal/LoadingModal';
 import {black, gray} from 'styles';
 import {useAppSelector} from 'store/hooks';
-import {requestNewPosting} from 'api/board';
+import {requestNewPosting, request_editBoard} from 'api/board';
 import {BottomStackProps} from 'navigations/types';
 import {alert} from 'utils/alert';
-import {changeTopicToEnglish} from 'utils/translation';
+import {changeTopicToEnglish, changeTopicToKorean} from 'utils/translation';
+import {PostListElement} from 'hooks/useFetchPostList';
 
-const PostingMain = () => {
+const PostingMain: React.FC<BottomStackProps> = ({route}) => {
+  const {item} = route.params as {
+    item: PostListElement;
+  };
+
   const navigation = useNavigation<BottomStackProps['navigation']>();
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+
+  const [category, setCategory] = useState(
+    changeTopicToKorean(item?.Category) || '',
+  );
+  const [title, setTitle] = useState(item?.Title || '');
+  const [content, setContent] = useState(item?.Content || '');
   const [imageList, setImageList] = useState<Asset[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
   const {nickName, account, userId} = useAppSelector(state => state.user);
@@ -44,10 +52,12 @@ const PostingMain = () => {
   }, [title, content, category]);
 
   const handleChoosePhoto = async () => {
+    if (item) return showToast('수정시 이미지를 변경할 수 없습니다!');
+
     if (imageList.length >= 5) {
-      showToast('이미지는 5개 이상 업로드할 수 없습니다');
-      return;
+      return showToast('이미지는 5개 이상 업로드할 수 없습니다');
     }
+
     const result = await launchImageLibrary({
       includeBase64: true,
       mediaType: 'photo',
@@ -94,11 +104,22 @@ const PostingMain = () => {
     return formData;
   };
 
+  const editBoard = async () => {
+    setIsLoading(true);
+    const response = await request_editBoard({
+      BoardId: item.BoardId,
+      Category: changeTopicToEnglish(category),
+      Title: title,
+      Content: content,
+    });
+    setIsLoading(false);
+    if (response) navigation.navigate('MyPage');
+  };
+
   const postBoard = async () => {
     const formData = makeFormData();
-    if (!formData) {
-      return;
-    }
+    if (!formData) return;
+
     setIsLoading(true);
     const newPostingResult = await requestNewPosting(formData);
     if (!newPostingResult) {
@@ -137,12 +158,22 @@ const PostingMain = () => {
         <Pressable
           onPress={async () => {
             if (!isDisabled) {
+              if (
+                item &&
+                item.Category === changeTopicToEnglish(category) &&
+                item.Title === title &&
+                item.Content === content
+              ) {
+                return showToast(
+                  '카테고리, 제목, 내용 중 수정된 부분이 없습니다!',
+                );
+              }
               const keepGo = await alert({
                 title: '게시글을 등록하시겠습니까?',
                 body: '게시글을 최종적으로 등록하시겠습니까?',
                 isConfirm: true,
               });
-              if (keepGo) postBoard();
+              if (keepGo) item ? editBoard() : postBoard();
             } else {
               showToast('제목, 내용, 카테고리를 입력해주세요');
             }
@@ -184,6 +215,7 @@ const PostingMain = () => {
             multiline={true}
             onChangeText={setTitle}
             autoFocus={true}
+            value={title}
           />
         </View>
         <TouchableOpacity

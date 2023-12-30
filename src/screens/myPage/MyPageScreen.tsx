@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
   requestMyPageUserData,

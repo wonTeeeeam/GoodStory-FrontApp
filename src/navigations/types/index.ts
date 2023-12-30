@@ -18,13 +18,13 @@ export type MainStackProps = NativeStackScreenProps<
 export type BottomStackParamList = {
   Board: {boardTopic: string};
   Topic: undefined;
-  Posting: undefined;
+  Posting: {item?: PostListElement};
   MyPage: undefined;
 };
 
 export type BottomStackProps = BottomTabScreenProps<
   BottomStackParamList,
-  'Board'
+  'Board' | 'Posting'
 >;
 
 export type DetailBoardStackParamList = {
