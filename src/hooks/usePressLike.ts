@@ -8,6 +8,7 @@ import {PostListElement} from './useFetchPostList';
 import {handleLikeBoards} from 'slice/userSlice';
 import {useDispatch} from 'react-redux';
 import {changeBoardCountExisted} from 'slice/boardCountDetailSlice';
+import {changeMyPageBoardCountExisted} from 'slice/myActivityCountDetailSlice';
 
 const usePressLike = () => {
   const [isLikePressed, setIsLikePressed] = useState(false);
@@ -15,6 +16,11 @@ const usePressLike = () => {
   const boardCountDetail = useAppSelector(
     (state: RootState) => state.boardCountDetail,
   );
+
+  const myPageCountDetail = useAppSelector(
+    (state: RootState) => state.myActivityCountDetail,
+  );
+
   const dispatch = useDispatch();
 
   const handlePressLike = async (singleData: PostListElement) => {
@@ -32,18 +38,38 @@ const usePressLike = () => {
     const targetBoardCount = boardCountDetail.find(
       boardCount => boardCount.BoardId === singleData.BoardId,
     );
-    if (!targetBoardCount) {
+
+    const myPageTargetBoardCount = myPageCountDetail.find(
+      boardCount => boardCount.BoardId === singleData.BoardId,
+    );
+
+    if (!targetBoardCount && !myPageTargetBoardCount) {
       return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
     }
     dispatch(handleLikeBoards([...likeBoards, `${singleData.BoardId}`]));
-    dispatch(
-      changeBoardCountExisted({
-        BoardId: targetBoardCount.BoardId,
-        likeCnt: targetBoardCount.likeCnt + 1,
-        replyCnt: targetBoardCount.replyCnt,
-        viewCnt: targetBoardCount.viewCnt,
-      }),
-    );
+
+    if (targetBoardCount) {
+      dispatch(
+        changeBoardCountExisted({
+          BoardId: targetBoardCount.BoardId,
+          likeCnt: targetBoardCount.likeCnt + 1,
+          replyCnt: targetBoardCount.replyCnt,
+          viewCnt: targetBoardCount.viewCnt,
+        }),
+      );
+    }
+
+    if (myPageTargetBoardCount) {
+      dispatch(
+        changeMyPageBoardCountExisted({
+          BoardId: myPageTargetBoardCount.BoardId,
+          likeCnt: myPageTargetBoardCount.likeCnt + 1,
+          replyCnt: myPageTargetBoardCount.replyCnt,
+          viewCnt: myPageTargetBoardCount.viewCnt,
+        }),
+      );
+    }
+
     // setLikeCnt(likeCnt + 1);
     setIsLikePressed(true);
   };

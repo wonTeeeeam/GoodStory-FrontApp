@@ -5,10 +5,7 @@ import {
 } from 'api/myPage/myActivityFeed';
 import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {
-  addBoardCount,
-  initBoardCountDetail,
-} from 'slice/myActivityCountDetailSlice';
+import {myPageAddBoardCount} from 'slice/myActivityCountDetailSlice';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
 import {alert} from 'utils/alert';
@@ -110,7 +107,7 @@ const useFetchMyActivity = (type: string) => {
 
       const newUpdatePostList = updatePostList(nextPostList);
       setPostList(newUpdatePostList);
-      dispatch(addBoardCount(newUpdatePostList));
+      dispatch(myPageAddBoardCount(newUpdatePostList));
       // // 지금 가지고 있는 게시글 이후부터 가져오기 위한 skip
       setSkip(newUpdatePostList.length);
 

@@ -9,7 +9,7 @@ export const myActivityCountDetailSlice = createSlice({
   name: 'myActivity',
   initialState,
   reducers: {
-    addBoardCount: (state, action) => {
+    myPageAddBoardCount: (state, action) => {
       return action.payload.map((board: PostListElement) => {
         return {
           BoardId: board.BoardId,
@@ -20,7 +20,7 @@ export const myActivityCountDetailSlice = createSlice({
       });
     },
 
-    changeBoardCountExisted: (state, action) => {
+    changeMyPageBoardCountExisted: (state, action) => {
       return [
         ...state.filter(
           boardDetail => boardDetail.BoardId !== action.payload.BoardId,
@@ -34,14 +34,17 @@ export const myActivityCountDetailSlice = createSlice({
       ];
     },
 
-    initBoardCountDetail: () => {
+    myPageInitBoardCountDetail: () => {
       return initialState;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {addBoardCount, changeBoardCountExisted, initBoardCountDetail} =
-  myActivityCountDetailSlice.actions;
+export const {
+  myPageAddBoardCount,
+  changeMyPageBoardCountExisted,
+  myPageInitBoardCountDetail,
+} = myActivityCountDetailSlice.actions;
 
 export default myActivityCountDetailSlice.reducer;

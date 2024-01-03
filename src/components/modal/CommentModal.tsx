@@ -28,6 +28,7 @@ import {useDispatch} from 'react-redux';
 import {changeBoardCountExisted} from 'slice/boardCountDetailSlice';
 import {RootState} from 'store/store';
 import LoadingModal from './LoadingModal';
+import {changeMyPageBoardCountExisted} from 'slice/myActivityCountDetailSlice';
 
 type Props = {
   isCommentModalVisible: boolean;
@@ -50,6 +51,11 @@ const CommentModal: React.FC<Props> = ({
   const boardCountDetail = useAppSelector(
     (state: RootState) => state.boardCountDetail,
   ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+
+  const myPageBoardCountDetail = useAppSelector(
+    (state: RootState) => state.myActivityCountDetail,
+  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+
   const dispatch = useDispatch();
 
   const handleChoosePhoto = async () => {
@@ -99,19 +105,31 @@ const CommentModal: React.FC<Props> = ({
     }
 
     setIsLoading(false);
-    if (!boardCountDetail) {
+    if (!boardCountDetail && !myPageBoardCountDetail) {
       return showToast(
         '댓글 개수 업데이트에 실패하였습니다!\n재접속 시 정상작동합니다.',
       );
     }
-    dispatch(
-      changeBoardCountExisted({
-        BoardId: singleData.BoardId,
-        likeCnt: boardCountDetail.likeCnt,
-        replyCnt: boardCountDetail.replyCnt + 1,
-        viewCnt: boardCountDetail.viewCnt,
-      }),
-    );
+    if (boardCountDetail) {
+      dispatch(
+        changeBoardCountExisted({
+          BoardId: singleData.BoardId,
+          likeCnt: boardCountDetail.likeCnt,
+          replyCnt: boardCountDetail.replyCnt + 1,
+          viewCnt: boardCountDetail.viewCnt,
+        }),
+      );
+    }
+    if (myPageBoardCountDetail) {
+      dispatch(
+        changeMyPageBoardCountExisted({
+          BoardId: singleData.BoardId,
+          likeCnt: myPageBoardCountDetail.likeCnt,
+          replyCnt: myPageBoardCountDetail.replyCnt + 1,
+          viewCnt: myPageBoardCountDetail.viewCnt,
+        }),
+      );
+    }
   };
 
   return (
