@@ -2,8 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import useDeleteOrEdit from 'hooks/useDeleteOrEdit';
 import {PostListElement} from 'hooks/useFetchPostList';
 import useLikeAndView from 'hooks/useLikeAndView';
-import useReply from 'hooks/useReply';
-import {BottomStackProps, MainStackProps} from 'navigations/types';
+import {MainStackProps} from 'navigations/types';
 import React, {useCallback, useEffect} from 'react';
 import {
   Pressable,
@@ -48,8 +47,6 @@ const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
     handlePlusView,
     navigateDetailPost,
   } = useLikeAndView();
-
-  const {handleSetReplyCnt} = useReply();
 
   const {deleteBoard} = useDeleteOrEdit();
 

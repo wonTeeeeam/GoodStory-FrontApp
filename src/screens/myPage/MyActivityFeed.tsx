@@ -1,27 +1,18 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
-import {black, gray} from 'styles';
-import {hs, ss, vs} from 'utils/scailing';
+import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
+import {gray} from 'styles';
+import {ss} from 'utils/scailing';
 
 import NoPost from 'components/NoPost';
 import Post from 'components/Post';
 import {MainStackProps, MyPageStackProps} from 'navigations/types';
 import useFetchMyActivity from 'hooks/useFetchMyActivity';
 import {useNavigation} from '@react-navigation/native';
-import useDelete from 'hooks/useDeleteOrEdit';
-import {PostListElement} from 'hooks/useFetchPostList';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
 
 const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
   const {type} = route.params as {type: string};
-  const {userId} = useAppSelector((state: RootState) => state.user);
 
   const boardCountDetails = useAppSelector(
     (state: RootState) => state.myActivityCountDetail,
@@ -60,7 +51,9 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
       {isPostListExist === false && (
         <NoPost
           onPress={() =>
-            navigation.navigate('BottomStack', {screen: 'Posting'})
+            navigation.navigate('BottomStack', {
+              screen: 'Posting',
+            })
           }
           btnText={'게시글 등록'}
         />

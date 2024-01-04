@@ -13,7 +13,6 @@ export const changeTopicToKorean = (topic: string | undefined) => {
     case 'Humor':
       return '유머';
   }
-  return null;
 };
 
 export const changeTopicToEnglish = (topic: string) => {

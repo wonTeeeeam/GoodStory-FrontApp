@@ -1,4 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {requestNewPosting, request_editBoard} from 'api/board';
+import SelectedImage from 'components/SelectedImage';
+import LoadingModal from 'components/modal/LoadingModal';
+import {PostListElement} from 'hooks/useFetchPostList';
+import {BottomStackProps} from 'navigations/types';
 import React, {useEffect, useState} from 'react';
 import {
   Platform,
@@ -12,37 +17,44 @@ import {
 } from 'react-native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
-
+import {useAppSelector} from 'store/hooks';
+import {black, gray} from 'styles';
+import {alert} from 'utils/alert';
 import {AntDesign} from 'utils/react-native-vector-helper';
-import SelectedImage from 'components/SelectedImage';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
-import LoadingModal from 'components/modal/LoadingModal';
-import {black, gray} from 'styles';
-import {useAppSelector} from 'store/hooks';
-import {requestNewPosting, request_editBoard} from 'api/board';
-import {BottomStackProps} from 'navigations/types';
-import {alert} from 'utils/alert';
 import {changeTopicToEnglish, changeTopicToKorean} from 'utils/translation';
-import {PostListElement} from 'hooks/useFetchPostList';
+import {CommonActions} from '@react-navigation/native';
 
 const PostingMain: React.FC<BottomStackProps> = ({route}) => {
-  const {item} = route.params as {
-    item: PostListElement;
-  };
+  const item = (route.params as {item?: PostListElement})?.item;
 
   const navigation = useNavigation<BottomStackProps['navigation']>();
+  const {nickName, account, userId} = useAppSelector(state => state.user);
 
-  const [category, setCategory] = useState(
-    changeTopicToKorean(item?.Category) || '',
-  );
-  const [title, setTitle] = useState(item?.Title || '');
-  const [content, setContent] = useState(item?.Content || '');
+  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [imageList, setImageList] = useState<Asset[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
-  const {nickName, account, userId} = useAppSelector(state => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       // 화면이 포커스를 잃을 때 실행됩니다.
+  //       navigation.dispatch(
+  //         CommonActions.reset({
+  //           index: 0,
+  //           routes: [
+  //             {name: 'AnotherScreen'}, // 이동하고자 하는 스크린
+  //           ],
+  //         }),
+  //       );
+  //     };
+  //   }, [navigation]),
+  // );
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -50,6 +62,14 @@ const PostingMain: React.FC<BottomStackProps> = ({route}) => {
     }
     return setIsDisabled(true);
   }, [title, content, category]);
+
+  useEffect(() => {
+    if (!item) return;
+    const koreanCategory = changeTopicToKorean(item.Category);
+    if (koreanCategory) setCategory(koreanCategory);
+    setTitle(item.Title);
+    setContent(item.Content);
+  }, [item]);
 
   const handleChoosePhoto = async () => {
     if (item) return showToast('수정시 이미지를 변경할 수 없습니다!');
@@ -105,6 +125,7 @@ const PostingMain: React.FC<BottomStackProps> = ({route}) => {
   };
 
   const editBoard = async () => {
+    if (!item) return;
     setIsLoading(true);
     const response = await request_editBoard({
       BoardId: item.BoardId,
