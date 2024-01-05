@@ -28,17 +28,13 @@ import {RootState} from '../store/store';
 
 type Props = {
   singleData: PostListElement;
-  boardCountDetails: BoardCountDetail[];
+  boardCountDetail: BoardCountDetail | undefined;
 };
 
-const Post: React.FC<Props> = ({singleData, boardCountDetails}) => {
+const Post: React.FC<Props> = ({singleData, boardCountDetail}) => {
   const {likeBoards, userId} = useAppSelector((state: RootState) => state.user);
 
   const navigation = useNavigation<MainStackProps['navigation']>();
-
-  const boardCountDetail = boardCountDetails.find(
-    boardCount => boardCount.BoardId === singleData.BoardId,
-  );
 
   const {
     handlePressLike,

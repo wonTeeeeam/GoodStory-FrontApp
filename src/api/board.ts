@@ -24,13 +24,11 @@ export const requestNewPosting = async (formData: FormData) => {
 
 export const request_deleteBoard = async (user: User, BoardId: string) => {
   try {
-    console.log(user, BoardId);
     const response = await axios.delete('/board/delete', {
       data: {user, BoardId},
     });
     return true;
   } catch (e: any) {
-    console.log(e.response);
     alert({
       title: '게시글 삭제 실패',
       body: `게시글 삭제에 실패했습니다.\n${e.message}`,

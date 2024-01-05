@@ -59,6 +59,10 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
     (state: RootState) => state.boardCountDetail,
   ).find(boardCount => boardCount.BoardId === singleData.BoardId);
 
+  const myPageBoardCountDetail = useAppSelector(
+    (state: RootState) => state.myActivityCountDetail,
+  ).find(boardCount => boardCount.BoardId === singleData.BoardId);
+
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const {isModalVisible, changeModalVisible} = useBottomModal();
@@ -175,11 +179,13 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                       <AntDesign name="hearto" color={gray.dimGray} />
                     )}
                   </View>
-                  {boardCountDetail?.likeCnt === 0 ? (
+                  {!boardCountDetail?.likeCnt &&
+                  !myPageBoardCountDetail?.likeCnt ? (
                     <Text style={styles.likeText}>{'좋아요'}</Text>
                   ) : (
                     <Text style={styles.likeText}>
-                      {boardCountDetail?.likeCnt}
+                      {boardCountDetail?.likeCnt ||
+                        myPageBoardCountDetail?.likeCnt}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -191,9 +197,11 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                     />
                   </View>
                   <Text style={styles.replyText}>
-                    {boardCountDetail?.replyCnt === 0
+                    {!boardCountDetail?.replyCnt &&
+                    !myPageBoardCountDetail?.replyCnt
                       ? '댓글'
-                      : boardCountDetail?.replyCnt}
+                      : boardCountDetail?.replyCnt ||
+                        myPageBoardCountDetail?.replyCnt}
                   </Text>
                 </Pressable>
                 <Pressable style={{...styles.bottomContainer, left: hs(240)}}>
@@ -201,9 +209,11 @@ const DetailPost: React.FC<DetailBoardStackProps> = ({route, navigation}) => {
                     <AntDesign name="eyeo" color={gray.dimGray} />
                   </View>
                   <Text style={styles.viewText}>
-                    {boardCountDetail?.viewCnt === 0
+                    {!boardCountDetail?.viewCnt &&
+                    !myPageBoardCountDetail?.viewCnt
                       ? '조회수'
-                      : boardCountDetail?.viewCnt}
+                      : boardCountDetail?.viewCnt ||
+                        myPageBoardCountDetail?.viewCnt}
                   </Text>
                 </Pressable>
               </View>

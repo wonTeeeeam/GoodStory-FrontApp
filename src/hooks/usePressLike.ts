@@ -76,29 +76,54 @@ const usePressLike = () => {
 
   const minusLike = async (singleData: PostListElement) => {
     const minusLikeResult = await requestMinusLike(singleData.BoardId, userId);
-    if (!minusLikeResult) {
-      return;
-    }
-    const newLikeBoardList = likeBoards.filter(
-      likeBoard => likeBoard !== singleData.BoardId,
-    );
-    const targetBoardCount = boardCountDetail.find(
-      boardCount => boardCount.BoardId === singleData.BoardId,
-    );
-    if (!targetBoardCount) {
-      return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
-    }
-    dispatch(handleLikeBoards([...newLikeBoardList]));
-    dispatch(
-      changeBoardCountExisted({
-        BoardId: targetBoardCount.BoardId,
-        likeCnt: targetBoardCount.likeCnt - 1,
-        replyCnt: targetBoardCount.replyCnt,
-        viewCnt: targetBoardCount.viewCnt,
-      }),
+
+    if (!minusLikeResult) return;
+
+    const targetBoardId = likeBoards.find(
+      likeBoard => likeBoard === singleData.BoardId,
     );
 
-    // setLikeCnt(likeCnt - 1);
+    console.log(targetBoardId);
+
+    if (!targetBoardId) {
+      return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
+    }
+
+    const mypageTargetBoard = myPageCountDetail.find(
+      boardCount => boardCount.BoardId === singleData.BoardId,
+    );
+
+    const targetBoard = boardCountDetail.find(
+      boardCount => boardCount.BoardId === singleData.BoardId,
+    );
+
+    dispatch(
+      handleLikeBoards([
+        ...likeBoards.filter(likeBoard => likeBoard !== singleData.BoardId),
+      ]),
+    );
+
+    if (targetBoard) {
+      dispatch(
+        changeBoardCountExisted({
+          BoardId: targetBoard.BoardId,
+          likeCnt: targetBoard.likeCnt - 1,
+          replyCnt: targetBoard.replyCnt,
+          viewCnt: targetBoard.viewCnt,
+        }),
+      );
+    }
+    if (mypageTargetBoard) {
+      dispatch(
+        changeMyPageBoardCountExisted({
+          BoardId: mypageTargetBoard.BoardId,
+          likeCnt: mypageTargetBoard.likeCnt - 1,
+          replyCnt: mypageTargetBoard.replyCnt,
+          viewCnt: mypageTargetBoard.viewCnt,
+        }),
+      );
+    }
+
     setIsLikePressed(false);
   };
 
