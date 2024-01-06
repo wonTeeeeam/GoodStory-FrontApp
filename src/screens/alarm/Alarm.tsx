@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {Linking, Text, TouchableOpacity, View} from 'react-native';
+import {Linking, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {black, blue, gray, white} from 'styles';
 import {AntDesign} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 
 const Alarm = () => {
   const [canAlarmAccessed, setCanAlarmAccessed] = useState(false);
+
   return (
     <View style={{}}>
       {!canAlarmAccessed && (
@@ -34,6 +35,7 @@ const Alarm = () => {
         </View>
       )}
       <View style={{marginTop: vs(30)}}>
+        <ScrollView></ScrollView>
         <View
           style={{
             borderTopWidth: ss(1),

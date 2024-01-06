@@ -58,7 +58,12 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
                 testID={'flatListItems'}
                 key={index}
                 style={styles.container}>
-                <Post singleData={item} boardCountDetails={boardCountDetails} />
+                <Post
+                  singleData={item}
+                  boardCountDetail={boardCountDetails.find(
+                    boardCount => boardCount.BoardId === item.BoardId,
+                  )}
+                />
               </View>
             );
           }}

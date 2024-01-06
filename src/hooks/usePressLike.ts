@@ -83,8 +83,6 @@ const usePressLike = () => {
       likeBoard => likeBoard === singleData.BoardId,
     );
 
-    console.log(targetBoardId);
-
     if (!targetBoardId) {
       return showToast(`좋아요을 업데이트하는데 실패하였습니다!`);
     }

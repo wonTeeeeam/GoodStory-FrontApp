@@ -24,11 +24,8 @@ import {AntDesign} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
 import {showToast} from 'utils/toast';
 import {changeTopicToEnglish, changeTopicToKorean} from 'utils/translation';
-import {CommonActions} from '@react-navigation/native';
 
 const PostingMain: React.FC<BottomStackProps> = ({route}) => {
-  const item = (route.params as {item?: PostListElement})?.item;
-
   const navigation = useNavigation<BottomStackProps['navigation']>();
   const {nickName, account, userId} = useAppSelector(state => state.user);
 
@@ -39,22 +36,29 @@ const PostingMain: React.FC<BottomStackProps> = ({route}) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+  const [item, setItem] = useState(
+    (route.params as {item?: PostListElement})?.item || null,
+  );
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       // 화면이 포커스를 잃을 때 실행됩니다.
-  //       navigation.dispatch(
-  //         CommonActions.reset({
-  //           index: 0,
-  //           routes: [
-  //             {name: 'AnotherScreen'}, // 이동하고자 하는 스크린
-  //           ],
-  //         }),
-  //       );
-  //     };
-  //   }, [navigation]),
-  // );
+  useEffect(() => {
+    setItem((route.params as {item?: PostListElement})?.item || null);
+  }, [route]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const initAllValues = () => {
+        setItem(null);
+        setCategory('');
+        setTitle('');
+        setContent('');
+        setImageList([]);
+        setIsDisabled(false);
+        setIsLoading(false);
+        setIsCategoryModalVisible(false);
+      };
+      return () => initAllValues();
+    }, []),
+  );
 
   useEffect(() => {
     if (title.length > 0 && content.length > 0 && category) {
@@ -72,7 +76,9 @@ const PostingMain: React.FC<BottomStackProps> = ({route}) => {
   }, [item]);
 
   const handleChoosePhoto = async () => {
-    if (item) return showToast('수정시 이미지를 변경할 수 없습니다!');
+    if (item) {
+      return showToast('수정시 이미지를 변경할 수 없습니다!');
+    }
 
     if (imageList.length >= 5) {
       return showToast('이미지는 5개 이상 업로드할 수 없습니다');
