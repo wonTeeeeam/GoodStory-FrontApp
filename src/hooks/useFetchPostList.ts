@@ -1,6 +1,5 @@
 import axios from 'axios';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addBoardCount} from 'slice/boardCountDetailSlice';
 import {alert} from 'utils/alert';

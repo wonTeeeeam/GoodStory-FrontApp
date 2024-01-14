@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {black, gray} from 'styles';
 import {hs, ss, vs} from 'utils/scailing';

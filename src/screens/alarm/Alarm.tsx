@@ -1,14 +1,23 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Message} from 'App';
 import React, {useEffect, useState} from 'react';
-import {Linking, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Linking,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {black, blue, gray, white} from 'styles';
 import {checkNotificationPermission} from 'utils/permission';
 import {AntDesign} from 'utils/react-native-vector-helper';
 import {hs, ss, vs} from 'utils/scailing';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {convertTimeToKorean} from 'utils/timeConverter';
 
 const Alarm = () => {
   const [canAlarmAccessed, setCanAlarmAccessed] = useState(false);
-  const [alarmList, setAlarmList] = useState([]);
+  const [alarmList, setAlarmList] = useState<Message[]>([]);
 
   const checkPermission = async () => {
     const result = await checkNotificationPermission();
@@ -18,8 +27,8 @@ const Alarm = () => {
 
   const settingInitList = async () => {
     const listData = await AsyncStorage.getItem('alarmList');
-    if (!listData) return;
-    setAlarmList(listData);
+    console.log(listData);
+    setAlarmList(listData ? JSON.parse(listData) : []);
   };
 
   useEffect(() => {
@@ -29,6 +38,14 @@ const Alarm = () => {
   useEffect(() => {
     settingInitList();
   }, []);
+
+  const deleteAlarm = (alarm: Message) => {
+    const newAlarmList = alarmList.filter(
+      element => element.boardItem.BoardId !== alarm.boardItem.BoardId,
+    );
+    setAlarmList(newAlarmList);
+    AsyncStorage.setItem('alarmList', JSON.stringify(newAlarmList));
+  };
 
   return (
     <View style={{}}>
@@ -59,27 +76,41 @@ const Alarm = () => {
       )}
       <View style={{marginTop: canAlarmAccessed ? 0 : vs(30)}}>
         <ScrollView>
-          {alarmList.map(() => (
-            <View
+          {alarmList.map((alarm, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                // navigation.navigate('DetailBoardStack', {
+                //   screen: 'DetailPost',
+                //   params: {
+                //     singleData: singleData,
+                //     firstIsLikePressed: isLikePressed,
+                //   },
+                // });
+              }}
               style={{
                 borderTopWidth: ss(1),
                 borderBottomWidth: ss(1),
                 borderColor: gray.lightGray,
                 paddingVertical: vs(20),
-              }}>
+              }}
+              key={`${index}-${alarm.boardItem.BoardId}`}>
               <View style={{marginHorizontal: hs(20)}}>
-                <View style={{position: 'absolute', right: 0}}>
+                <Pressable
+                  style={{position: 'absolute', right: 0, zIndex: 10000000}}
+                  onPress={() => {
+                    deleteAlarm(alarm);
+                  }}>
                   <AntDesign name="close" size={ss(20)} color={'black'} />
-                </View>
+                </Pressable>
                 <Text
                   style={{
                     color: black.origin,
                     fontSize: ss(10),
                   }}>
-                  새 댓글이 있습니다
+                  {alarm.title}
                 </Text>
                 <Text style={{color: black.origin, paddingTop: vs(10)}}>
-                  {'한원석 멍청한데요?'}
+                  {alarm.body}
                 </Text>
                 <Text
                   style={{
@@ -87,10 +118,10 @@ const Alarm = () => {
                     fontSize: ss(10),
                     paddingTop: vs(10),
                   }}>
-                  {'어제'}
+                  {convertTimeToKorean(alarm.sendTime)}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>

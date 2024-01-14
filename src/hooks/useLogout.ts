@@ -6,6 +6,7 @@ import * as Keychain from 'react-native-keychain';
 import {requestLogOut} from 'api/logout';
 import {useAppSelector} from 'store/hooks';
 import {RootState} from 'store/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogout = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const useLogout = () => {
     await Keychain.resetInternetCredentials('password');
     await Keychain.resetInternetCredentials('refreshToken');
     delete axios.defaults.headers.common.Authorization;
+    await AsyncStorage.removeItem('alarmList');
     dispatch(initUserInfo());
     alert({title: '로그아웃 성공', body: '로그아웃 되었습니다!'});
   };
