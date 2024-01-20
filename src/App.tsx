@@ -12,6 +12,7 @@ import {store} from 'store/store';
 import {PostListElement} from 'hooks/useFetchPostList';
 
 export type Message = {
+  messageId: string;
   title: string;
   body: string;
   sendTime: string;

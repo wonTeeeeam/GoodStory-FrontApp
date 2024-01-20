@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 import {Message} from 'App';
+import {PostListElement} from 'hooks/useFetchPostList';
+import {MainStackProps} from 'navigations/types';
 import React, {useEffect, useState} from 'react';
 import {
   Linking,
@@ -9,6 +12,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {myPageAddBoardCount} from 'slice/myActivityCountDetailSlice';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
 import {black, blue, gray, white} from 'styles';
 import {checkNotificationPermission} from 'utils/permission';
 import {AntDesign} from 'utils/react-native-vector-helper';
@@ -18,6 +25,26 @@ import {convertTimeToKorean} from 'utils/timeConverter';
 const Alarm = () => {
   const [canAlarmAccessed, setCanAlarmAccessed] = useState(false);
   const [alarmList, setAlarmList] = useState<Message[]>([]);
+  const boardCountDetails = useAppSelector(
+    (state: RootState) => state.myActivityCountDetail,
+  );
+
+  const {likeBoards} = useAppSelector((state: RootState) => state.user);
+
+  const navigation = useNavigation<MainStackProps['navigation']>();
+
+  const dispatch = useDispatch();
+
+  const addDetailBoard = (boardItem: PostListElement) => {
+    dispatch(myPageAddBoardCount([...boardCountDetails, boardItem]));
+  };
+
+  const checkIsDetailBoardExist = (alarm: Message) => {
+    const isExist = boardCountDetails.some(
+      boardCountDetail => boardCountDetail.BoardId === alarm.boardItem.BoardId,
+    );
+    if (!isExist) addDetailBoard(alarm.boardItem);
+  };
 
   const checkPermission = async () => {
     const result = await checkNotificationPermission();
@@ -27,7 +54,6 @@ const Alarm = () => {
 
   const settingInitList = async () => {
     const listData = await AsyncStorage.getItem('alarmList');
-    console.log(listData);
     setAlarmList(listData ? JSON.parse(listData) : []);
   };
 
@@ -41,7 +67,7 @@ const Alarm = () => {
 
   const deleteAlarm = (alarm: Message) => {
     const newAlarmList = alarmList.filter(
-      element => element.boardItem.BoardId !== alarm.boardItem.BoardId,
+      element => element.messageId !== alarm.messageId,
     );
     setAlarmList(newAlarmList);
     AsyncStorage.setItem('alarmList', JSON.stringify(newAlarmList));
@@ -79,13 +105,16 @@ const Alarm = () => {
           {alarmList.map((alarm, index) => (
             <TouchableOpacity
               onPress={() => {
-                // navigation.navigate('DetailBoardStack', {
-                //   screen: 'DetailPost',
-                //   params: {
-                //     singleData: singleData,
-                //     firstIsLikePressed: isLikePressed,
-                //   },
-                // });
+                checkIsDetailBoardExist(alarm);
+                navigation.navigate('DetailBoardStack', {
+                  screen: 'DetailPost',
+                  params: {
+                    singleData: alarm.boardItem,
+                    firstIsLikePressed: likeBoards.some(
+                      boardId => boardId === alarm.boardItem.BoardId,
+                    ),
+                  },
+                });
               }}
               style={{
                 borderTopWidth: ss(1),

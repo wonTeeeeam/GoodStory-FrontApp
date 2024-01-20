@@ -1,16 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-// type loginUserInfo = {
-//   userId: string;
-//   companyName: string;
-//   nickname: string;
-//   profilePhoto: string;
-//   refresh_token: string;
-//   likeBoards: string[];
-//   likeReplies: string[];
-//   likeReReplies: string[];
-// };
-
 const initialState = {
   userId: '',
   account: '',
