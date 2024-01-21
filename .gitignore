@@ -65,3 +65,8 @@ buck-out/
 
 #config
 src/config
+
+private.pem
+public.pem
+
+android/app/src/main/assets/appcenter-config.json

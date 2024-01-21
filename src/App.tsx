@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Platform, View, Text, StatusBar} from 'react-native';
 import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 
-// import codePush from 'react-native-code-push';
+import CodePush from 'react-native-code-push';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {MIN_ANDROID_VERSION} from './config';
@@ -65,5 +65,4 @@ const App = () => {
   );
 };
 
-// App = codePush({checkFrequency: codePush.checkFrequency.ON_App_START})(App);
-export default App;
+export default CodePush(App);
