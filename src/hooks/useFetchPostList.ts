@@ -85,6 +85,7 @@ const useFetchPostList = ({topic}: Props) => {
       });
       const newUpdatePostList = updatePostList(nextPostList.data);
       setPostList(newUpdatePostList);
+      // console.log(newUpdatePostList);
       dispatch(addBoardCount(newUpdatePostList));
       // 지금 가지고 있는 게시글 이후부터 가져오기 위한 skip
       setSkip(newUpdatePostList.length);

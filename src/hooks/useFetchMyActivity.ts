@@ -107,6 +107,7 @@ const useFetchMyActivity = (type: string) => {
 
       const newUpdatePostList = updatePostList(nextPostList);
       setPostList(newUpdatePostList);
+      // console.log(newUpdatePostList);
       dispatch(myPageAddBoardCount(newUpdatePostList));
       // // 지금 가지고 있는 게시글 이후부터 가져오기 위한 skip
       setSkip(newUpdatePostList.length);

@@ -32,6 +32,7 @@ type Props = {
 };
 
 const Post: React.FC<Props> = ({singleData, boardCountDetail}) => {
+  // console.log(boardCountDetail);
   const {likeBoards, userId} = useAppSelector((state: RootState) => state.user);
 
   const navigation = useNavigation<MainStackProps['navigation']>();

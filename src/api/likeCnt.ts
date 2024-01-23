@@ -11,7 +11,6 @@ export const requestPlusLike = async (BoardId: string, userId: string) => {
     });
     return true;
   } catch (e: any) {
-    console.log(e.response);
     showToast(`좋아요에 실패하였습니다.\n${e.message}`);
     return false;
   }

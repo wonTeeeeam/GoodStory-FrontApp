@@ -32,7 +32,6 @@ const App = () => {
     if (checkPermission !== RESULTS.GRANTED) {
       const request = await requestNotificationPermission();
       if (request !== RESULTS.GRANTED) {
-        console.log(request);
         // permission not granted
       }
     }
