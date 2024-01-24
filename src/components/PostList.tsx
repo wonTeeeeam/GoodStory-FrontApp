@@ -16,8 +16,14 @@ export type Props = {
 };
 
 const PostList: React.FC<Props> = ({filterValue, topic}) => {
-  const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
-    useFetchPostList({topic: topic});
+  const {
+    onRefresh,
+    fetchNextPostList,
+    postList,
+    isPostListExist,
+    refreshing,
+    deletePost,
+  } = useFetchPostList({topic: topic});
 
   const boardCountDetails = useAppSelector(
     (state: RootState) => state.boardCountDetail,
@@ -63,6 +69,7 @@ const PostList: React.FC<Props> = ({filterValue, topic}) => {
                   boardCountDetail={boardCountDetails.find(
                     boardCount => boardCount.BoardId === item.BoardId,
                   )}
+                  deletePost={deletePost}
                 />
               </View>
             );

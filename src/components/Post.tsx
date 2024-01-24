@@ -3,7 +3,7 @@ import useDeleteOrEdit from 'hooks/useDeleteOrEdit';
 import {PostListElement} from 'hooks/useFetchPostList';
 import useLikeAndView from 'hooks/useLikeAndView';
 import {MainStackProps} from 'navigations/types';
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -19,21 +19,24 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from 'utils/react-native-vector-helper';
+import LoadingModal from 'components/modal/LoadingModal';
 import {hs, ss, vs} from 'utils/scailing';
 import {convertTimeToKorean} from 'utils/timeConverter';
 import {changeTopicToKorean} from 'utils/translation';
 
 import {useAppSelector} from '../store/hooks';
 import {RootState} from '../store/store';
+import {alert} from 'utils/alert';
 
 type Props = {
   singleData: PostListElement;
   boardCountDetail: BoardCountDetail | undefined;
+  deletePost: (boardId: string) => void;
 };
 
-const Post: React.FC<Props> = ({singleData, boardCountDetail}) => {
-  // console.log(boardCountDetail);
+const Post: React.FC<Props> = ({singleData, boardCountDetail, deletePost}) => {
   const {likeBoards, userId} = useAppSelector((state: RootState) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation<MainStackProps['navigation']>();
 
@@ -47,8 +50,20 @@ const Post: React.FC<Props> = ({singleData, boardCountDetail}) => {
 
   const {deleteBoard} = useDeleteOrEdit();
 
-  const handleOnDelete = (item: PostListElement) => {
-    deleteBoard(item.BoardId);
+  const handleOnDelete = async (item: PostListElement) => {
+    const keepGoing = await alert({
+      title: '게시글 삭제',
+      body: '게시글 삭제하시겠습니까?',
+      isConfirm: true,
+    });
+    if (!keepGoing) return;
+
+    setIsLoading(true);
+    const isDeleted = await deleteBoard(item.BoardId);
+    if (isDeleted) {
+      deletePost(item.BoardId);
+    }
+    setIsLoading(false);
   };
 
   const handleOnEdit = (item: PostListElement) => {
@@ -78,6 +93,8 @@ const Post: React.FC<Props> = ({singleData, boardCountDetail}) => {
       ? content.slice(0, maxLength + 1) + '...'
       : content;
   };
+
+  if (isLoading) return <LoadingModal isVisible={isLoading} />;
 
   return (
     <View>

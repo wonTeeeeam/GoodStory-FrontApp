@@ -42,10 +42,14 @@ type Props = {
 
 const useFetchPostList = ({topic}: Props) => {
   const [skip, setSkip] = useState(0);
-  const [postList, setPostList] = useState<any[]>([]);
+  const [postList, setPostList] = useState<PostListElement[]>([]);
   const [isPostListExist, setIsPostListExist] = useState<boolean>();
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
+
+  const deletePost = (boardId: string) => {
+    setPostList(postList.filter(post => post.BoardId !== boardId));
+  };
 
   const updatePostList = (nextPostList: PostListElement[]) => {
     const postListUpdated: PostListElement[] = [];
@@ -57,11 +61,13 @@ const useFetchPostList = ({topic}: Props) => {
         newPost => newPost.BoardId === oldPost.BoardId,
       );
 
-      //게시글이 존재하면
+      //게시글이 존재하면(기존에 존재하는 게시글인데 가져온 경우)
       if (index !== -1) {
         postListUpdated.push(nextPostListCopyed[index]);
         nextPostListCopyed.splice(index, 1);
-      } else {
+      }
+      // 게시글이 존재하지 않을때(기존에는 존재하는데 새로운 게시글 목록에는 없는 경우.)
+      else {
         postListUpdated.push(oldPost);
       }
     });
@@ -119,6 +125,7 @@ const useFetchPostList = ({topic}: Props) => {
     postList,
     isPostListExist,
     refreshing,
+    deletePost,
   };
 };
 export default useFetchPostList;
