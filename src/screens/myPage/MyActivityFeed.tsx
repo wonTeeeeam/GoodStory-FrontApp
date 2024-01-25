@@ -22,8 +22,14 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
 
   const nextPostListLength = 10;
 
-  const {onRefresh, fetchNextPostList, postList, isPostListExist, refreshing} =
-    useFetchMyActivity(type);
+  const {
+    onRefresh,
+    fetchNextPostList,
+    postList,
+    isPostListExist,
+    refreshing,
+    deletePost,
+  } = useFetchMyActivity(type);
 
   return (
     <View style={{flex: 1}}>
@@ -44,6 +50,7 @@ const MyActivityFeed: React.FC<MyPageStackProps> = ({route}) => {
                   boardCountDetail={boardCountDetails.find(
                     boardCount => boardCount.BoardId === item.BoardId,
                   )}
+                  deletePost={deletePost}
                 />
               </View>
             );

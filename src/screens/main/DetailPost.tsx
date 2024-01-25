@@ -1,36 +1,33 @@
-import axios from 'axios';
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
-
+import {fetchDetailData} from 'api/reply';
+import BottomModalElement from 'components/BottomModalElement';
 import DetailPostMain from 'components/DetailPostMain';
 import ReplyList from 'components/ReplyList';
-import {black, gray, red, white} from 'styles';
-import {ss, vs, hs} from 'utils/scailing';
-import {convertTimeToKorean} from 'utils/timeConverter';
-
+import CommentBar from 'components/bar/CommentBar';
 import BottomModal from 'components/modal/BottomModal';
-import BottomModalElement from 'components/BottomModalElement';
-import FastImage from 'react-native-fast-image';
+import useBottomModal from 'hooks/useModal';
 import usePressLike from 'hooks/usePressLike';
+import {DetailBoardStackProps} from 'navigations/types';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {useAppSelector} from 'store/hooks';
+import {RootState} from 'store/store';
+import {black, gray, red, white} from 'styles';
 import {
   AntDesign,
   Entypo,
   Ionicons,
   MaterialCommunityIcons,
 } from 'utils/react-native-vector-helper';
-import {DetailBoardStackProps} from 'navigations/types';
-import useBottomModal from 'hooks/useModal';
-import CommentBar from 'components/bar/CommentBar';
-import {useAppSelector} from 'store/hooks';
-import {RootState} from 'store/store';
-import {fetchDetailData} from 'api/reply';
+import {hs, ss, vs} from 'utils/scailing';
+import {convertTimeToKorean} from 'utils/timeConverter';
 
 export type ReplyDatum = {
   ReplyId: string;

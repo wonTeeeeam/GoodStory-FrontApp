@@ -159,9 +159,9 @@ const MyPageScreen = () => {
                 navigation.navigate('MyPageStack', {screen: 'Alarm'});
               }}>
               <Feather name="bell" color={'#696969'} size={ss(25)} />
-              <View style={{position: 'absolute'}}>
+              {/* <View style={{position: 'absolute'}}>
                 <Entypo name={'dot-single'} size={ss(40)} color={red.hotLips} />
-              </View>
+              </View> */}
             </TouchableOpacity>
           </View>
         </View>

@@ -60,10 +60,10 @@ const Post: React.FC<Props> = ({singleData, boardCountDetail, deletePost}) => {
 
     setIsLoading(true);
     const isDeleted = await deleteBoard(item.BoardId);
+    setIsLoading(false);
     if (isDeleted) {
       deletePost(item.BoardId);
     }
-    setIsLoading(false);
   };
 
   const handleOnEdit = (item: PostListElement) => {
@@ -134,8 +134,8 @@ const Post: React.FC<Props> = ({singleData, boardCountDetail, deletePost}) => {
                 <Octicons name="pencil" color={black.origin} size={ss(18)} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  handleOnDelete(singleData);
+                onPress={async () => {
+                  await handleOnDelete(singleData);
                 }}
                 style={{position: 'absolute', right: hs(0), top: vs(15)}}>
                 <AntDesign name="delete" color={black.origin} size={ss(18)} />

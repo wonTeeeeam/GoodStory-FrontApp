@@ -51,6 +51,17 @@ const useFetchMyActivity = (type: string) => {
   const dispatch = useDispatch();
   const {userId} = useAppSelector((state: RootState) => state.user);
 
+  useEffect(() => {
+    postList.length === 0
+      ? setIsPostListExist(false)
+      : setIsPostListExist(true);
+  }, [postList]);
+
+  const deletePost = (boardId: string) => {
+    const newPostList = postList.filter(post => post.BoardId !== boardId);
+    setPostList(newPostList);
+  };
+
   const updatePostList = (nextPostList: PostListElement[]) => {
     const postListUpdated: PostListElement[] = [];
     const nextPostListCopyed: PostListElement[] = JSON.parse(
@@ -141,6 +152,7 @@ const useFetchMyActivity = (type: string) => {
     postList,
     isPostListExist,
     refreshing,
+    deletePost,
   };
 };
 export default useFetchMyActivity;

@@ -47,8 +47,15 @@ const useFetchPostList = ({topic}: Props) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    postList.length === 0
+      ? setIsPostListExist(false)
+      : setIsPostListExist(true);
+  }, [postList]);
+
   const deletePost = (boardId: string) => {
-    setPostList(postList.filter(post => post.BoardId !== boardId));
+    const newPostList = postList.filter(post => post.BoardId !== boardId);
+    setPostList(newPostList);
   };
 
   const updatePostList = (nextPostList: PostListElement[]) => {
