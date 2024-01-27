@@ -154,7 +154,11 @@ const PostingMain: React.FC<BottomStackProps> = ({route}) => {
     }
     showToast('게시글 등록에 성공하였습니다.');
     setIsLoading(false);
-    navigation.navigate('Board', {boardTopic: category});
+    navigation.reset({
+      routes: [
+        {name: 'Board', params: {boardTopic: changeTopicToEnglish(category)}},
+      ],
+    });
   };
 
   const TopicItem = (text: string) => {

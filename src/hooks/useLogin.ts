@@ -49,7 +49,7 @@ const useLogin = () => {
 
     if (
       IDCredentials &&
-      IDCredentials?.password &&
+      IDCredentials.password &&
       passwordCredentials &&
       passwordCredentials.password
     ) {
@@ -63,16 +63,17 @@ const useLogin = () => {
       }
     }
     SplashScreen.hide();
-    if (!autoLoginResult) {
+    if (IDCredentials && passwordCredentials && !autoLoginResult) {
       alert({title: '자동로그인 실패', body: '자동 로그인 실패하였습니다.'});
     }
   };
 
-  const handleLogin = async () => {
-    if (ID === '' || password === '') {
-      return;
-    }
-    const loginUserInfo = await requestUserInfo(ID, password);
+  const handleLogin = async (IDInput?: string, passwordInput?: string) => {
+    const id = IDInput ? IDInput : ID;
+    const pwd = passwordInput ? passwordInput : password;
+    if (id === '' || pwd === '') return;
+
+    const loginUserInfo = await requestUserInfo(id, pwd);
     if (!loginUserInfo) {
       return alert({
         title: '로그인 실패',
@@ -80,8 +81,8 @@ const useLogin = () => {
       });
     }
     if (isAutoLogin) {
-      await Keychain.setInternetCredentials('ID', 'ID', ID);
-      await Keychain.setInternetCredentials('password', 'password', password);
+      await Keychain.setInternetCredentials('ID', 'ID', id);
+      await Keychain.setInternetCredentials('password', 'password', pwd);
     }
     await handleSetUserInfo(loginUserInfo);
   };

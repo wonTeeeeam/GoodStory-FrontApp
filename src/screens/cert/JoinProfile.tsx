@@ -1,6 +1,7 @@
 import {registerUserInfo} from 'api/join';
 import LongButton from 'components/button/LongButton';
 import LoadingModal from 'components/modal/LoadingModal';
+import useLogin from 'hooks/useLogin';
 import {JoinStackProps} from 'navigations/types';
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Platform} from 'react-native';
@@ -19,6 +20,8 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
     Password: string;
     Nickname: string;
   };
+
+  const {handleLogin} = useLogin();
 
   const [profileImage, setProfileImage] = useState<ImageOrVideo>();
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +55,7 @@ const JoinProfile: React.FC<JoinStackProps> = ({route, navigation}) => {
     if (result) {
       alert({title: '회원가입 성공', body: '회원가입에 성공하였습니다!'});
       dispatch(handleIsUserStartJoin());
+      await handleLogin(result.Account, Password);
     }
   };
 

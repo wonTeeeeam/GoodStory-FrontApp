@@ -41,12 +41,12 @@ export const requestSendEmail = async (email: string) => {
 
 export const registerUserInfo = async (formData: FormData) => {
   try {
-    const result = await axios.post('/user/create', formData, {
+    const response = await axios.post('/user/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return true;
+    return response.data;
   } catch (e: any) {
     alert({
       title: '회원가입 실패',

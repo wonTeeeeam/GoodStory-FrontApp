@@ -1,8 +1,7 @@
+import HandleTopicCard from 'components/HandleTopicCard';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {hs, ss, vs} from 'utils/scailing';
-
-import HandleTopicCard from 'components/HandleTopicCard';
+import {white} from 'styles';
 import {
   FontAwesome,
   Fontisto,
@@ -10,7 +9,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from 'utils/react-native-vector-helper';
-import {black, gray, white} from 'styles';
+import {hs, ss, vs} from 'utils/scailing';
 
 const Topic = () => {
   return (
