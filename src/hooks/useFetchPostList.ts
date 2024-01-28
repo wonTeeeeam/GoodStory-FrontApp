@@ -106,7 +106,7 @@ const useFetchPostList = ({topic}: Props) => {
       postList.length === 0 && nextPostList.data.length === 0
         ? setIsPostListExist(false)
         : setIsPostListExist(true);
-    } catch (e) {
+    } catch (e: any) {
       setIsPostListExist(false);
       alert({
         title: '게시글 불러오기 실패',

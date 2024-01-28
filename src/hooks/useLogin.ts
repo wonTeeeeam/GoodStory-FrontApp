@@ -63,7 +63,13 @@ const useLogin = () => {
       }
     }
     SplashScreen.hide();
-    if (IDCredentials && passwordCredentials && !autoLoginResult) {
+    if (
+      IDCredentials &&
+      IDCredentials.password &&
+      passwordCredentials &&
+      passwordCredentials.password &&
+      !autoLoginResult
+    ) {
       alert({title: '자동로그인 실패', body: '자동 로그인 실패하였습니다.'});
     }
   };

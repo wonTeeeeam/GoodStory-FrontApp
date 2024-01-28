@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
-import {Platform, View, Text, StatusBar} from 'react-native';
-import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
-
+import {Platform, StatusBar, Text, View} from 'react-native';
 import CodePush from 'react-native-code-push';
+import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-import {MIN_ANDROID_VERSION} from './config';
-import RootNavigation from './navigations/RootNavigation';
+import {PostListElement} from 'hooks/useFetchPostList';
 import {Provider} from 'react-redux';
 import {store} from 'store/store';
-import {PostListElement} from 'hooks/useFetchPostList';
+import {MIN_ANDROID_VERSION} from './config';
+import RootNavigation from './navigations/RootNavigation';
 
 export type Message = {
   messageId: string;
