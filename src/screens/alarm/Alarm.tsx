@@ -48,7 +48,7 @@ const Alarm = () => {
 
   const checkPermission = async () => {
     const result = await checkNotificationPermission();
-    if (result) setCanAlarmAccessed(true);
+    if (result === 'granted') setCanAlarmAccessed(true);
     else setCanAlarmAccessed(false);
   };
 
